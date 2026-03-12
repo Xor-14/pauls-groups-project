@@ -1,0 +1,2156 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package gui;
+
+import java.awt.Color;
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+import javax.swing.JScrollBar;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+/**
+ *
+ * @author xor
+ */
+public class BuyerDashboard extends javax.swing.JFrame {
+    
+     /**
+     * 
+     */ 
+    private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
+    private int imageIndex = 0;
+    
+   private void imageSlideshow() {
+
+    Timer timer = new Timer(8000, e -> {
+        imageIndex = (imageIndex + 1) % imgslides.length;
+
+        bgimg.setIcon(
+            new ImageIcon(getClass().getResource(imgslides[imageIndex])));
+    });
+    timer.start();
+}
+   /** 
+    * Colors
+     */ 
+   Color clickedcolor, entered, normal;
+   Color occupied = new Color(255,98,96);
+   Color reserved = new Color(0, 78, 122);
+   Color vacant = new Color(0,153,0);
+        
+   /** 
+    * Creating Lots Status (Buttons) for future reference
+     */ 
+   public void setLotStatus(JButton btn, String status){
+
+    btn.setOpaque(true);
+
+    switch(status){
+
+        case "Vacant":
+            btn.setBackground(vacant);
+            break;
+
+        case "Reserved":
+            btn.setBackground(reserved);
+            break;
+
+        case "Occupied":
+            btn.setBackground(occupied);
+            break;
+
+    }
+
+}
+      // sample database for testing filters
+   
+    JButton[][] lotButtons = new JButton[5][20];
+    private void mapButtons(){
+
+    // BLOCK 1
+    lotButtons[0][0] = b1_l1;
+    lotButtons[0][1] = b1_l2;
+    lotButtons[0][2] = b1_l3;
+    lotButtons[0][3] = b1_l4;
+    lotButtons[0][4] = b1_l5;
+    lotButtons[0][5] = b1_l6;
+    lotButtons[0][6] = b1_l7;
+    lotButtons[0][7] = b1_l8;
+    lotButtons[0][8] = b1_l9;
+    lotButtons[0][9] = b1_l10;
+    lotButtons[0][10] = b1_l11;
+    lotButtons[0][11] = b1_l12;
+    lotButtons[0][12] = b1_l13;
+    lotButtons[0][13] = b1_l14;
+    lotButtons[0][14] = b1_l15;
+    lotButtons[0][15] = b1_l16;
+    lotButtons[0][16] = b1_l17;
+    lotButtons[0][17] = b1_l18;
+    lotButtons[0][18] = b1_l19;
+    lotButtons[0][19] = b1_l20;
+
+    // BLOCK 2
+    lotButtons[1][0] = b2_l1;
+    lotButtons[1][1] = b2_l2;
+    lotButtons[1][2] = b2_l3;
+    lotButtons[1][3] = b2_l4;
+    lotButtons[1][4] = b2_l5;
+    lotButtons[1][5] = b2_l6;
+    lotButtons[1][6] = b2_l7;
+    lotButtons[1][7] = b2_l8;
+    lotButtons[1][8] = b2_l9;
+    lotButtons[1][9] = b2_l10;
+    lotButtons[1][10] = b2_l11;
+    lotButtons[1][11] = b2_l12;
+    lotButtons[1][12] = b2_l13;
+    lotButtons[1][13] = b2_l14;
+    lotButtons[1][14] = b2_l15;
+    lotButtons[1][15] = b2_l16;
+    lotButtons[1][16] = b2_l17;
+    lotButtons[1][17] = b2_l18;
+    lotButtons[1][18] = b2_l19;
+    lotButtons[1][19] = b2_l20;
+
+    // BLOCK 3
+    lotButtons[2][0] = b3_l1;
+    lotButtons[2][1] = b3_l2;
+    lotButtons[2][2] = b3_l3;
+    lotButtons[2][3] = b3_l4;
+    lotButtons[2][4] = b3_l5;
+    lotButtons[2][5] = b3_l6;
+    lotButtons[2][6] = b3_l7;
+    lotButtons[2][7] = b3_l8;
+    lotButtons[2][8] = b3_l9;
+    lotButtons[2][9] = b3_l10;
+    lotButtons[2][10] = b3_l11;
+    lotButtons[2][11] = b3_l12;
+    lotButtons[2][12] = b3_l13;
+    lotButtons[2][13] = b3_l14;
+    lotButtons[2][14] = b3_l15;
+    lotButtons[2][15] = b3_l16;
+    lotButtons[2][16] = b3_l17;
+    lotButtons[2][17] = b3_l18;
+    lotButtons[2][18] = b3_l19;
+    lotButtons[2][19] = b3_l20;
+
+    // BLOCK 4
+    lotButtons[3][0] = b4_l1;
+    lotButtons[3][1] = b4_l2;
+    lotButtons[3][2] = b4_l3;
+    lotButtons[3][3] = b4_l4;
+    lotButtons[3][4] = b4_l5;
+    lotButtons[3][5] = b4_l6;
+    lotButtons[3][6] = b4_l7;
+    lotButtons[3][7] = b4_l8;
+    lotButtons[3][8] = b4_l9;
+    lotButtons[3][9] = b4_l10;
+    lotButtons[3][10] = b4_l11;
+    lotButtons[3][11] = b4_l12;
+    lotButtons[3][12] = b4_l13;
+    lotButtons[3][13] = b4_l14;
+    lotButtons[3][14] = b4_l15;
+    lotButtons[3][15] = b4_l16;
+    lotButtons[3][16] = b4_l17;
+    lotButtons[3][17] = b4_l18;
+    lotButtons[3][18] = b4_l19;
+    lotButtons[3][19] = b4_l20;
+
+    // BLOCK 5
+    lotButtons[4][0] = b5_l1;
+    lotButtons[4][1] = b5_l2;
+    lotButtons[4][2] = b5_l3;
+    lotButtons[4][3] = b5_l4;
+    lotButtons[4][4] = b5_l5;
+    lotButtons[4][5] = b5_l6;
+    lotButtons[4][6] = b5_l7;
+    lotButtons[4][7] = b5_l8;
+    lotButtons[4][8] = b5_l9;
+    lotButtons[4][9] = b5_l10;
+    lotButtons[4][10] = b5_l11;
+    lotButtons[4][11] = b5_l12;
+    lotButtons[4][12] = b5_l13;
+    lotButtons[4][13] = b5_l14;
+    lotButtons[4][14] = b5_l15;
+    lotButtons[4][15] = b5_l16;
+    lotButtons[4][16] = b5_l17;
+    lotButtons[4][17] = b5_l18;
+    lotButtons[4][18] = b5_l19;
+    lotButtons[4][19] = b5_l20;
+
+}
+    
+    String[][] lotStatus = new String[5][20];
+    String[][] lotType = new String[5][20];
+    double[][] lotPrice = new double[5][20];
+    
+    private void initializeLots(){
+
+    for(int b=0;b<5;b++){
+        for(int l=0;l<20;l++){
+
+            lotStatus[b][l] = "Vacant";
+            lotType[b][l] = "Standard Lot";
+            lotPrice[b][l] = 500000 + (l*10000);
+
+        }
+    }
+
+}
+    public void updateLotColor(int b,int l){
+
+    JButton btn = lotButtons[b][l];
+
+    btn.setOpaque(true);
+
+    if(lotStatus[b][l].equals("Vacant"))
+        btn.setBackground(vacant);
+
+    if(lotStatus[b][l].equals("Reserved"))
+        btn.setBackground(reserved);
+
+    if(lotStatus[b][l].equals("Occupied"))
+        btn.setBackground(occupied);
+    
+    btn.setOpaque(true);
+    btn.setContentAreaFilled(true);
+    btn.setBorderPainted(false);
+}
+    private void updateAllLotColors(){
+
+    for(int b = 0; b < 5; b++){
+        for(int l = 0; l < 20; l++){
+
+            updateLotColor(b,l);
+
+        }
+    }
+
+}
+    public void applyFilters(){
+
+    String status = statusFilter.getSelectedItem().toString();
+    String type = lotFilter.getSelectedItem().toString();
+    String price = priceFilter.getSelectedItem().toString();
+    String block = blockFilter.getSelectedItem().toString();
+
+    for(int b = 0; b < 5; b++){
+        for(int l = 0; l < 20; l++){
+
+            boolean show = true;
+
+            // STATUS FILTER
+            if(!status.equals("All") && !lotStatus[b][l].equals(status)){
+                show = false;
+            }
+
+            // TYPE FILTER
+            if(!type.equals("All") && !lotType[b][l].equals(type)){
+                show = false;
+            }
+
+            // PRICE FILTER
+            if(price.equals("Max 500000") && lotPrice[b][l] > 500000){
+                show = false;
+            }
+
+            if(price.equals("Max 750000") && lotPrice[b][l] > 750000){
+                show = false;
+            }
+
+            if(price.equals("Max 1000000") && lotPrice[b][l] > 1000000){
+                show = false;
+            }
+
+            // BLOCK FILTER
+            if(!block.equals("All") && !block.equals("Block " + (b+1))){
+                show = false;
+            }
+
+            lotButtons[b][l].setVisible(show);
+
+        }
+    }
+
+}
+
+    public BuyerDashboard() {
+        initComponents();
+        imageSlideshow();
+        mapButtons();
+        initializeLots();
+        lotStatus[1][5]="Reserved";
+        lotStatus[2][4]="Vacant";
+        lotStatus[0][1]="Occupied";
+        updateAllLotColors();
+        clickedcolor = new Color(0,0,0);
+        entered = new Color(110, 110, 110);
+        normal = new Color(255,255,255);
+ 
+        
+    }
+ 
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        BuyerSideBar = new javax.swing.JPanel();
+        DashboardLabel = new javax.swing.JLabel();
+        GroupName = new javax.swing.JLabel();
+        viewLots = new javax.swing.JButton();
+        reqComputation = new javax.swing.JButton();
+        viewReserv = new javax.swing.JButton();
+        logOut = new javax.swing.JButton();
+        MainContentBuyer = new javax.swing.JTabbedPane();
+        Lots = new javax.swing.JPanel();
+        lotsOverview = new javax.swing.JScrollPane();
+        lotsView = new javax.swing.JPanel();
+        Block1 = new javax.swing.JLabel();
+        Block1Grid = new javax.swing.JPanel();
+        b1_l1 = new javax.swing.JButton();
+        b1_l2 = new javax.swing.JButton();
+        b1_l3 = new javax.swing.JButton();
+        b1_l4 = new javax.swing.JButton();
+        b1_l5 = new javax.swing.JButton();
+        b1_l6 = new javax.swing.JButton();
+        b1_l7 = new javax.swing.JButton();
+        b1_l8 = new javax.swing.JButton();
+        b1_l9 = new javax.swing.JButton();
+        b1_l10 = new javax.swing.JButton();
+        b1_l11 = new javax.swing.JButton();
+        b1_l12 = new javax.swing.JButton();
+        b1_l13 = new javax.swing.JButton();
+        b1_l14 = new javax.swing.JButton();
+        b1_l15 = new javax.swing.JButton();
+        b1_l16 = new javax.swing.JButton();
+        b1_l17 = new javax.swing.JButton();
+        b1_l18 = new javax.swing.JButton();
+        b1_l19 = new javax.swing.JButton();
+        b1_l20 = new javax.swing.JButton();
+        Block2 = new javax.swing.JLabel();
+        Block2Grid = new javax.swing.JPanel();
+        b2_l1 = new javax.swing.JButton();
+        b2_l2 = new javax.swing.JButton();
+        b2_l3 = new javax.swing.JButton();
+        b2_l4 = new javax.swing.JButton();
+        b2_l5 = new javax.swing.JButton();
+        b2_l6 = new javax.swing.JButton();
+        b2_l7 = new javax.swing.JButton();
+        b2_l8 = new javax.swing.JButton();
+        b2_l9 = new javax.swing.JButton();
+        b2_l10 = new javax.swing.JButton();
+        b2_l11 = new javax.swing.JButton();
+        b2_l12 = new javax.swing.JButton();
+        b2_l13 = new javax.swing.JButton();
+        b2_l14 = new javax.swing.JButton();
+        b2_l15 = new javax.swing.JButton();
+        b2_l16 = new javax.swing.JButton();
+        b2_l17 = new javax.swing.JButton();
+        b2_l18 = new javax.swing.JButton();
+        b2_l19 = new javax.swing.JButton();
+        b2_l20 = new javax.swing.JButton();
+        Block3 = new javax.swing.JLabel();
+        Block3Grid = new javax.swing.JPanel();
+        b3_l1 = new javax.swing.JButton();
+        b3_l2 = new javax.swing.JButton();
+        b3_l3 = new javax.swing.JButton();
+        b3_l4 = new javax.swing.JButton();
+        b3_l5 = new javax.swing.JButton();
+        b3_l6 = new javax.swing.JButton();
+        b3_l7 = new javax.swing.JButton();
+        b3_l8 = new javax.swing.JButton();
+        b3_l9 = new javax.swing.JButton();
+        b3_l10 = new javax.swing.JButton();
+        b3_l11 = new javax.swing.JButton();
+        b3_l12 = new javax.swing.JButton();
+        b3_l13 = new javax.swing.JButton();
+        b3_l14 = new javax.swing.JButton();
+        b3_l15 = new javax.swing.JButton();
+        b3_l16 = new javax.swing.JButton();
+        b3_l17 = new javax.swing.JButton();
+        b3_l18 = new javax.swing.JButton();
+        b3_l19 = new javax.swing.JButton();
+        b3_l20 = new javax.swing.JButton();
+        Block4 = new javax.swing.JLabel();
+        Block4Grid = new javax.swing.JPanel();
+        b4_l1 = new javax.swing.JButton();
+        b4_l2 = new javax.swing.JButton();
+        b4_l3 = new javax.swing.JButton();
+        b4_l4 = new javax.swing.JButton();
+        b4_l5 = new javax.swing.JButton();
+        b4_l6 = new javax.swing.JButton();
+        b4_l7 = new javax.swing.JButton();
+        b4_l8 = new javax.swing.JButton();
+        b4_l9 = new javax.swing.JButton();
+        b4_l10 = new javax.swing.JButton();
+        b4_l11 = new javax.swing.JButton();
+        b4_l12 = new javax.swing.JButton();
+        b4_l13 = new javax.swing.JButton();
+        b4_l14 = new javax.swing.JButton();
+        b4_l15 = new javax.swing.JButton();
+        b4_l16 = new javax.swing.JButton();
+        b4_l17 = new javax.swing.JButton();
+        b4_l18 = new javax.swing.JButton();
+        b4_l19 = new javax.swing.JButton();
+        b4_l20 = new javax.swing.JButton();
+        Block5 = new javax.swing.JLabel();
+        Block5Grid = new javax.swing.JPanel();
+        b5_l1 = new javax.swing.JButton();
+        b5_l2 = new javax.swing.JButton();
+        b5_l3 = new javax.swing.JButton();
+        b5_l4 = new javax.swing.JButton();
+        b5_l5 = new javax.swing.JButton();
+        b5_l6 = new javax.swing.JButton();
+        b5_l7 = new javax.swing.JButton();
+        b5_l8 = new javax.swing.JButton();
+        b5_l9 = new javax.swing.JButton();
+        b5_l10 = new javax.swing.JButton();
+        b5_l11 = new javax.swing.JButton();
+        b5_l12 = new javax.swing.JButton();
+        b5_l13 = new javax.swing.JButton();
+        b5_l14 = new javax.swing.JButton();
+        b5_l15 = new javax.swing.JButton();
+        b5_l16 = new javax.swing.JButton();
+        b5_l17 = new javax.swing.JButton();
+        b5_l18 = new javax.swing.JButton();
+        b5_l19 = new javax.swing.JButton();
+        b5_l20 = new javax.swing.JButton();
+        filteringPanel = new javax.swing.JPanel();
+        title = new javax.swing.JLabel();
+        sFilter = new javax.swing.JLabel();
+        statusFilter = new javax.swing.JComboBox<>();
+        bFilter1 = new javax.swing.JLabel();
+        blockFilter = new javax.swing.JComboBox<>();
+        lFilter = new javax.swing.JLabel();
+        lotFilter = new javax.swing.JComboBox<>();
+        pFilter = new javax.swing.JLabel();
+        priceFilter = new javax.swing.JComboBox<>();
+        applyFilter = new javax.swing.JButton();
+        Reservations = new javax.swing.JPanel();
+        Title = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ReservationTable = new javax.swing.JTable();
+        Computation = new javax.swing.JPanel();
+        Title1 = new javax.swing.JLabel();
+        computationOverview = new javax.swing.JScrollPane();
+        computation = new javax.swing.JPanel();
+        computation1 = new javax.swing.JPanel();
+        computationTitle = new javax.swing.JLabel();
+        info1 = new javax.swing.JLabel();
+        InfoText1 = new javax.swing.JTextField();
+        info2 = new javax.swing.JLabel();
+        InfoText2 = new javax.swing.JTextField();
+        info3 = new javax.swing.JLabel();
+        InfoText3 = new javax.swing.JTextField();
+        info4 = new javax.swing.JLabel();
+        InfoText4 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        computation2 = new javax.swing.JPanel();
+        computationTitle1 = new javax.swing.JLabel();
+        info5 = new javax.swing.JLabel();
+        InfoText5 = new javax.swing.JTextField();
+        info6 = new javax.swing.JLabel();
+        InfoText6 = new javax.swing.JTextField();
+        info7 = new javax.swing.JLabel();
+        InfoText7 = new javax.swing.JTextField();
+        info8 = new javax.swing.JLabel();
+        InfoText8 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        computation3 = new javax.swing.JPanel();
+        computationTitle2 = new javax.swing.JLabel();
+        info9 = new javax.swing.JLabel();
+        InfoText9 = new javax.swing.JTextField();
+        info10 = new javax.swing.JLabel();
+        InfoText10 = new javax.swing.JTextField();
+        info11 = new javax.swing.JLabel();
+        InfoText11 = new javax.swing.JTextField();
+        info12 = new javax.swing.JLabel();
+        InfoText12 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        computation4 = new javax.swing.JPanel();
+        computationTitle3 = new javax.swing.JLabel();
+        info13 = new javax.swing.JLabel();
+        InfoText13 = new javax.swing.JTextField();
+        info14 = new javax.swing.JLabel();
+        InfoText14 = new javax.swing.JTextField();
+        info15 = new javax.swing.JLabel();
+        InfoText15 = new javax.swing.JTextField();
+        info16 = new javax.swing.JLabel();
+        InfoText16 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        Logout = new javax.swing.JPanel();
+        bgimg = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1280, 720));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1279, 720));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        BuyerSideBar.setBackground(new java.awt.Color(30, 30, 30));
+        BuyerSideBar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        BuyerSideBar.setFocusable(false);
+        BuyerSideBar.setMaximumSize(new java.awt.Dimension(1280, 92));
+        BuyerSideBar.setMinimumSize(new java.awt.Dimension(1280, 92));
+        BuyerSideBar.setPreferredSize(new java.awt.Dimension(1280, 92));
+        BuyerSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
+        DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
+        DashboardLabel.setText("<html>Buyer's<br>Dashboard</html>");
+        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
+
+        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        GroupName.setForeground(new java.awt.Color(255, 255, 255));
+        GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        GroupName.setText("Paul's Group");
+        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 30));
+
+        viewLots.setBackground(new java.awt.Color(0, 0, 0));
+        viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewLots.setForeground(new java.awt.Color(255, 255, 255));
+        viewLots.setText("   View Lots");
+        viewLots.setAlignmentY(0.0F);
+        viewLots.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewLots.setBorderPainted(false);
+        viewLots.setContentAreaFilled(false);
+        viewLots.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewLots.setFocusPainted(false);
+        viewLots.setFocusable(false);
+        viewLots.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewLots.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewLots.setIconTextGap(0);
+        viewLots.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewLots.setSelected(true);
+        viewLots.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewLotsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewLotsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewLotsMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                viewLotsMousePressed(evt);
+            }
+        });
+        viewLots.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewLotsActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 340, 40));
+
+        reqComputation.setBackground(new java.awt.Color(0, 0, 0));
+        reqComputation.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        reqComputation.setForeground(new java.awt.Color(255, 255, 255));
+        reqComputation.setText("   Computation");
+        reqComputation.setAlignmentY(0.0F);
+        reqComputation.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        reqComputation.setBorderPainted(false);
+        reqComputation.setContentAreaFilled(false);
+        reqComputation.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        reqComputation.setFocusPainted(false);
+        reqComputation.setFocusable(false);
+        reqComputation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        reqComputation.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        reqComputation.setIconTextGap(0);
+        reqComputation.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        reqComputation.setSelected(true);
+        reqComputation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reqComputationMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reqComputationMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reqComputationMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                reqComputationMousePressed(evt);
+            }
+        });
+        reqComputation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reqComputationActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 340, 40));
+
+        viewReserv.setBackground(new java.awt.Color(0, 0, 0));
+        viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewReserv.setForeground(new java.awt.Color(255, 255, 255));
+        viewReserv.setText("   Reservations");
+        viewReserv.setAlignmentY(0.0F);
+        viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewReserv.setBorderPainted(false);
+        viewReserv.setContentAreaFilled(false);
+        viewReserv.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewReserv.setFocusPainted(false);
+        viewReserv.setFocusable(false);
+        viewReserv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewReserv.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewReserv.setIconTextGap(0);
+        viewReserv.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewReserv.setSelected(true);
+        viewReserv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewReservMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewReservMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewReservMouseExited(evt);
+            }
+        });
+        viewReserv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReservActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+
+        logOut.setBackground(new java.awt.Color(0, 0, 0));
+        logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        logOut.setForeground(new java.awt.Color(255, 255, 255));
+        logOut.setText("   Logout");
+        logOut.setAlignmentY(0.0F);
+        logOut.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        logOut.setBorderPainted(false);
+        logOut.setContentAreaFilled(false);
+        logOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        logOut.setFocusPainted(false);
+        logOut.setFocusable(false);
+        logOut.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        logOut.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        logOut.setIconTextGap(0);
+        logOut.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        logOut.setSelected(true);
+        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logOutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logOutMouseExited(evt);
+            }
+        });
+        logOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 340, 40));
+
+        getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
+
+        Lots.setBackground(new java.awt.Color(30, 30, 30));
+        Lots.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lotsOverview.setBackground(new java.awt.Color(30, 30, 30));
+        lotsOverview.setBorder(null);
+        javax.swing.JScrollBar verticalBar = lotsOverview.getVerticalScrollBar();
+        verticalBar.setPreferredSize(new java.awt.Dimension(8,0));
+        verticalBar.setUnitIncrement(24);
+
+        verticalBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
+
+            @Override
+            protected void configureScrollBarColors() {
+                this.trackColor = new java.awt.Color(30,30,30);
+                this.thumbColor = new java.awt.Color(120,120,120);
+            }
+
+            @Override
+            protected javax.swing.JButton createDecreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
+
+            @Override
+            protected javax.swing.JButton createIncreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
+
+        });
+
+        lotsView.setBackground(new java.awt.Color(30, 30, 30));
+        lotsView.setMinimumSize(new java.awt.Dimension(930, 1058));
+        lotsView.setPreferredSize(new java.awt.Dimension(930, 1058));
+        lotsView.setSize(new java.awt.Dimension(930, 1058));
+        lotsView.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Block1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Block1.setForeground(new java.awt.Color(255, 255, 255));
+        Block1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Block1.setText("Block 1");
+        lotsView.add(Block1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 43, 340, 30));
+
+        Block1Grid.setBackground(new java.awt.Color(51, 51, 51));
+        Block1Grid.setForeground(new java.awt.Color(153, 153, 153));
+        Block1Grid.setLayout(new java.awt.GridLayout(4, 5));
+
+        b1_l1.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l1.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l1.setText("L1");
+        Block1Grid.add(b1_l1);
+
+        b1_l2.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l2.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l2.setText("L2");
+        Block1Grid.add(b1_l2);
+
+        b1_l3.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l3.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l3.setText("L3");
+        Block1Grid.add(b1_l3);
+
+        b1_l4.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l4.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l4.setText("L4");
+        Block1Grid.add(b1_l4);
+
+        b1_l5.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l5.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l5.setText("L5");
+        Block1Grid.add(b1_l5);
+
+        b1_l6.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l6.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l6.setText("L6");
+        Block1Grid.add(b1_l6);
+
+        b1_l7.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l7.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l7.setText("L7");
+        b1_l7.setToolTipText("");
+        Block1Grid.add(b1_l7);
+
+        b1_l8.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l8.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l8.setText("L8");
+        Block1Grid.add(b1_l8);
+
+        b1_l9.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l9.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l9.setText("L9");
+        Block1Grid.add(b1_l9);
+
+        b1_l10.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l10.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l10.setText("L10");
+        Block1Grid.add(b1_l10);
+
+        b1_l11.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l11.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l11.setText("L11");
+        Block1Grid.add(b1_l11);
+
+        b1_l12.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l12.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l12.setText("L12");
+        Block1Grid.add(b1_l12);
+
+        b1_l13.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l13.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l13.setText("L13");
+        Block1Grid.add(b1_l13);
+
+        b1_l14.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l14.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l14.setText("L14");
+        Block1Grid.add(b1_l14);
+
+        b1_l15.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l15.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l15.setText("L15");
+        Block1Grid.add(b1_l15);
+
+        b1_l16.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l16.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l16.setText("L16");
+        Block1Grid.add(b1_l16);
+
+        b1_l17.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l17.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l17.setText("L17");
+        Block1Grid.add(b1_l17);
+
+        b1_l18.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l18.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l18.setText("L18");
+        Block1Grid.add(b1_l18);
+
+        b1_l19.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l19.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l19.setText("L19");
+        Block1Grid.add(b1_l19);
+
+        b1_l20.setBackground(new java.awt.Color(102, 153, 0));
+        b1_l20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b1_l20.setForeground(new java.awt.Color(255, 255, 255));
+        b1_l20.setText("L20");
+        Block1Grid.add(b1_l20);
+
+        lotsView.add(Block1Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 83, 890, 130));
+
+        Block2.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Block2.setForeground(new java.awt.Color(255, 255, 255));
+        Block2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Block2.setText("Block 2");
+        lotsView.add(Block2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 252, 340, 30));
+
+        Block2Grid.setBackground(new java.awt.Color(51, 51, 51));
+        Block2Grid.setLayout(new java.awt.GridLayout(4, 5));
+
+        b2_l1.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l1.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l1.setText("L1");
+        Block2Grid.add(b2_l1);
+
+        b2_l2.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l2.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l2.setText("L2");
+        Block2Grid.add(b2_l2);
+
+        b2_l3.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l3.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l3.setText("L3");
+        Block2Grid.add(b2_l3);
+
+        b2_l4.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l4.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l4.setText("L4");
+        Block2Grid.add(b2_l4);
+
+        b2_l5.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l5.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l5.setText("L5");
+        Block2Grid.add(b2_l5);
+
+        b2_l6.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l6.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l6.setText("L6");
+        Block2Grid.add(b2_l6);
+
+        b2_l7.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l7.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l7.setText("L7");
+        Block2Grid.add(b2_l7);
+
+        b2_l8.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l8.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l8.setText("L8");
+        Block2Grid.add(b2_l8);
+
+        b2_l9.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l9.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l9.setText("L9");
+        Block2Grid.add(b2_l9);
+
+        b2_l10.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l10.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l10.setText("L10");
+        Block2Grid.add(b2_l10);
+
+        b2_l11.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l11.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l11.setText("L11");
+        Block2Grid.add(b2_l11);
+
+        b2_l12.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l12.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l12.setText("L12");
+        Block2Grid.add(b2_l12);
+
+        b2_l13.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l13.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l13.setText("L13");
+        Block2Grid.add(b2_l13);
+
+        b2_l14.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l14.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l14.setText("L14");
+        Block2Grid.add(b2_l14);
+
+        b2_l15.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l15.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l15.setText("L15");
+        Block2Grid.add(b2_l15);
+
+        b2_l16.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l16.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l16.setText("L16");
+        Block2Grid.add(b2_l16);
+
+        b2_l17.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l17.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l17.setText("L17");
+        Block2Grid.add(b2_l17);
+
+        b2_l18.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l18.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l18.setText("L18");
+        Block2Grid.add(b2_l18);
+
+        b2_l19.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l19.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l19.setText("L19");
+        Block2Grid.add(b2_l19);
+
+        b2_l20.setBackground(new java.awt.Color(102, 153, 0));
+        b2_l20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b2_l20.setForeground(new java.awt.Color(255, 255, 255));
+        b2_l20.setText("L20");
+        Block2Grid.add(b2_l20);
+
+        lotsView.add(Block2Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 292, 890, 130));
+
+        Block3.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Block3.setForeground(new java.awt.Color(255, 255, 255));
+        Block3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Block3.setText("Block 3");
+        lotsView.add(Block3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 451, 340, 30));
+
+        Block3Grid.setBackground(new java.awt.Color(51, 51, 51));
+        Block3Grid.setLayout(new java.awt.GridLayout(4, 5));
+
+        b3_l1.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l1.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l1.setText("L1");
+        Block3Grid.add(b3_l1);
+
+        b3_l2.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l2.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l2.setText("L2");
+        Block3Grid.add(b3_l2);
+
+        b3_l3.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l3.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l3.setText("L3");
+        Block3Grid.add(b3_l3);
+
+        b3_l4.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l4.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l4.setText("L4");
+        b3_l4.setToolTipText("");
+        Block3Grid.add(b3_l4);
+
+        b3_l5.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l5.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l5.setText("L5");
+        Block3Grid.add(b3_l5);
+
+        b3_l6.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l6.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l6.setText("L6");
+        Block3Grid.add(b3_l6);
+
+        b3_l7.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l7.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l7.setText("L7");
+        Block3Grid.add(b3_l7);
+
+        b3_l8.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l8.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l8.setText("L8");
+        Block3Grid.add(b3_l8);
+
+        b3_l9.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l9.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l9.setText("L9");
+        Block3Grid.add(b3_l9);
+
+        b3_l10.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l10.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l10.setText("L10");
+        Block3Grid.add(b3_l10);
+
+        b3_l11.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l11.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l11.setText("L11");
+        Block3Grid.add(b3_l11);
+
+        b3_l12.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l12.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l12.setText("L12");
+        Block3Grid.add(b3_l12);
+
+        b3_l13.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l13.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l13.setText("L13");
+        Block3Grid.add(b3_l13);
+
+        b3_l14.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l14.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l14.setText("L14");
+        Block3Grid.add(b3_l14);
+
+        b3_l15.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l15.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l15.setText("L15");
+        Block3Grid.add(b3_l15);
+
+        b3_l16.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l16.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l16.setText("L16");
+        Block3Grid.add(b3_l16);
+
+        b3_l17.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l17.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l17.setText("L17");
+        Block3Grid.add(b3_l17);
+
+        b3_l18.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l18.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l18.setText("L18");
+        Block3Grid.add(b3_l18);
+
+        b3_l19.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l19.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l19.setText("L19");
+        Block3Grid.add(b3_l19);
+
+        b3_l20.setBackground(new java.awt.Color(102, 153, 0));
+        b3_l20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b3_l20.setForeground(new java.awt.Color(255, 255, 255));
+        b3_l20.setText("L20");
+        b3_l20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b3_l20ActionPerformed(evt);
+            }
+        });
+        Block3Grid.add(b3_l20);
+
+        lotsView.add(Block3Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 491, 890, 130));
+
+        Block4.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Block4.setForeground(new java.awt.Color(255, 255, 255));
+        Block4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Block4.setText("Block 4");
+        lotsView.add(Block4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 650, 340, 30));
+
+        Block4Grid.setBackground(new java.awt.Color(51, 51, 51));
+        Block4Grid.setLayout(new java.awt.GridLayout(4, 5));
+
+        b4_l1.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l1.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l1.setText("L1");
+        Block4Grid.add(b4_l1);
+
+        b4_l2.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l2.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l2.setText("L2");
+        Block4Grid.add(b4_l2);
+
+        b4_l3.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l3.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l3.setText("L3");
+        Block4Grid.add(b4_l3);
+
+        b4_l4.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l4.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l4.setText("L4");
+        Block4Grid.add(b4_l4);
+
+        b4_l5.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l5.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l5.setText("L5");
+        Block4Grid.add(b4_l5);
+
+        b4_l6.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l6.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l6.setText("L6");
+        Block4Grid.add(b4_l6);
+
+        b4_l7.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l7.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l7.setText("L7");
+        Block4Grid.add(b4_l7);
+
+        b4_l8.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l8.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l8.setText("L8");
+        Block4Grid.add(b4_l8);
+
+        b4_l9.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l9.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l9.setText("L9");
+        Block4Grid.add(b4_l9);
+
+        b4_l10.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l10.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l10.setText("L10");
+        Block4Grid.add(b4_l10);
+
+        b4_l11.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l11.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l11.setText("L11");
+        Block4Grid.add(b4_l11);
+
+        b4_l12.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l12.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l12.setText("L12");
+        Block4Grid.add(b4_l12);
+
+        b4_l13.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l13.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l13.setText("L13");
+        Block4Grid.add(b4_l13);
+
+        b4_l14.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l14.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l14.setText("L14");
+        Block4Grid.add(b4_l14);
+
+        b4_l15.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l15.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l15.setText("L15");
+        Block4Grid.add(b4_l15);
+
+        b4_l16.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l16.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l16.setText("L16");
+        Block4Grid.add(b4_l16);
+
+        b4_l17.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l17.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l17.setText("L17");
+        Block4Grid.add(b4_l17);
+
+        b4_l18.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l18.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l18.setText("L18");
+        Block4Grid.add(b4_l18);
+
+        b4_l19.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l19.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l19.setText("L19");
+        Block4Grid.add(b4_l19);
+
+        b4_l20.setBackground(new java.awt.Color(102, 153, 0));
+        b4_l20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b4_l20.setForeground(new java.awt.Color(255, 255, 255));
+        b4_l20.setText("L20");
+        Block4Grid.add(b4_l20);
+
+        lotsView.add(Block4Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 690, 890, 130));
+
+        Block5.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        Block5.setForeground(new java.awt.Color(255, 255, 255));
+        Block5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Block5.setText("Block 5");
+        lotsView.add(Block5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 849, 340, 30));
+
+        Block5Grid.setBackground(new java.awt.Color(51, 51, 51));
+        Block5Grid.setLayout(new java.awt.GridLayout(4, 5));
+
+        b5_l1.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l1.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l1.setText("L1");
+        Block5Grid.add(b5_l1);
+
+        b5_l2.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l2.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l2.setText("L2");
+        Block5Grid.add(b5_l2);
+
+        b5_l3.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l3.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l3.setText("L3");
+        Block5Grid.add(b5_l3);
+
+        b5_l4.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l4.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l4.setText("L4");
+        Block5Grid.add(b5_l4);
+
+        b5_l5.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l5.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l5.setText("L5");
+        Block5Grid.add(b5_l5);
+
+        b5_l6.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l6.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l6.setText("L6");
+        Block5Grid.add(b5_l6);
+
+        b5_l7.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l7.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l7.setText("L7");
+        Block5Grid.add(b5_l7);
+
+        b5_l8.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l8.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l8.setText("L8");
+        Block5Grid.add(b5_l8);
+
+        b5_l9.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l9.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l9.setText("L9");
+        Block5Grid.add(b5_l9);
+
+        b5_l10.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l10.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l10.setText("L10");
+        Block5Grid.add(b5_l10);
+
+        b5_l11.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l11.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l11.setText("L11");
+        Block5Grid.add(b5_l11);
+
+        b5_l12.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l12.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l12.setText("L12");
+        Block5Grid.add(b5_l12);
+
+        b5_l13.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l13.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l13.setText("L13");
+        b5_l13.setToolTipText("");
+        Block5Grid.add(b5_l13);
+
+        b5_l14.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l14.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l14.setText("L14");
+        Block5Grid.add(b5_l14);
+
+        b5_l15.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l15.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l15.setText("L15");
+        b5_l15.setToolTipText("");
+        Block5Grid.add(b5_l15);
+
+        b5_l16.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l16.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l16.setText("L16");
+        Block5Grid.add(b5_l16);
+
+        b5_l17.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l17.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l17.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l17.setText("L17");
+        Block5Grid.add(b5_l17);
+
+        b5_l18.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l18.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l18.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l18.setText("L18");
+        Block5Grid.add(b5_l18);
+
+        b5_l19.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l19.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l19.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l19.setText("L19");
+        Block5Grid.add(b5_l19);
+
+        b5_l20.setBackground(new java.awt.Color(102, 153, 0));
+        b5_l20.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        b5_l20.setForeground(new java.awt.Color(255, 255, 255));
+        b5_l20.setText("L20");
+        Block5Grid.add(b5_l20);
+
+        lotsView.add(Block5Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 889, 890, 130));
+
+        lotsOverview.setViewportView(lotsView);
+
+        Lots.add(lotsOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1000, 590));
+
+        filteringPanel.setBackground(new java.awt.Color(30, 30, 30));
+        filteringPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        title.setText("Filters:");
+        filteringPanel.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 30));
+
+        sFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
+        sFilter.setForeground(new java.awt.Color(255, 255, 255));
+        sFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        sFilter.setText("Status:");
+        filteringPanel.add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 60, 30));
+
+        statusFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        statusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Vacant", "Reserved", "Occupied" }));
+        statusFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusFilterActionPerformed(evt);
+            }
+        });
+        filteringPanel.add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 60, 90, -1));
+
+        bFilter1.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
+        bFilter1.setForeground(new java.awt.Color(255, 255, 255));
+        bFilter1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        bFilter1.setText("Block:");
+        filteringPanel.add(bFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 60, 60, 30));
+
+        blockFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        blockFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Block 1", "Block 2", "Block 3", "Block 4", "Block 5" }));
+        blockFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blockFilterActionPerformed(evt);
+            }
+        });
+        filteringPanel.add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 60, -1, -1));
+
+        lFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
+        lFilter.setForeground(new java.awt.Color(255, 255, 255));
+        lFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lFilter.setText("Lot Size:");
+        filteringPanel.add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
+
+        lotFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Standard Lot (~400–500 sqm)", "Premium Lot (~500–650 sqm)", "Corner Lot (~650+ sqm)" }));
+        lotFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lotFilterActionPerformed(evt);
+            }
+        });
+        filteringPanel.add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 60, -1, -1));
+
+        pFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
+        pFilter.setForeground(new java.awt.Color(255, 255, 255));
+        pFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        pFilter.setText("Max Price:");
+        filteringPanel.add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
+
+        priceFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 500000", "Max 750000", "Max 1000000" }));
+        priceFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                priceFilterActionPerformed(evt);
+            }
+        });
+        filteringPanel.add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
+
+        applyFilter.setText("Apply Filter");
+        applyFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyFilterActionPerformed(evt);
+            }
+        });
+        filteringPanel.add(applyFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 100, -1, -1));
+
+        Lots.add(filteringPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 130));
+
+        MainContentBuyer.addTab("tab1", Lots);
+
+        Reservations.setBackground(new java.awt.Color(30, 30, 30));
+        Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title.setForeground(new java.awt.Color(255, 255, 255));
+        Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title.setText("MY RESERVATIONS");
+        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 340, 30));
+
+        ReservationTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        ReservationTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Name", "Block", "Lot", "Price"
+            }
+        ));
+        jScrollPane1.setViewportView(ReservationTable);
+
+        Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 940, -1));
+
+        MainContentBuyer.addTab("tab2", Reservations);
+
+        Computation.setBackground(new java.awt.Color(30, 30, 30));
+        Computation.setMinimumSize(new java.awt.Dimension(502, 297));
+        Computation.setPreferredSize(new java.awt.Dimension(502, 297));
+        Computation.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title1.setForeground(new java.awt.Color(255, 255, 255));
+        Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title1.setText("COMPUTATION:");
+        Computation.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+
+        computationOverview.setBorder(null);
+        javax.swing.JScrollBar computationBar = computationOverview.getVerticalScrollBar();
+        computationBar.setPreferredSize(new java.awt.Dimension(8,0));
+        computationBar.setUnitIncrement(24);
+
+        computationBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
+
+            @Override
+            protected void configureScrollBarColors() {
+                this.trackColor = new java.awt.Color(30,30,30);
+                this.thumbColor = new java.awt.Color(120,120,120);
+            }
+
+            @Override
+            protected javax.swing.JButton createDecreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
+
+            @Override
+            protected javax.swing.JButton createIncreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
+
+        });
+
+        computation.setBackground(new java.awt.Color(30, 30, 30));
+        computation.setMinimumSize(new java.awt.Dimension(930, 1058));
+        computation.setPreferredSize(new java.awt.Dimension(930, 1058));
+        computation.setLayout(new java.awt.GridLayout(5, 1, 5, 0));
+
+        computation1.setBackground(new java.awt.Color(30, 30, 30));
+        computation1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        computationTitle.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        computationTitle.setForeground(new java.awt.Color(255, 255, 255));
+        computationTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        computationTitle.setText("Sample Lot Name Here");
+        computation1.add(computationTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+
+        info1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info1.setForeground(new java.awt.Color(255, 255, 255));
+        info1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info1.setText("Info:");
+        computation1.add(info1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+
+        InfoText1.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText1.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText1.setText("jTextField1");
+        InfoText1.setBorder(null);
+        computation1.add(InfoText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+
+        info2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info2.setForeground(new java.awt.Color(255, 255, 255));
+        info2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info2.setText("Info:");
+        computation1.add(info2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+
+        InfoText2.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText2.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText2.setText("jTextField1");
+        InfoText2.setBorder(null);
+        computation1.add(InfoText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+
+        info3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info3.setForeground(new java.awt.Color(255, 255, 255));
+        info3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info3.setText("Info:");
+        computation1.add(info3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+
+        InfoText3.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText3.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText3.setText("jTextField1");
+        InfoText3.setBorder(null);
+        computation1.add(InfoText3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+
+        info4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info4.setForeground(new java.awt.Color(255, 255, 255));
+        info4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info4.setText("Info:");
+        computation1.add(info4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+
+        InfoText4.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText4.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText4.setText("jTextField1");
+        InfoText4.setBorder(null);
+        computation1.add(InfoText4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+
+        jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton1.setText("Compute");
+        computation1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+
+        computation.add(computation1);
+
+        computation2.setBackground(new java.awt.Color(30, 30, 30));
+        computation2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        computationTitle1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        computationTitle1.setForeground(new java.awt.Color(255, 255, 255));
+        computationTitle1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        computationTitle1.setText("Sample Lot Name Here");
+        computation2.add(computationTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+
+        info5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info5.setForeground(new java.awt.Color(255, 255, 255));
+        info5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info5.setText("Info:");
+        computation2.add(info5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+
+        InfoText5.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText5.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText5.setText("jTextField1");
+        InfoText5.setBorder(null);
+        computation2.add(InfoText5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+
+        info6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info6.setForeground(new java.awt.Color(255, 255, 255));
+        info6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info6.setText("Info:");
+        computation2.add(info6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+
+        InfoText6.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText6.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText6.setText("jTextField1");
+        InfoText6.setBorder(null);
+        computation2.add(InfoText6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+
+        info7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info7.setForeground(new java.awt.Color(255, 255, 255));
+        info7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info7.setText("Info:");
+        computation2.add(info7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+
+        InfoText7.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText7.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText7.setText("jTextField1");
+        InfoText7.setBorder(null);
+        computation2.add(InfoText7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+
+        info8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info8.setForeground(new java.awt.Color(255, 255, 255));
+        info8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info8.setText("Info:");
+        computation2.add(info8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+
+        InfoText8.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText8.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText8.setText("jTextField1");
+        InfoText8.setBorder(null);
+        computation2.add(InfoText8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+
+        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton2.setText("Compute");
+        computation2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+
+        computation.add(computation2);
+
+        computation3.setBackground(new java.awt.Color(30, 30, 30));
+        computation3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        computationTitle2.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        computationTitle2.setForeground(new java.awt.Color(255, 255, 255));
+        computationTitle2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        computationTitle2.setText("Sample Lot Name Here");
+        computation3.add(computationTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+
+        info9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info9.setForeground(new java.awt.Color(255, 255, 255));
+        info9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info9.setText("Info:");
+        computation3.add(info9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+
+        InfoText9.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText9.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText9.setText("jTextField1");
+        InfoText9.setBorder(null);
+        computation3.add(InfoText9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+
+        info10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info10.setForeground(new java.awt.Color(255, 255, 255));
+        info10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info10.setText("Info:");
+        computation3.add(info10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+
+        InfoText10.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText10.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText10.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText10.setText("jTextField1");
+        InfoText10.setBorder(null);
+        computation3.add(InfoText10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+
+        info11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info11.setForeground(new java.awt.Color(255, 255, 255));
+        info11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info11.setText("Info:");
+        computation3.add(info11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+
+        InfoText11.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText11.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText11.setText("jTextField1");
+        InfoText11.setBorder(null);
+        computation3.add(InfoText11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+
+        info12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info12.setForeground(new java.awt.Color(255, 255, 255));
+        info12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info12.setText("Info:");
+        computation3.add(info12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+
+        InfoText12.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText12.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText12.setText("jTextField1");
+        InfoText12.setBorder(null);
+        computation3.add(InfoText12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+
+        jButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton3.setText("Compute");
+        computation3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+
+        computation.add(computation3);
+
+        computation4.setBackground(new java.awt.Color(30, 30, 30));
+        computation4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        computationTitle3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        computationTitle3.setForeground(new java.awt.Color(255, 255, 255));
+        computationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        computationTitle3.setText("Sample Lot Name Here");
+        computation4.add(computationTitle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+
+        info13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info13.setForeground(new java.awt.Color(255, 255, 255));
+        info13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info13.setText("Info:");
+        computation4.add(info13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+
+        InfoText13.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText13.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText13.setText("jTextField1");
+        InfoText13.setBorder(null);
+        computation4.add(InfoText13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+
+        info14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info14.setForeground(new java.awt.Color(255, 255, 255));
+        info14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info14.setText("Info:");
+        computation4.add(info14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+
+        InfoText14.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText14.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText14.setText("jTextField1");
+        InfoText14.setBorder(null);
+        computation4.add(InfoText14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+
+        info15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info15.setForeground(new java.awt.Color(255, 255, 255));
+        info15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info15.setText("Info:");
+        computation4.add(info15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+
+        InfoText15.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText15.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText15.setText("jTextField1");
+        InfoText15.setBorder(null);
+        computation4.add(InfoText15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+
+        info16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info16.setForeground(new java.awt.Color(255, 255, 255));
+        info16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info16.setText("Info:");
+        computation4.add(info16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+
+        InfoText16.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText16.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText16.setText("jTextField1");
+        InfoText16.setBorder(null);
+        computation4.add(InfoText16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+
+        jButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton4.setText("Compute");
+        computation4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+
+        computation.add(computation4);
+
+        computationOverview.setViewportView(computation);
+
+        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+
+        MainContentBuyer.addTab("tab3", Computation);
+
+        Logout.setBackground(new java.awt.Color(30, 30, 30));
+        Logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        MainContentBuyer.addTab("tab4", Logout);
+
+        getContentPane().add(MainContentBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
+
+        bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        bgimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/main_bg.png"))); // NOI18N
+        getContentPane().add(bgimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, -1));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(0);
+    }//GEN-LAST:event_viewLotsActionPerformed
+
+    private void reqComputationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqComputationActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(2);
+    }//GEN-LAST:event_reqComputationActionPerformed
+
+    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(1);
+    }//GEN-LAST:event_viewReservActionPerformed
+
+    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
+        // TODO add your handling code here:
+        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
+        BuyerLoginFrame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logOutActionPerformed
+
+    private void viewLotsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseEntered
+        // TODO add your handling code here:
+        viewLots.setForeground(entered);
+    }//GEN-LAST:event_viewLotsMouseEntered
+
+    private void viewLotsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseExited
+        // TODO add your handling code here:
+        viewLots.setForeground(normal);
+    }//GEN-LAST:event_viewLotsMouseExited
+
+    private void viewLotsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMousePressed
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMousePressed
+
+    private void viewLotsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseClicked
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMouseClicked
+
+    private void b3_l20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3_l20ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_b3_l20ActionPerformed
+
+    private void reqComputationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseEntered
+        // TODO add your handling code here:
+         reqComputation.setForeground(entered);
+    }//GEN-LAST:event_reqComputationMouseEntered
+
+    private void reqComputationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseExited
+        // TODO add your handling code here:
+        reqComputation.setForeground(normal);
+    }//GEN-LAST:event_reqComputationMouseExited
+
+    private void reqComputationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMousePressed
+        // TODO add your handling code here:
+        reqComputation.setForeground(clickedcolor);
+    }//GEN-LAST:event_reqComputationMousePressed
+
+    private void reqComputationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseClicked
+        // TODO add your handling code here:
+        reqComputation.setForeground(clickedcolor);
+    }//GEN-LAST:event_reqComputationMouseClicked
+
+    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+        // TODO add your handling code here:
+        viewReserv.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewReservMouseClicked
+
+    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+        // TODO add your handling code here:
+        viewReserv.setForeground(entered);
+    }//GEN-LAST:event_viewReservMouseEntered
+
+    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+        // TODO add your handling code here:
+        viewReserv.setForeground(normal);
+    }//GEN-LAST:event_viewReservMouseExited
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        logOut.setForeground(clickedcolor);
+    }//GEN-LAST:event_logOutMouseClicked
+
+    private void logOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseEntered
+        // TODO add your handling code here:
+        logOut.setForeground(entered);
+    }//GEN-LAST:event_logOutMouseEntered
+
+    private void logOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseExited
+        // TODO add your handling code here:
+        logOut.setForeground(normal);
+    }//GEN-LAST:event_logOutMouseExited
+
+    private void statusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_statusFilterActionPerformed
+
+    private void blockFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_blockFilterActionPerformed
+
+    private void lotFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lotFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lotFilterActionPerformed
+
+    private void priceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_priceFilterActionPerformed
+
+    private void applyFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyFilterActionPerformed
+        // TODO add your handling code here:
+        applyFilters();
+    }//GEN-LAST:event_applyFilterActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new BuyerDashboard().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Block1;
+    private javax.swing.JPanel Block1Grid;
+    private javax.swing.JLabel Block2;
+    private javax.swing.JPanel Block2Grid;
+    private javax.swing.JLabel Block3;
+    private javax.swing.JPanel Block3Grid;
+    private javax.swing.JLabel Block4;
+    private javax.swing.JPanel Block4Grid;
+    private javax.swing.JLabel Block5;
+    private javax.swing.JPanel Block5Grid;
+    private javax.swing.JPanel BuyerSideBar;
+    private javax.swing.JPanel Computation;
+    private javax.swing.JLabel DashboardLabel;
+    private javax.swing.JLabel GroupName;
+    private javax.swing.JTextField InfoText1;
+    private javax.swing.JTextField InfoText10;
+    private javax.swing.JTextField InfoText11;
+    private javax.swing.JTextField InfoText12;
+    private javax.swing.JTextField InfoText13;
+    private javax.swing.JTextField InfoText14;
+    private javax.swing.JTextField InfoText15;
+    private javax.swing.JTextField InfoText16;
+    private javax.swing.JTextField InfoText2;
+    private javax.swing.JTextField InfoText3;
+    private javax.swing.JTextField InfoText4;
+    private javax.swing.JTextField InfoText5;
+    private javax.swing.JTextField InfoText6;
+    private javax.swing.JTextField InfoText7;
+    private javax.swing.JTextField InfoText8;
+    private javax.swing.JTextField InfoText9;
+    private javax.swing.JPanel Logout;
+    private javax.swing.JPanel Lots;
+    private javax.swing.JTabbedPane MainContentBuyer;
+    private javax.swing.JTable ReservationTable;
+    private javax.swing.JPanel Reservations;
+    private javax.swing.JLabel Title;
+    private javax.swing.JLabel Title1;
+    private javax.swing.JButton applyFilter;
+    private javax.swing.JButton b1_l1;
+    private javax.swing.JButton b1_l10;
+    private javax.swing.JButton b1_l11;
+    private javax.swing.JButton b1_l12;
+    private javax.swing.JButton b1_l13;
+    private javax.swing.JButton b1_l14;
+    private javax.swing.JButton b1_l15;
+    private javax.swing.JButton b1_l16;
+    private javax.swing.JButton b1_l17;
+    private javax.swing.JButton b1_l18;
+    private javax.swing.JButton b1_l19;
+    private javax.swing.JButton b1_l2;
+    private javax.swing.JButton b1_l20;
+    private javax.swing.JButton b1_l3;
+    private javax.swing.JButton b1_l4;
+    private javax.swing.JButton b1_l5;
+    private javax.swing.JButton b1_l6;
+    private javax.swing.JButton b1_l7;
+    private javax.swing.JButton b1_l8;
+    private javax.swing.JButton b1_l9;
+    private javax.swing.JButton b2_l1;
+    private javax.swing.JButton b2_l10;
+    private javax.swing.JButton b2_l11;
+    private javax.swing.JButton b2_l12;
+    private javax.swing.JButton b2_l13;
+    private javax.swing.JButton b2_l14;
+    private javax.swing.JButton b2_l15;
+    private javax.swing.JButton b2_l16;
+    private javax.swing.JButton b2_l17;
+    private javax.swing.JButton b2_l18;
+    private javax.swing.JButton b2_l19;
+    private javax.swing.JButton b2_l2;
+    private javax.swing.JButton b2_l20;
+    private javax.swing.JButton b2_l3;
+    private javax.swing.JButton b2_l4;
+    private javax.swing.JButton b2_l5;
+    private javax.swing.JButton b2_l6;
+    private javax.swing.JButton b2_l7;
+    private javax.swing.JButton b2_l8;
+    private javax.swing.JButton b2_l9;
+    private javax.swing.JButton b3_l1;
+    private javax.swing.JButton b3_l10;
+    private javax.swing.JButton b3_l11;
+    private javax.swing.JButton b3_l12;
+    private javax.swing.JButton b3_l13;
+    private javax.swing.JButton b3_l14;
+    private javax.swing.JButton b3_l15;
+    private javax.swing.JButton b3_l16;
+    private javax.swing.JButton b3_l17;
+    private javax.swing.JButton b3_l18;
+    private javax.swing.JButton b3_l19;
+    private javax.swing.JButton b3_l2;
+    private javax.swing.JButton b3_l20;
+    private javax.swing.JButton b3_l3;
+    private javax.swing.JButton b3_l4;
+    private javax.swing.JButton b3_l5;
+    private javax.swing.JButton b3_l6;
+    private javax.swing.JButton b3_l7;
+    private javax.swing.JButton b3_l8;
+    private javax.swing.JButton b3_l9;
+    private javax.swing.JButton b4_l1;
+    private javax.swing.JButton b4_l10;
+    private javax.swing.JButton b4_l11;
+    private javax.swing.JButton b4_l12;
+    private javax.swing.JButton b4_l13;
+    private javax.swing.JButton b4_l14;
+    private javax.swing.JButton b4_l15;
+    private javax.swing.JButton b4_l16;
+    private javax.swing.JButton b4_l17;
+    private javax.swing.JButton b4_l18;
+    private javax.swing.JButton b4_l19;
+    private javax.swing.JButton b4_l2;
+    private javax.swing.JButton b4_l20;
+    private javax.swing.JButton b4_l3;
+    private javax.swing.JButton b4_l4;
+    private javax.swing.JButton b4_l5;
+    private javax.swing.JButton b4_l6;
+    private javax.swing.JButton b4_l7;
+    private javax.swing.JButton b4_l8;
+    private javax.swing.JButton b4_l9;
+    private javax.swing.JButton b5_l1;
+    private javax.swing.JButton b5_l10;
+    private javax.swing.JButton b5_l11;
+    private javax.swing.JButton b5_l12;
+    private javax.swing.JButton b5_l13;
+    private javax.swing.JButton b5_l14;
+    private javax.swing.JButton b5_l15;
+    private javax.swing.JButton b5_l16;
+    private javax.swing.JButton b5_l17;
+    private javax.swing.JButton b5_l18;
+    private javax.swing.JButton b5_l19;
+    private javax.swing.JButton b5_l2;
+    private javax.swing.JButton b5_l20;
+    private javax.swing.JButton b5_l3;
+    private javax.swing.JButton b5_l4;
+    private javax.swing.JButton b5_l5;
+    private javax.swing.JButton b5_l6;
+    private javax.swing.JButton b5_l7;
+    private javax.swing.JButton b5_l8;
+    private javax.swing.JButton b5_l9;
+    private javax.swing.JLabel bFilter1;
+    private javax.swing.JLabel bgimg;
+    private javax.swing.JComboBox<String> blockFilter;
+    private javax.swing.JPanel computation;
+    private javax.swing.JPanel computation1;
+    private javax.swing.JPanel computation2;
+    private javax.swing.JPanel computation3;
+    private javax.swing.JPanel computation4;
+    private javax.swing.JScrollPane computationOverview;
+    private javax.swing.JLabel computationTitle;
+    private javax.swing.JLabel computationTitle1;
+    private javax.swing.JLabel computationTitle2;
+    private javax.swing.JLabel computationTitle3;
+    private javax.swing.JPanel filteringPanel;
+    private javax.swing.JLabel info1;
+    private javax.swing.JLabel info10;
+    private javax.swing.JLabel info11;
+    private javax.swing.JLabel info12;
+    private javax.swing.JLabel info13;
+    private javax.swing.JLabel info14;
+    private javax.swing.JLabel info15;
+    private javax.swing.JLabel info16;
+    private javax.swing.JLabel info2;
+    private javax.swing.JLabel info3;
+    private javax.swing.JLabel info4;
+    private javax.swing.JLabel info5;
+    private javax.swing.JLabel info6;
+    private javax.swing.JLabel info7;
+    private javax.swing.JLabel info8;
+    private javax.swing.JLabel info9;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lFilter;
+    private javax.swing.JButton logOut;
+    private javax.swing.JComboBox<String> lotFilter;
+    private javax.swing.JScrollPane lotsOverview;
+    private javax.swing.JPanel lotsView;
+    private javax.swing.JLabel pFilter;
+    private javax.swing.JComboBox<String> priceFilter;
+    private javax.swing.JButton reqComputation;
+    private javax.swing.JLabel sFilter;
+    private javax.swing.JComboBox<String> statusFilter;
+    private javax.swing.JLabel title;
+    private javax.swing.JButton viewLots;
+    private javax.swing.JButton viewReserv;
+    // End of variables declaration//GEN-END:variables
+}
