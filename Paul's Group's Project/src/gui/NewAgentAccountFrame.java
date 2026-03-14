@@ -235,8 +235,8 @@ public class NewAgentAccountFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
+        AgentAssignment AgentAssignment=new AgentAssignment(this,true);
+        AgentAssignment.setVisible(true);
         dispose();
     }//GEN-LAST:event_loginActionPerformed
 

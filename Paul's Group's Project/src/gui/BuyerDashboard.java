@@ -25,6 +25,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
     private int imageIndex = 0;
     
+    
    private void imageSlideshow() {
 
     Timer timer = new Timer(8000, e -> {
@@ -309,7 +310,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         GroupName = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
         reqComputation = new javax.swing.JButton();
-        viewReserv = new javax.swing.JButton();
+        transaction = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         MainContentBuyer = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
@@ -454,18 +455,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText3 = new javax.swing.JTextField();
         info4 = new javax.swing.JLabel();
         InfoText4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        computation2 = new javax.swing.JPanel();
-        computationTitle1 = new javax.swing.JLabel();
-        info5 = new javax.swing.JLabel();
-        InfoText5 = new javax.swing.JTextField();
-        info6 = new javax.swing.JLabel();
-        InfoText6 = new javax.swing.JTextField();
-        info7 = new javax.swing.JLabel();
-        InfoText7 = new javax.swing.JTextField();
-        info8 = new javax.swing.JLabel();
-        InfoText8 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
         computation3 = new javax.swing.JPanel();
         computationTitle2 = new javax.swing.JLabel();
         info9 = new javax.swing.JLabel();
@@ -476,7 +465,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText11 = new javax.swing.JTextField();
         info12 = new javax.swing.JLabel();
         InfoText12 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
         computation4 = new javax.swing.JPanel();
         computationTitle3 = new javax.swing.JLabel();
         info13 = new javax.swing.JLabel();
@@ -487,7 +475,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText15 = new javax.swing.JTextField();
         info16 = new javax.swing.JLabel();
         InfoText16 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
         Logout = new javax.swing.JPanel();
         bgimg = new javax.swing.JLabel();
 
@@ -551,7 +538,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 340, 40));
+        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 280, 40));
 
         reqComputation.setBackground(new java.awt.Color(0, 0, 0));
         reqComputation.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -588,41 +575,41 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 reqComputationActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 340, 40));
+        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 280, 40));
 
-        viewReserv.setBackground(new java.awt.Color(0, 0, 0));
-        viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewReserv.setForeground(new java.awt.Color(255, 255, 255));
-        viewReserv.setText("   Reservations");
-        viewReserv.setAlignmentY(0.0F);
-        viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewReserv.setBorderPainted(false);
-        viewReserv.setContentAreaFilled(false);
-        viewReserv.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewReserv.setFocusPainted(false);
-        viewReserv.setFocusable(false);
-        viewReserv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewReserv.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewReserv.setIconTextGap(0);
-        viewReserv.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewReserv.setSelected(true);
-        viewReserv.addMouseListener(new java.awt.event.MouseAdapter() {
+        transaction.setBackground(new java.awt.Color(0, 0, 0));
+        transaction.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        transaction.setForeground(new java.awt.Color(255, 255, 255));
+        transaction.setText("   Transactions");
+        transaction.setAlignmentY(0.0F);
+        transaction.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        transaction.setBorderPainted(false);
+        transaction.setContentAreaFilled(false);
+        transaction.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        transaction.setFocusPainted(false);
+        transaction.setFocusable(false);
+        transaction.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        transaction.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        transaction.setIconTextGap(0);
+        transaction.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        transaction.setSelected(true);
+        transaction.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewReservMouseClicked(evt);
+                transactionMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewReservMouseEntered(evt);
+                transactionMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewReservMouseExited(evt);
+                transactionMouseExited(evt);
             }
         });
-        viewReserv.addActionListener(new java.awt.event.ActionListener() {
+        transaction.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewReservActionPerformed(evt);
+                transactionActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -656,7 +643,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 340, 40));
+        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 40));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1586,78 +1573,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText4.setBorder(null);
         computation1.add(InfoText4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
 
-        jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton1.setText("Compute");
-        computation1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
-
         computation.add(computation1);
-
-        computation2.setBackground(new java.awt.Color(30, 30, 30));
-        computation2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        computationTitle1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        computationTitle1.setForeground(new java.awt.Color(255, 255, 255));
-        computationTitle1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        computationTitle1.setText("Sample Lot Name Here");
-        computation2.add(computationTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
-
-        info5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info5.setForeground(new java.awt.Color(255, 255, 255));
-        info5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info5.setText("Info:");
-        computation2.add(info5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
-
-        InfoText5.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText5.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText5.setText("jTextField1");
-        InfoText5.setBorder(null);
-        computation2.add(InfoText5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
-
-        info6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info6.setForeground(new java.awt.Color(255, 255, 255));
-        info6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info6.setText("Info:");
-        computation2.add(info6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
-
-        InfoText6.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText6.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText6.setText("jTextField1");
-        InfoText6.setBorder(null);
-        computation2.add(InfoText6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
-
-        info7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info7.setForeground(new java.awt.Color(255, 255, 255));
-        info7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info7.setText("Info:");
-        computation2.add(info7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
-
-        InfoText7.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText7.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText7.setText("jTextField1");
-        InfoText7.setBorder(null);
-        computation2.add(InfoText7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
-
-        info8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info8.setForeground(new java.awt.Color(255, 255, 255));
-        info8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info8.setText("Info:");
-        computation2.add(info8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
-
-        InfoText8.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText8.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText8.setText("jTextField1");
-        InfoText8.setBorder(null);
-        computation2.add(InfoText8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
-
-        jButton2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton2.setText("Compute");
-        computation2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
-
-        computation.add(computation2);
 
         computation3.setBackground(new java.awt.Color(30, 30, 30));
         computation3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1719,10 +1635,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText12.setText("jTextField1");
         InfoText12.setBorder(null);
         computation3.add(InfoText12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
-
-        jButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton3.setText("Compute");
-        computation3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         computation.add(computation3);
 
@@ -1787,10 +1699,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText16.setBorder(null);
         computation4.add(InfoText16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
 
-        jButton4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jButton4.setText("Compute");
-        computation4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
-
         computation.add(computation4);
 
         computationOverview.setViewportView(computation);
@@ -1822,10 +1730,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
         MainContentBuyer.setSelectedIndex(2);
     }//GEN-LAST:event_reqComputationActionPerformed
 
-    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+    private void transactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionActionPerformed
         // TODO add your handling code here:
         MainContentBuyer.setSelectedIndex(1);
-    }//GEN-LAST:event_viewReservActionPerformed
+    }//GEN-LAST:event_transactionActionPerformed
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         // TODO add your handling code here:
@@ -1878,20 +1786,20 @@ public class BuyerDashboard extends javax.swing.JFrame {
         reqComputation.setForeground(clickedcolor);
     }//GEN-LAST:event_reqComputationMouseClicked
 
-    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+    private void transactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseClicked
         // TODO add your handling code here:
-        viewReserv.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewReservMouseClicked
+        transaction.setForeground(clickedcolor);
+    }//GEN-LAST:event_transactionMouseClicked
 
-    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+    private void transactionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseEntered
         // TODO add your handling code here:
-        viewReserv.setForeground(entered);
-    }//GEN-LAST:event_viewReservMouseEntered
+        transaction.setForeground(entered);
+    }//GEN-LAST:event_transactionMouseEntered
 
-    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+    private void transactionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseExited
         // TODO add your handling code here:
-        viewReserv.setForeground(normal);
-    }//GEN-LAST:event_viewReservMouseExited
+        transaction.setForeground(normal);
+    }//GEN-LAST:event_transactionMouseExited
 
     private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
         // TODO add your handling code here:
@@ -1991,10 +1899,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText2;
     private javax.swing.JTextField InfoText3;
     private javax.swing.JTextField InfoText4;
-    private javax.swing.JTextField InfoText5;
-    private javax.swing.JTextField InfoText6;
-    private javax.swing.JTextField InfoText7;
-    private javax.swing.JTextField InfoText8;
     private javax.swing.JTextField InfoText9;
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
@@ -2109,12 +2013,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> blockFilter;
     private javax.swing.JPanel computation;
     private javax.swing.JPanel computation1;
-    private javax.swing.JPanel computation2;
     private javax.swing.JPanel computation3;
     private javax.swing.JPanel computation4;
     private javax.swing.JScrollPane computationOverview;
     private javax.swing.JLabel computationTitle;
-    private javax.swing.JLabel computationTitle1;
     private javax.swing.JLabel computationTitle2;
     private javax.swing.JLabel computationTitle3;
     private javax.swing.JPanel filteringPanel;
@@ -2129,15 +2031,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel info2;
     private javax.swing.JLabel info3;
     private javax.swing.JLabel info4;
-    private javax.swing.JLabel info5;
-    private javax.swing.JLabel info6;
-    private javax.swing.JLabel info7;
-    private javax.swing.JLabel info8;
     private javax.swing.JLabel info9;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lFilter;
     private javax.swing.JButton logOut;
@@ -2150,7 +2044,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel sFilter;
     private javax.swing.JComboBox<String> statusFilter;
     private javax.swing.JLabel title;
+    private javax.swing.JButton transaction;
     private javax.swing.JButton viewLots;
-    private javax.swing.JButton viewReserv;
     // End of variables declaration//GEN-END:variables
 }

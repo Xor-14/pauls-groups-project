@@ -12,7 +12,6 @@ import javax.swing.Timer;
  * @author xor
  */
 public class AgentLoginFrame extends javax.swing.JFrame {
-    
      /**
      * Creates new form BuyerLoginFrame
      */ 

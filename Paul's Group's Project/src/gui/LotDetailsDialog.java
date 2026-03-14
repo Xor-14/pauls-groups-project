@@ -35,33 +35,42 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ActionButton1 = new javax.swing.JButton();
         ActionButton2 = new javax.swing.JButton();
         ActionButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(30, 30, 30));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         LotDetails.setBackground(new java.awt.Color(30, 30, 30));
         LotDetails.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
+        LotDetails.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("L O T  D E T A I L S");
+        LotDetails.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 17, -1, -1));
 
         Info1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Info1.setForeground(new java.awt.Color(255, 255, 255));
         Info1.setText("Enter Lot Information");
+        LotDetails.add(Info1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 63, -1, -1));
 
         Info2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Info2.setForeground(new java.awt.Color(255, 255, 255));
         Info2.setText("Enter Lot Information");
+        LotDetails.add(Info2, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 93, -1, -1));
 
         Info3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         Info3.setForeground(new java.awt.Color(255, 255, 255));
         Info3.setText("Enter Lot Information");
+        LotDetails.add(Info3, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 121, -1, -1));
 
         ActionButton1.setBackground(new java.awt.Color(0, 78, 122));
         ActionButton1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
         ActionButton1.setForeground(new java.awt.Color(255, 255, 255));
         ActionButton1.setText("Reserve");
+        LotDetails.add(ActionButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, -1, -1));
 
         ActionButton2.setBackground(new java.awt.Color(0, 153, 0));
         ActionButton2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
@@ -72,6 +81,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton2ActionPerformed(evt);
             }
         });
+        LotDetails.add(ActionButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, -1, -1));
 
         ActionButton3.setBackground(new java.awt.Color(255, 98, 96));
         ActionButton3.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
@@ -82,56 +92,24 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton3ActionPerformed(evt);
             }
         });
+        LotDetails.add(ActionButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, -1, -1));
 
-        javax.swing.GroupLayout LotDetailsLayout = new javax.swing.GroupLayout(LotDetails);
-        LotDetails.setLayout(LotDetailsLayout);
-        LotDetailsLayout.setHorizontalGroup(
-            LotDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LotDetailsLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(LotDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, LotDetailsLayout.createSequentialGroup()
-                        .addComponent(ActionButton3)
-                        .addGap(69, 69, 69)
-                        .addComponent(ActionButton2))
-                    .addGroup(LotDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(Info3)
-                        .addComponent(Info2)
-                        .addComponent(Info1)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addComponent(ActionButton1)
-                .addGap(17, 17, 17))
-        );
-        LotDetailsLayout.setVerticalGroup(
-            LotDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(LotDetailsLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(Info1)
-                .addGap(8, 8, 8)
-                .addComponent(Info2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Info3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addGroup(LotDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ActionButton1)
-                    .addComponent(ActionButton2)
-                    .addComponent(ActionButton3))
-                .addGap(19, 19, 19))
-        );
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LotDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LotDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 149, 660, 320));
+
+        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -195,5 +173,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel Info3;
     private javax.swing.JPanel LotDetails;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
