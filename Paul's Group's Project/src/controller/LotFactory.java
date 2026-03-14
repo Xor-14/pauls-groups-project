@@ -10,22 +10,8 @@
 
 package controller;
 
-import models.AlliyahInnerLot;
-import models.AlliyahOuterLot;
-import models.CallistaLot;
 import models.Lot;
 
-public class LotFactory {
-    public static Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status) {
-        switch (type.trim().toLowerCase()) {
-            case "callista":
-                return new CallistaLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
-            case "alliyahinner":
-                return new AlliyahInnerLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
-            case "alliyahouter":
-                return new AlliyahOuterLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
-            default:
-                throw new IllegalArgumentException("Unknown lot type: " + type);
-        }
-    }
+public interface LotFactory {
+    Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status);
 }

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstateManager {
-    private static EstateManager instance;
     private List<Lot> allLots;
     private List<Block> blocks;
 
@@ -24,12 +23,13 @@ public class EstateManager {
         allLots = CSVDatabase.loadLots();
         initializeBlocks();
     }
+    
+    private static class InstanceHolder {
+        private static final EstateManager INSTANCE = new EstateManager();
+    }
 
     public static EstateManager getInstance() {
-        if (instance == null) {
-            instance = new EstateManager();
-        }
-        return instance;
+        return InstanceHolder.INSTANCE;
     }
 
     private void initializeBlocks() {

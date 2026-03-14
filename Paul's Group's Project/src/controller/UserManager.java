@@ -25,12 +25,13 @@ public class UserManager {
         buyers = CSVDatabase.loadBuyers();
         agents = CSVDatabase.loadAgents();
     }
+    
+    private static class InstanceHolder {
+        private static final UserManager INSTANCE = new UserManager();
+    }
 
     public static UserManager getInstance() {
-        if (instance == null) {
-            instance = new UserManager();
-        }
-        return instance;
+        return InstanceHolder.INSTANCE;
     }
 
     public User login(String email, String password) {

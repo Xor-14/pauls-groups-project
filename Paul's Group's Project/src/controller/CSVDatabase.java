@@ -24,8 +24,10 @@ public class CSVDatabase {
 
     public static List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();
+        LotFactory factory = new ConcreteLotFactory(); // Instantiate the concrete factory
+        
         try (BufferedReader br = new BufferedReader(new FileReader(LOTS_FILE))) {
-            br.readLine(); // Skip header
+            br.readLine(); 
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
@@ -40,7 +42,8 @@ public class CSVDatabase {
                 String type = v[7].trim(); 
                 String status = v[8].trim();
                 
-                lots.add(LotFactory.createLot(type, id, blockId, lotArea, floorArea, tcp, rf, hdmfMax, status));
+                // Use the interface method
+                lots.add(factory.createLot(type, id, blockId, lotArea, floorArea, tcp, rf, hdmfMax, status));
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Critical IO Error reading lots.csv: " + e.getMessage());
