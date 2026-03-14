@@ -10,9 +10,9 @@
 
 package controller;
 
-import models.Lot;
-import models.Buyer;
 import models.Agent;
+import models.Buyer;
+import models.Lot;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +24,23 @@ public class CSVDatabase {
 
     public static List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();
-        String line;
-        
         try (BufferedReader br = new BufferedReader(new FileReader(LOTS_FILE))) {
             br.readLine(); // Skip header
+            String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
+                String[] v = line.split(",");
+                int id = Integer.parseInt(v[0].trim());
+                int blockId = Integer.parseInt(v[1].trim());
+                double lotArea = Double.parseDouble(v[2].trim());
+                double floorArea = Double.parseDouble(v[3].trim());
+                double tcp = Double.parseDouble(v[4].trim());
+                double rf = Double.parseDouble(v[5].trim());
+                double hdmfMax = Double.parseDouble(v[6].trim());
+                String type = v[7].trim(); 
+                String status = v[8].trim();
                 
-                String[] values = line.split(",");
-                int id = Integer.parseInt(values[0].trim());
-                int blockId = Integer.parseInt(values[1].trim());
-                double size = Double.parseDouble(values[2].trim());
-                double price = Double.parseDouble(values[3].trim());
-                String type = values[4].trim(); 
-                String status = values[5].trim();
-                
-                lots.add(LotFactory.createLot(type, id, blockId, size, price, status));
+                lots.add(LotFactory.createLot(type, id, blockId, lotArea, floorArea, tcp, rf, hdmfMax, status));
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Critical IO Error reading lots.csv: " + e.getMessage());
@@ -49,10 +50,12 @@ public class CSVDatabase {
 
     public static void saveLots(List<Lot> lots) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(LOTS_FILE))) {
-            bw.write("lotID,blockID,sizeSqm,basePrice,type,status\n");
+            bw.write("lotID,blockID,lotArea,floorArea,tcp,rf,hdmfMax,type,status\n");
             for (Lot lot : lots) {
-                String line = String.format("%d,%d,%.2f,%.2f,%s,%s\n", 
-                    lot.getLotID(), lot.getBlockID(), lot.getSizeSqm(), lot.getBasePrice(), lot.getLotType(), lot.getStatus());
+                String line = String.format("%d,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%s,%s\n", 
+                    lot.getLotID(), lot.getBlockID(), lot.getLotArea(), lot.getFloorArea(), 
+                    lot.getTcp(), lot.getReservationFee(), lot.getHdmfMaxLoan(), 
+                    lot.getLotType(), lot.getStatus());
                 bw.write(line);
             }
         } catch (IOException e) {
@@ -90,7 +93,7 @@ public class CSVDatabase {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                String[] v = line.split(","); // Ensure agents.csv is comma-separated, not tab-separated
+                String[] v = line.split(",");
                 agents.add(new Agent(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), v[4].trim(), Integer.parseInt(v[5].trim()), Double.parseDouble(v[6].trim())));
             }
         } catch (Exception e) { System.err.println("Error reading agents.csv: " + e.getMessage()); }

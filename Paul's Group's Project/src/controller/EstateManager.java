@@ -34,11 +34,9 @@ public class EstateManager {
 
     private void initializeBlocks() {
         blocks = new ArrayList<>();
-        // Assuming project spec of 5 blocks
         for (int i = 1; i <= 5; i++) {
             blocks.add(new Block(i));
         }
-        // Distribute loaded lots into their respective blocks
         for (Lot lot : allLots) {
             for (Block block : blocks) {
                 if (block.getBlockID() == lot.getBlockID()) {
@@ -49,9 +47,8 @@ public class EstateManager {
         }
     }
 
-    public List<Lot> getAllLots() {
-        return allLots;
-    }
+    public List<Lot> getAllLots() { return allLots; }
+    public List<Block> getBlocks() { return blocks; }
 
     public List<Lot> getAvailableLots() {
         List<Lot> available = new ArrayList<>();
@@ -67,10 +64,17 @@ public class EstateManager {
         for (Lot lot : allLots) {
             if (lot.getLotID() == lotID && "Available".equalsIgnoreCase(lot.getStatus())) {
                 lot.setStatus("Reserved");
-                CSVDatabase.saveLots(allLots); // Sync to disk immediately
+                CSVDatabase.saveLots(allLots); 
                 return true;
             }
         }
-        return false; // Lot not found or not available
+        return false; 
+    }
+    
+    public Lot findLotById(int lotID) {
+        for (Lot lot : allLots) {
+            if (lot.getLotID() == lotID) return lot;
+        }
+        return null;
     }
 }

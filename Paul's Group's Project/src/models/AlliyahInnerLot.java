@@ -11,8 +11,8 @@
 package models;
 
 public class AlliyahInnerLot extends Lot {
-    public AlliyahInnerLot(int lotID, int blockID, double sizeSqm, double basePrice, String status) {
-        super(lotID, blockID, sizeSqm, basePrice, status);
+    public AlliyahInnerLot(int lotID, int blockID, double lotArea, double floorArea, double tcp, double reservationFee, double hdmfMaxLoan, String status) {
+        super(lotID, blockID, lotArea, floorArea, tcp, reservationFee, hdmfMaxLoan, status);
     }
 
     @Override

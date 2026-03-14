@@ -16,18 +16,14 @@ import models.CallistaLot;
 import models.Lot;
 
 public class LotFactory {
-    public static Lot createLot(String type, int lotID, int blockID, double sizeSqm, double basePrice, String status) {
-        if (type == null) {
-            throw new IllegalArgumentException("Lot type cannot be null");
-        }
-        
+    public static Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status) {
         switch (type.trim().toLowerCase()) {
             case "callista":
-                return new CallistaLot(lotID, blockID, sizeSqm, basePrice, status);
+                return new CallistaLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
             case "alliyahinner":
-                return new AlliyahInnerLot(lotID, blockID, sizeSqm, basePrice, status);
+                return new AlliyahInnerLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
             case "alliyahouter":
-                return new AlliyahOuterLot(lotID, blockID, sizeSqm, basePrice, status);
+                return new AlliyahOuterLot(lotID, blockID, lotArea, floorArea, tcp, rf, hdmfMax, status);
             default:
                 throw new IllegalArgumentException("Unknown lot type: " + type);
         }
