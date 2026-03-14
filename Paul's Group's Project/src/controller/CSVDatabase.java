@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVDatabase {
-    private static final String LOTS_FILE = "Mock Data For Later/lots.csv";
-    private static final String CLIENTS_FILE = "Mock Data For Later/clients.csv";
-    private static final String AGENTS_FILE = "Mock Data For Later/agents.csv";
+    private static final String LOTS_FILE = "../Mock Data For Later/lots.csv";
+    private static final String CLIENTS_FILE = "../Mock Data For Later/clients.csv";
+    private static final String AGENTS_FILE = "../Mock Data For Later/agents.csv";
 
     public static List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();

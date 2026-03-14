@@ -16,7 +16,6 @@ import models.User;
 import java.util.List;
 
 public class UserManager {
-    private static UserManager instance;
     private List<Buyer> buyers;
     private List<Agent> agents;
     private User currentUser;

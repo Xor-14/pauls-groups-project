@@ -13,6 +13,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import controller.EstateManager;
+import models.Lot;
+import java.util.List;
+
 /**
  *
  * @author xor
@@ -35,7 +39,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
             new ImageIcon(getClass().getResource(imgslides[imageIndex])));
     });
     timer.start();
-}
+    }
    /** 
     * Colors
      */ 
@@ -184,115 +188,103 @@ public class BuyerDashboard extends javax.swing.JFrame {
     lotButtons[4][19] = b5_l20;
 
 }
-    
-    String[][] lotStatus = new String[5][20];
-    String[][] lotType = new String[5][20];
-    double[][] lotPrice = new double[5][20];
-    
-    private void initializeLots(){
-
-    for(int b=0;b<5;b++){
-        for(int l=0;l<20;l++){
-
-            lotStatus[b][l] = "Vacant";
-            lotType[b][l] = "Standard Lot";
-            lotPrice[b][l] = 500000 + (l*10000);
-
+    private void updateAllLotColors() {
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
+                updateLotColor(b, l);
+            }
         }
     }
-
-}
-    public void updateLotColor(int b,int l){
-
-    JButton btn = lotButtons[b][l];
-
-    btn.setOpaque(true);
-
-    if(lotStatus[b][l].equals("Vacant"))
-        btn.setBackground(vacant);
-
-    if(lotStatus[b][l].equals("Reserved"))
-        btn.setBackground(reserved);
-
-    if(lotStatus[b][l].equals("Occupied"))
-        btn.setBackground(occupied);
     
-    btn.setOpaque(true);
-    btn.setContentAreaFilled(true);
-    btn.setBorderPainted(false);
-}
-    private void updateAllLotColors(){
+    public void updateLotColor(int b, int l){
+        JButton btn = lotButtons[b][l];
+        int lotIndex = (b * 20) + l;
+        Lot lot = EstateManager.getInstance().getAllLots().get(lotIndex);
 
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
+        btn.setOpaque(true);
 
-            updateLotColor(b,l);
-
+        String status = lot.getStatus();
+        if(status.equalsIgnoreCase("Available")) {
+            btn.setBackground(vacant);
+        } else if(status.equalsIgnoreCase("Reserved")) {
+            btn.setBackground(reserved);
+        } else {
+            btn.setBackground(occupied);
         }
+        
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(false);
     }
 
-}
     public void applyFilters(){
+        String status = statusFilter.getSelectedItem().toString();
+        String type = lotFilter.getSelectedItem().toString();
+        String price = priceFilter.getSelectedItem().toString();
+        String block = blockFilter.getSelectedItem().toString();
 
-    String status = statusFilter.getSelectedItem().toString();
-    String type = lotFilter.getSelectedItem().toString();
-    String price = priceFilter.getSelectedItem().toString();
-    String block = blockFilter.getSelectedItem().toString();
+        List<Lot> allLots = EstateManager.getInstance().getAllLots();
 
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
+        for(int b = 0; b < 5; b++){
+            for(int l = 0; l < 20; l++){
+                int lotIndex = (b * 20) + l;
+                Lot lot = allLots.get(lotIndex);
+                boolean show = true;
 
-            boolean show = true;
+                if(!status.equals("All") && !lot.getStatus().equalsIgnoreCase(status)) show = false;
+                if(!type.equals("All") && !lot.getLotType().equalsIgnoreCase(type)) show = false;
+                if(!block.equals("All") && !block.equals("Block " + (b+1))) show = false;
 
-            // STATUS FILTER
-            if(!status.equals("All") && !lotStatus[b][l].equals(status)){
-                show = false;
+                double lotPrice = lot.getTcp();
+                if(price.equals("Max 500000") && lotPrice > 500000) show = false;
+                if(price.equals("Max 750000") && lotPrice > 750000) show = false;
+                if(price.equals("Max 1000000") && lotPrice > 1000000) show = false;
+
+                lotButtons[b][l].setVisible(show);
             }
-
-            // TYPE FILTER
-            if(!type.equals("All") && !lotType[b][l].equals(type)){
-                show = false;
-            }
-
-            // PRICE FILTER
-            if(price.equals("Max 500000") && lotPrice[b][l] > 500000){
-                show = false;
-            }
-
-            if(price.equals("Max 750000") && lotPrice[b][l] > 750000){
-                show = false;
-            }
-
-            if(price.equals("Max 1000000") && lotPrice[b][l] > 1000000){
-                show = false;
-            }
-
-            // BLOCK FILTER
-            if(!block.equals("All") && !block.equals("Block " + (b+1))){
-                show = false;
-            }
-
-            lotButtons[b][l].setVisible(show);
-
         }
     }
-
-}
-
+    
     public BuyerDashboard() {
         initComponents();
         imageSlideshow();
         mapButtons();
-        initializeLots();
-        lotStatus[1][5]="Reserved";
-        lotStatus[2][4]="Vacant";
-        lotStatus[0][1]="Occupied";
+        
+        // Backend integration replacements
+        attachButtonListeners();
         updateAllLotColors();
+        
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
- 
+    }
+    
+    private void attachButtonListeners() {
+        List<Lot> allLots = EstateManager.getInstance().getAllLots();
         
+        for(int b = 0; b < 5; b++) {
+            for(int l = 0; l < 20; l++) {
+                // Calculate the 1D list index (0-99) from the 2D grid coordinates
+                int lotIndex = (b * 20) + l;
+                if (lotIndex >= allLots.size()) break; // Safety check
+                
+                Lot lot = allLots.get(lotIndex);
+                JButton btn = lotButtons[b][l];
+                
+                int finalB = b;
+                int finalL = l;
+                
+                // Attach click event
+                btn.addActionListener(e -> {
+                    // Pass the specific Lot object to the dialog
+                    LotDetailsDialog dialog = new LotDetailsDialog(this, true, lot);
+                    dialog.setLocationRelativeTo(this);
+                    dialog.setVisible(true);
+                    
+                    // Refresh color when dialog closes in case user reserved it
+                    updateLotColor(finalB, finalL);
+                });
+            }
+        }
     }
  
 

@@ -1,0 +1,2 @@
+transactionID,date,financingType,amount,monthlyAmortization,lotID,buyerID,agentID
+1,2026-03-15,Bank,1500000.00,12500.00,1,1,1

@@ -4,6 +4,10 @@
  */
 package gui;
 
+import models.Lot;
+import controller.EstateManager;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author xor
@@ -13,9 +17,32 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     /**
      * Creates new form LotDetailsDialog
      */
-    public LotDetailsDialog(java.awt.Frame parent, boolean modal) {
+    private Lot currentLot; // Add class variable
+
+    // Update constructor signature to accept Lot
+    public LotDetailsDialog(java.awt.Frame parent, boolean modal, Lot lot) {
         super(parent, modal);
+        this.currentLot = lot;
         initComponents();
+        
+        // Dynamically set labels
+        jLabel1.setText("LOT DETAILS - " + currentLot.getLotType().toUpperCase());
+        Info1.setText("Block: " + currentLot.getBlockID() + " | Lot ID: " + currentLot.getLotID());
+        Info2.setText("Status: " + currentLot.getStatus());
+        Info3.setText("TCP: PHP " + String.format("%,.2f", currentLot.getTcp()));
+        
+        // Attach logic to the Reserve Button (ActionButton1)
+        ActionButton1.addActionListener(e -> {
+            if(currentLot.getStatus().equalsIgnoreCase("Available")) {
+                boolean success = EstateManager.getInstance().reserveLot(currentLot.getLotID());
+                if(success) {
+                    JOptionPane.showMessageDialog(this, "Lot Successfully Reserved!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    Info2.setText("Status: Reserved");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Lot is not available for reservation.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 
     /**
@@ -125,44 +152,44 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                LotDetailsDialog dialog = new LotDetailsDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(LotDetailsDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the dialog */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                LotDetailsDialog dialog = new LotDetailsDialog(new javax.swing.JFrame(), true);
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
+//                dialog.setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ActionButton1;
