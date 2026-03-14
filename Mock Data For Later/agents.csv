@@ -1,5 +1,2 @@
-AgentID	LastName	FirstName	Status
-A001	Santos	Maria	Active
-A002	Reyes	Jose	Active
-A003	Dizon	Bea	Inactive
-A004	Tan	Gabriel	Active
+id,firstName,lastName,email,password,assignedBlock,totalSales
+1,Jane,Smith,agent1@test.com,pass456,1,0.00
