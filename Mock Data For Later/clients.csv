@@ -1,5 +1,2 @@
-﻿ClientID,Name,ContactNumber,Email
-C101,Juan Cruz,9171234567,juan.cruz@email.com
-C102,Ana Lim,9187654321,ana.lim@email.com
-C103,Peter Go,9225556666,peter.go@email.com
-C104,Lara Yap,9198889999,lara.yap@email.com
+id,firstName,lastName,email,password
+1,John,Doe,buyer1@test.com,pass123
