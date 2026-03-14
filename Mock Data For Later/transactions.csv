@@ -1,6 +1,2 @@
-﻿TransactionID,BlockID,LotID,AgentID,ClientID,Type,Date
-T001,1,1,A001,C101,Sale,12/1/2025
-T002,1,4,A002,C102,Reservation,1/10/2026
-T003,2,2,A001,C103,Sale,1/15/2026
-T004,2,3,A004,C104,Sale,1/20/2026
-T005,4,15,A002,C101,Reservation,1/25/2026
+transactionID,date,financingType,amount,monthlyAmortization,lotID,buyerID,agentID
+1,2026-03-15,Bank,1500000.00,12500.00,1,1,1
