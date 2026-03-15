@@ -185,43 +185,30 @@ public class AgentDashboard extends javax.swing.JFrame {
     lotButtons[4][19] = b5_l20;
 
 }
-    
-    String[][] lotStatus = new String[5][20];
-    String[][] lotType = new String[5][20];
-    double[][] lotPrice = new double[5][20];
-    
-    private void initializeLots(){
 
-    for(int b=0;b<5;b++){
-        for(int l=0;l<20;l++){
+    public void updateLotColor(int b, int l) {
+        javax.swing.JButton btn = lotButtons[b][l];
+        int lotIndex = (b * 20) + l;
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
 
-            lotStatus[b][l] = "Vacant";
-            lotType[b][l] = "Standard Lot";
-            lotPrice[b][l] = 500000 + (l*10000);
+        if (lotIndex >= allLots.size()) return;
 
+        models.Lot lot = allLots.get(lotIndex);
+        btn.setOpaque(true);
+
+        String status = lot.getStatus();
+        if (status.equalsIgnoreCase("Available")) {
+            btn.setBackground(vacant); // Green
+        } else if (status.equalsIgnoreCase("Reserved") || status.toLowerCase().contains("pending")) {
+            btn.setBackground(reserved); // Blue
+        } else {
+            btn.setBackground(occupied); // Red
         }
+        
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(false);
     }
-
-}
-    public void updateLotColor(int b,int l){
-
-    JButton btn = lotButtons[b][l];
-
-    btn.setOpaque(true);
-
-    if(lotStatus[b][l].equals("Vacant"))
-        btn.setBackground(vacant);
-
-    if(lotStatus[b][l].equals("Reserved"))
-        btn.setBackground(reserved);
-
-    if(lotStatus[b][l].equals("Occupied"))
-        btn.setBackground(occupied);
     
-    btn.setOpaque(true);
-    btn.setContentAreaFilled(true);
-    btn.setBorderPainted(false);
-}
     private void updateAllLotColors(){
 
     for(int b = 0; b < 5; b++){
@@ -233,61 +220,55 @@ public class AgentDashboard extends javax.swing.JFrame {
     }
 
 }
-    public void applyFilters(){
+    public void applyFilters() {
+        String status = statusFilter.getSelectedItem().toString();
+        String type = lotFilter.getSelectedItem().toString();
+        String price = priceFilter.getSelectedItem().toString();
+        String block = blockFilter.getSelectedItem().toString();
 
-    String status = statusFilter.getSelectedItem().toString();
-    String type = lotFilter.getSelectedItem().toString();
-    String price = priceFilter.getSelectedItem().toString();
-    String block = blockFilter.getSelectedItem().toString();
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
 
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
+                int lotIndex = (b * 20) + l;
+                if (lotIndex >= allLots.size()) continue;
+                
+                models.Lot lot = allLots.get(lotIndex);
+                boolean show = true;
 
-            boolean show = true;
+                // Status Filter Mapping
+                String currentStatus = lot.getStatus();
+                if (!status.equals("All")) {
+                    if (status.equals("Vacant") && !currentStatus.equalsIgnoreCase("Available")) show = false;
+                    if (status.equals("Reserved") && !(currentStatus.equalsIgnoreCase("Reserved") || currentStatus.toLowerCase().contains("pending"))) show = false;
+                    if (status.equals("Occupied") && !currentStatus.equalsIgnoreCase("Sold")) show = false;
+                }
 
-            // STATUS FILTER
-            if(!status.equals("All") && !lotStatus[b][l].equals(status)){
-                show = false;
+                // Type Filter
+                if (!type.equals("All") && !lot.getLotType().equalsIgnoreCase(type)) {
+                    show = false;
+                }
+
+                // Price Filter
+                double lotPrice = lot.getTcp();
+                if (price.equals("Max 3500000") && lotPrice > 3500000) show = false;
+                if (price.equals("Max 5500000") && lotPrice > 5500000) show = false;
+
+                // Block Filter
+                if (!block.equals("All") && !block.equals("Block " + (b + 1))) {
+                    show = false;
+                }
+
+                lotButtons[b][l].setVisible(show);
             }
-
-            // TYPE FILTER
-            if(!type.equals("All") && !lotType[b][l].equals(type)){
-                show = false;
-            }
-
-            // PRICE FILTER
-            if(price.equals("Max 500000") && lotPrice[b][l] > 500000){
-                show = false;
-            }
-
-            if(price.equals("Max 750000") && lotPrice[b][l] > 750000){
-                show = false;
-            }
-
-            if(price.equals("Max 1000000") && lotPrice[b][l] > 1000000){
-                show = false;
-            }
-
-            // BLOCK FILTER
-            if(!block.equals("All") && !block.equals("Block " + (b+1))){
-                show = false;
-            }
-
-            lotButtons[b][l].setVisible(show);
-
         }
     }
-
-}
 
     public AgentDashboard() {
         initComponents();
         imageSlideshow();
         mapButtons();
-        initializeLots();
-        lotStatus[1][5]="Reserved";
-        lotStatus[2][4]="Vacant";
-        lotStatus[0][1]="Occupied";
+        
         updateAllLotColors();
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
@@ -1578,7 +1559,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         filteringPanel.add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
 
         lotFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Standard Lot (~400–500 sqm)", "Premium Lot (~500–650 sqm)", "Corner Lot (~650+ sqm)" }));
+        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Callista", "AlliyahInner", "AlliyahOuter" }));
         lotFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lotFilterActionPerformed(evt);
@@ -1593,7 +1574,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         filteringPanel.add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
 
         priceFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 500000", "Max 750000", "Max 1000000" }));
+        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 3500000", "Max 5500000" }));
         priceFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 priceFilterActionPerformed(evt);
