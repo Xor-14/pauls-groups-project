@@ -45,7 +45,7 @@ public class CSVDatabase {
                 String type = v[7].trim(); 
                 String status = v[8].trim();
                 
-                // Use the interface method
+                // Use the interface method for factory design pattern
                 lots.add(factory.createLot(type, id, blockId, lotArea, floorArea, tcp, rf, hdmfMax, status));
             }
         } catch (IOException | NumberFormatException e) {
