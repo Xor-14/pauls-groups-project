@@ -6,3 +6,4 @@ transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,a
 5,2026-03-15,Purchase,Bank - RCBC,271000.00,20198.30,3,2,1,Approved
 6,2026-03-15,Purchase,Bank - BDO,271000.00,20198.30,22,1,2,Approved
 7,2026-03-15,Purchase,Pag-IBIG Financing,1280000.00,10611.40,23,1,2,Approved
+8,2026-03-15,Purchase,Bank - BPI,493725.00,37939.50,25,2,0,Pending
