@@ -13,14 +13,17 @@ package controller;
 import models.Agent;
 import models.Buyer;
 import models.Lot;
+import models.SaleTransaction;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVDatabase {
-    private static final String LOTS_FILE = "Mock Data For Later/lots.csv";
-    private static final String CLIENTS_FILE = "Mock Data For Later/clients.csv";
-    private static final String AGENTS_FILE = "Mock Data For Later/agents.csv";
+    private static final String LOTS_FILE = "../Mock Data For Later/lots.csv";
+    private static final String CLIENTS_FILE = "../Mock Data For Later/clients.csv";
+    private static final String AGENTS_FILE = "../Mock Data For Later/agents.csv";
+        private static final String TRANSACTIONS_FILE = "../Mock Data For Later/transactions.csv";
+
 
     public static List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();
@@ -42,7 +45,7 @@ public class CSVDatabase {
                 String type = v[7].trim(); 
                 String status = v[8].trim();
                 
-                // Use the interface method
+                // Use the interface method for factory design pattern
                 lots.add(factory.createLot(type, id, blockId, lotArea, floorArea, tcp, rf, hdmfMax, status));
             }
         } catch (IOException | NumberFormatException e) {
@@ -111,4 +114,35 @@ public class CSVDatabase {
             }
         } catch (Exception e) { System.err.println("Error writing agents.csv: " + e.getMessage()); }
     }
+    
+    public static List<SaleTransaction> loadTransactions() {
+        List<SaleTransaction> transactions = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(TRANSACTIONS_FILE))) {
+            br.readLine(); 
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                String[] v = line.split(",");
+                transactions.add(new SaleTransaction(
+                    Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), 
+                    Double.parseDouble(v[4].trim()), Double.parseDouble(v[5].trim()), 
+                    Integer.parseInt(v[6].trim()), Integer.parseInt(v[7].trim()), Integer.parseInt(v[8].trim()), v[9].trim()
+                ));
+            }
+        } catch (Exception e) { System.err.println("Error reading transactions.csv: " + e.getMessage()); }
+        return transactions;
+    }
+
+    public static void saveTransactions(List<SaleTransaction> transactions) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(TRANSACTIONS_FILE))) {
+            bw.write("transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,agentID,status\n");
+            for (SaleTransaction t : transactions) {
+                bw.write(String.format("%d,%s,%s,%s,%.2f,%.2f,%d,%d,%d,%s\n", 
+                    t.getTransactionID(), t.getDate(), t.getType(), t.getFinancingType(), 
+                    t.getAmount(), t.getMonthlyAmortization(), t.getLotID(), 
+                    t.getBuyerID(), t.getAgentID(), t.getStatus()));
+            }
+        } catch (Exception e) { System.err.println("Error writing transactions.csv: " + e.getMessage()); }
+    }
+    
 }
