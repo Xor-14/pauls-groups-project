@@ -24,6 +24,7 @@ public class AgentDashboard extends javax.swing.JFrame {
      */ 
     private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
     private int imageIndex = 0;
+    private LotFilterPanel customFilterPanel;
     
    private void imageSlideshow() {
 
@@ -216,56 +217,14 @@ public class AgentDashboard extends javax.swing.JFrame {
 
             updateLotColor(b,l);
 
-        }
-    }
-
-}
-    public void applyFilters() {
-        String status = statusFilter.getSelectedItem().toString();
-        String type = lotFilter.getSelectedItem().toString();
-        String price = priceFilter.getSelectedItem().toString();
-        String block = blockFilter.getSelectedItem().toString();
-
-        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
-
-        for (int b = 0; b < 5; b++) {
-            for (int l = 0; l < 20; l++) {
-                int lotIndex = (b * 20) + l;
-                if (lotIndex >= allLots.size()) continue;
-                
-                models.Lot lot = allLots.get(lotIndex);
-                boolean show = true;
-
-                // Status Filter Mapping
-                String currentStatus = lot.getStatus();
-                if (!status.equals("All")) {
-                    if (status.equals("Vacant") && !currentStatus.equalsIgnoreCase("Available")) show = false;
-                    if (status.equals("Reserved") && !(currentStatus.equalsIgnoreCase("Reserved") || currentStatus.toLowerCase().contains("pending"))) show = false;
-                    if (status.equals("Occupied") && !currentStatus.equalsIgnoreCase("Sold")) show = false;
-                }
-
-                // Type Filter
-                if (!type.equals("All") && !lot.getLotType().equalsIgnoreCase(type)) {
-                    show = false;
-                }
-
-                // Price Filter
-                double lotPrice = lot.getTcp();
-                if (price.equals("Max 3500000") && lotPrice > 3500000) show = false;
-                if (price.equals("Max 5500000") && lotPrice > 5500000) show = false;
-
-                // Block Filter
-                if (!block.equals("All") && !block.equals("Block " + (b + 1))) {
-                    show = false;
-                }
-
-                lotButtons[b][l].setVisible(show);
             }
         }
     }
 
     public AgentDashboard() {
         initComponents();
+        customFilterPanel = new LotFilterPanel(this::applyFilters);
+        Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
         imageSlideshow();
         mapButtons();
         attachButtonListeners();
@@ -276,6 +235,19 @@ public class AgentDashboard extends javax.swing.JFrame {
         normal = new Color(255,255,255);
         loadPendingTransactions();
         loadAgentHistory();
+    }
+    
+    public void applyFilters() {
+    java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+    for (int b = 0; b < 5; b++) {
+        for (int l = 0; l < 20; l++) {
+            int lotIndex = (b * 20) + l;
+            if (lotIndex < allLots.size()) 
+                {
+                    lotButtons[b][l].setVisible(customFilterPanel.evaluateLot(allLots.get(lotIndex)));
+                }
+            }
+        }   
     }
  
     private void loadPendingTransactions() {
@@ -540,17 +512,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
-        filteringPanel = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
-        sFilter = new javax.swing.JLabel();
-        statusFilter = new javax.swing.JComboBox<>();
-        bFilter1 = new javax.swing.JLabel();
-        blockFilter = new javax.swing.JComboBox<>();
-        lFilter = new javax.swing.JLabel();
-        lotFilter = new javax.swing.JComboBox<>();
-        pFilter = new javax.swing.JLabel();
-        priceFilter = new javax.swing.JComboBox<>();
-        applyFilter = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         reservOverview = new javax.swing.JScrollPane();
@@ -1543,85 +1504,6 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         Lots.add(lotsOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1000, 590));
 
-        filteringPanel.setBackground(new java.awt.Color(30, 30, 30));
-        filteringPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        title.setText("Filters:");
-        filteringPanel.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 30));
-
-        sFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        sFilter.setForeground(new java.awt.Color(255, 255, 255));
-        sFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        sFilter.setText("Status:");
-        filteringPanel.add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 60, 30));
-
-        statusFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        statusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Vacant", "Reserved", "Occupied" }));
-        statusFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 60, 90, -1));
-
-        bFilter1.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        bFilter1.setForeground(new java.awt.Color(255, 255, 255));
-        bFilter1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        bFilter1.setText("Block:");
-        filteringPanel.add(bFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 60, 60, 30));
-
-        blockFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        blockFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Block 1", "Block 2", "Block 3", "Block 4", "Block 5" }));
-        blockFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blockFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 60, -1, -1));
-
-        lFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        lFilter.setForeground(new java.awt.Color(255, 255, 255));
-        lFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lFilter.setText("Lot Size:");
-        filteringPanel.add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
-
-        lotFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Callista", "AlliyahInner", "AlliyahOuter" }));
-        lotFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lotFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 60, -1, -1));
-
-        pFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        pFilter.setForeground(new java.awt.Color(255, 255, 255));
-        pFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pFilter.setText("Max Price:");
-        filteringPanel.add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
-
-        priceFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 3500000", "Max 5500000" }));
-        priceFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
-
-        applyFilter.setText("Apply Filter");
-        applyFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applyFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(applyFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 100, -1, -1));
-
-        Lots.add(filteringPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 130));
-
         MainContentSeller.addTab("tab1", Lots);
 
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
@@ -2057,27 +1939,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         logOut.setForeground(normal);
     }//GEN-LAST:event_logOutMouseExited
 
-    private void statusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statusFilterActionPerformed
-
-    private void blockFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_blockFilterActionPerformed
-
-    private void lotFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lotFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lotFilterActionPerformed
-
-    private void priceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_priceFilterActionPerformed
-
-    private void applyFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyFilterActionPerformed
-        // TODO add your handling code here:
-        applyFilters();
-    }//GEN-LAST:event_applyFilterActionPerformed
-
     private void genReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseClicked
         // TODO add your handling code here:
         genReport.setForeground(clickedcolor);
@@ -2208,7 +2069,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Transactions;
     private javax.swing.JTable agentHistoryTable;
     private javax.swing.JScrollPane agentPerf;
-    private javax.swing.JButton applyFilter;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;
@@ -2309,10 +2169,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l7;
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
-    private javax.swing.JLabel bFilter1;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JComboBox<String> blockFilter;
-    private javax.swing.JPanel filteringPanel;
     private javax.swing.JButton genReport;
     private javax.swing.JLabel info29;
     private javax.swing.JLabel info30;
@@ -2328,14 +2185,10 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lFilter;
     private javax.swing.JButton logOut;
-    private javax.swing.JComboBox<String> lotFilter;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
-    private javax.swing.JLabel pFilter;
     private javax.swing.JScrollPane perfOverview;
-    private javax.swing.JComboBox<String> priceFilter;
     private javax.swing.JLabel reportPlaceholder;
     private javax.swing.JScrollPane reservOverview;
     private javax.swing.JPanel reservation1;
@@ -2343,9 +2196,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JLabel reservationTitle1;
     private javax.swing.JPanel reservations;
-    private javax.swing.JLabel sFilter;
-    private javax.swing.JComboBox<String> statusFilter;
-    private javax.swing.JLabel title;
     private javax.swing.JButton viewLots;
     private javax.swing.JButton viewPerformance;
     private javax.swing.JButton viewReserv;
