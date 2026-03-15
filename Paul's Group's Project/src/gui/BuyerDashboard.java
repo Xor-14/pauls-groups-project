@@ -297,6 +297,12 @@ public class BuyerDashboard extends javax.swing.JFrame {
         }
     }
  
+    private void refreshDashboard() {
+        controller.EstateManager.getInstance().refreshData();
+        updateAllLotColors();
+        applyFilters();
+        loadBuyerHistory();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -314,6 +320,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         reqComputation = new javax.swing.JButton();
         transaction = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
         MainContentBuyer = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -492,7 +499,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 30));
+        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -635,6 +642,14 @@ public class BuyerDashboard extends javax.swing.JFrame {
             }
         });
         BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 40));
+
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1634,6 +1649,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
         // TODO add your handling code here:
         MainContentBuyer.setSelectedIndex(0);
+        refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
     private void reqComputationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqComputationActionPerformed
@@ -1727,6 +1743,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         logOut.setForeground(normal);
     }//GEN-LAST:event_logOutMouseExited
 
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        // TODO add your handling code here:
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1793,6 +1814,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
+    private javax.swing.JButton Refresh;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;

@@ -12,3 +12,9 @@ transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,a
 11,2026-03-15,Reservation,None,30000.00,0.00,23,2,2,Approved
 12,2026-03-15,Purchase,Spot Cash,3010000.00,0.00,24,2,2,Approved
 13,2026-03-15,Reservation,None,50000.00,0.00,25,2,2,Approved
+14,2026-03-16,Reservation,None,50000.00,0.00,36,1,2,Approved
+15,2026-03-16,Purchase,Spot Cash,3010000.00,0.00,37,1,2,Approved
+16,2026-03-16,Purchase,Spot Cash,5437250.00,0.00,16,1,1,Approved
+17,2026-03-16,Purchase,Pag-IBIG Financing,1280000.00,10611.40,18,1,1,Approved
+18,2026-03-16,Reservation,None,30000.00,0.00,39,1,2,Rejected
+19,2026-03-16,Purchase,Bank - BDO,493725.00,36486.12,40,1,2,Approved

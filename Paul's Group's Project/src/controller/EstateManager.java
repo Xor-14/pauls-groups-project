@@ -161,5 +161,11 @@ public class EstateManager {
         CSVDatabase.saveLots(allLots);
         CSVDatabase.saveTransactions(transactions);
     }
-    
+ 
+    public void refreshData() {
+        // Overwrite memory state with fresh disk data
+        this.allLots = CSVDatabase.loadLots();
+        this.transactions = CSVDatabase.loadTransactions();
+        initializeBlocks(); // Re-sort lots into blocks
+    }
 }

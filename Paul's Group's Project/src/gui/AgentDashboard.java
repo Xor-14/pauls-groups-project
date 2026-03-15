@@ -379,6 +379,14 @@ public class AgentDashboard extends javax.swing.JFrame {
             }
         }
     }
+    
+    private void refreshDashboard() {
+        controller.EstateManager.getInstance().refreshData();
+        updateAllLotColors();
+        applyFilters();
+        loadPendingTransactions();
+        loadAgentHistory();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -398,6 +406,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         viewReserv = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -578,7 +587,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 30));
+        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -792,6 +801,14 @@ public class AgentDashboard extends javax.swing.JFrame {
             }
         });
         AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1846,6 +1863,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
         // TODO add your handling code here:
         MainContentSeller.setSelectedIndex(0);
+        refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
     private void viewPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPerformanceActionPerformed
@@ -1996,6 +2014,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         MainContentSeller.setSelectedIndex(1);
     }//GEN-LAST:event_viewReservActionPerformed
 
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        // TODO add your handling code here:
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2060,6 +2083,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JPanel Performance;
+    private javax.swing.JButton Refresh;
     private javax.swing.JPanel Report;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
