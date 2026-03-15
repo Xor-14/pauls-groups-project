@@ -205,9 +205,18 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        BuyerDashboard BuyerDashboard=new BuyerDashboard();
-        BuyerDashboard.setVisible(true);
-        dispose();
+        String email = userName.getText();
+        String password = new String(userPass.getPassword());
+        
+        models.User user = controller.UserManager.getInstance().login(email, password);
+
+        if (user instanceof models.Buyer) {
+            BuyerDashboard dashboard = new BuyerDashboard();
+            dashboard.setVisible(true);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Buyer Credentials!", "Login Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_loginActionPerformed
 
     private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed

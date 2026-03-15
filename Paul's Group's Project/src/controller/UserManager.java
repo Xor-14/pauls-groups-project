@@ -51,11 +51,21 @@ public class UserManager {
 
     public boolean registerBuyer(String firstName, String lastName, String email, String password) {
         for (Buyer b : buyers) {
-            if (b.getEmail().equals(email)) return false; // Email exists
+            if (b.getEmail().equals(email)) return false; 
         }
         int newId = buyers.size() + 1;
         buyers.add(new Buyer(newId, firstName, lastName, email, password));
         CSVDatabase.saveBuyers(buyers);
+        return true;
+    }
+
+    public boolean registerAgent(String firstName, String lastName, String email, String password, int assignedBlock) {
+        for (Agent a : agents) {
+            if (a.getEmail().equals(email)) return false;
+        }
+        int newId = agents.size() + 1;
+        agents.add(new Agent(newId, firstName, lastName, email, password, assignedBlock, 0.0));
+        CSVDatabase.saveAgents(agents);
         return true;
     }
 
