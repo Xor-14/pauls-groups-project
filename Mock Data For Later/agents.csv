@@ -1,2 +1,3 @@
 id,firstName,lastName,email,password,assignedBlock,totalSales
-1,Jane,Smith,agent1@test.com,pass456,1,0.00
+1,Jane,Smith,agent1@test.com,pass123,1,0
+2,Euan,Ridulme,ridulmeega@mymail.mapua.edu.ph,pass123,2,0

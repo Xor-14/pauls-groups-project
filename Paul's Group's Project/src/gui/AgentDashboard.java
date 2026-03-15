@@ -45,6 +45,8 @@ public class AgentDashboard extends javax.swing.JFrame {
         
    /** 
     * Creating Lots Status (Buttons) for future reference
+     * @param btn
+     * @param status
      */ 
    public void setLotStatus(JButton btn, String status){
 
@@ -290,10 +292,82 @@ public class AgentDashboard extends javax.swing.JFrame {
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
- 
-        
+        loadPendingTransactions();
     }
  
+    private void loadPendingTransactions() {
+        // Target the inner JPanel 'reservations' attached to the GridLayout
+        reservations.removeAll(); 
+        
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> pending = controller.EstateManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
+        
+        for (models.SaleTransaction t : pending) {
+            reservations.add(createTransactionCard(t, agent.getId()));
+        }
+        
+        reservations.revalidate();
+        reservations.repaint();
+    }
+
+    private javax.swing.JPanel createTransactionCard(models.SaleTransaction t, int agentId) {
+        javax.swing.JPanel card = new javax.swing.JPanel();
+        card.setBackground(new java.awt.Color(45, 45, 45)); // Dark gray match
+        card.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100), 1, true));
+        card.setLayout(new java.awt.GridLayout(1, 5, 10, 10)); // 1 row, 5 columns
+
+        // 1. Type Label
+        javax.swing.JLabel typeLabel = new javax.swing.JLabel(t.getType() + " Request");
+        typeLabel.setForeground(java.awt.Color.WHITE);
+        typeLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        card.add(typeLabel);
+
+        // 2. Buyer ID / Financing
+        javax.swing.JLabel buyerLabel = new javax.swing.JLabel("<html>Buyer ID: " + t.getBuyerID() + "<br>Financing: " + t.getFinancingType() + "</html>");
+        buyerLabel.setForeground(java.awt.Color.LIGHT_GRAY);
+        card.add(buyerLabel);
+
+        // 3. Location Label
+        models.Lot lot = controller.EstateManager.getInstance().findLotById(t.getLotID());
+        javax.swing.JLabel locLabel = new javax.swing.JLabel("Block " + lot.getBlockID() + " - Lot " + lot.getLotID());
+        locLabel.setForeground(java.awt.Color.WHITE);
+        card.add(locLabel);
+
+        // 4. Amount Label
+        javax.swing.JLabel amtLabel = new javax.swing.JLabel(String.format("PHP %,.2f", t.getAmount()));
+        amtLabel.setForeground(java.awt.Color.WHITE);
+        card.add(amtLabel);
+
+        // 5. Buttons Panel
+        javax.swing.JPanel btnPanel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnPanel.setOpaque(false);
+        
+        javax.swing.JButton approveBtn = new javax.swing.JButton("✓");
+        approveBtn.setBackground(new java.awt.Color(0, 153, 0));
+        approveBtn.setForeground(java.awt.Color.WHITE);
+        
+        javax.swing.JButton rejectBtn = new javax.swing.JButton("X");
+        rejectBtn.setBackground(new java.awt.Color(204, 0, 0));
+        rejectBtn.setForeground(java.awt.Color.WHITE);
+
+        approveBtn.addActionListener(e -> {
+            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
+            loadPendingTransactions();
+        });
+
+        rejectBtn.addActionListener(e -> {
+            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
+            loadPendingTransactions();
+        });
+
+        btnPanel.add(approveBtn);
+        btnPanel.add(rejectBtn);
+        card.add(btnPanel);
+
+        return card;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -720,7 +794,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         lotsView.setBackground(new java.awt.Color(30, 30, 30));
         lotsView.setMinimumSize(new java.awt.Dimension(930, 1058));
         lotsView.setPreferredSize(new java.awt.Dimension(930, 1058));
-        lotsView.setSize(new java.awt.Dimension(930, 1058));
         lotsView.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Block1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -1925,14 +1998,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         MainContentSeller.setSelectedIndex(3);
     }//GEN-LAST:event_genReportActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
-
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -1940,6 +2005,14 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
