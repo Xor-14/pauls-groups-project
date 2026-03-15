@@ -14,10 +14,6 @@ import javax.swing.JOptionPane;
  */
 
 public class LotDetailsDialog extends javax.swing.JDialog {
-
-    /**
-     * Creates new form LotDetailsDialog
-     */
     private Lot currentLot;
 
     public LotDetailsDialog(java.awt.Frame parent, boolean modal, models.Lot lot) {
@@ -45,7 +41,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
 
         updateFinancingTable(); 
         
-        // FIX: Utilize ItemListener for robust dropdown event detection
+        // Utilize ItemListener for robust dropdown event detection
         financingComboBox.addItemListener(e -> {
             if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
                 updateFinancingTable();
@@ -66,34 +62,36 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         });
 
         ActionButton2.addActionListener(e -> {
-        if (currentLot.getStatus().equalsIgnoreCase("Available")) {
-            String financingType = financingComboBox.getSelectedItem().toString();
-            double monthlyAmortization = 0.0;
-            double amountToPay = currentLot.getTcp();
+            if (currentLot.getStatus().equalsIgnoreCase("Available")) {
+                String financingType = financingComboBox.getSelectedItem().toString();
+                double monthlyAmortization = 0.0;
+                double amountToPay = currentLot.getTcp();
 
-            if (financingType.equals("Bank - BDO") || financingType.equals("Bank - RCBC")) {
-                amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
-                monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), 0.065, 20); 
-            } else if (financingType.equals("Bank - BPI")) {
-                amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
-                monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), 0.07, 20); 
-            } else if (financingType.equals("Pag-IBIG Financing")) {
-                amountToPay = controller.FinancialCalculator.getPagIbigNetDP(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), currentLot.getReservationFee());
-                monthlyAmortization = controller.FinancialCalculator.getPagIbigMonthlyAmortization(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), 30); 
-            }
+                if (financingType.equals("Bank - BDO") || financingType.equals("Bank - RCBC")) {
+                    amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
+                    monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), 0.065, 20); 
+                } else if (financingType.equals("Bank - BPI")) {
+                    amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
+                    monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), 0.07, 20); 
+                } else if (financingType.equals("Pag-IBIG Financing")) {
+                    amountToPay = controller.FinancialCalculator.getPagIbigNetDP(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), currentLot.getReservationFee());
+                    monthlyAmortization = controller.FinancialCalculator.getPagIbigMonthlyAmortization(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), 30); 
+                }
 
-            int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
-                String.format("Selected: %s\nInitial Payment: PHP %,.2f\nProceed?", financingType, amountToPay), 
-                "Confirm Purchase Request", javax.swing.JOptionPane.YES_NO_OPTION);
+                int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+                    String.format("Selected: %s\nInitial Payment: PHP %,.2f\nProceed?", financingType, amountToPay), 
+                    "Confirm Purchase Request", javax.swing.JOptionPane.YES_NO_OPTION);
 
-            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-                boolean success = controller.EstateManager.getInstance().requestTransaction(
-                    currentLot.getLotID(), currentUser.getId(), "Purchase", financingType, amountToPay, monthlyAmortization);
-                if(success) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Purchase Request Sent to Agent!");
-                    this.dispose();
+                if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                    boolean success = controller.EstateManager.getInstance().requestTransaction(
+                        currentLot.getLotID(), currentUser.getId(), "Purchase", financingType, amountToPay, monthlyAmortization);
+                    if(success) {
+                        javax.swing.JOptionPane.showMessageDialog(this, "Purchase Request Sent to Agent!");
+                        this.dispose();
                     }
                 }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Lot is not available for purchase.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         });
     }
