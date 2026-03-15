@@ -268,6 +268,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         initComponents();
         imageSlideshow();
         mapButtons();
+        attachButtonListeners();
         
         updateAllLotColors();
         clickedcolor = new Color(0,0,0);
@@ -376,6 +377,35 @@ public class AgentDashboard extends javax.swing.JFrame {
             });
         }
         agentHistoryTable.setModel(model);
+    }
+    
+    private void attachButtonListeners() {
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+        
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
+                int finalB = b;
+                int finalL = l;
+                int lotIndex = (b * 20) + l;
+                
+                if (lotIndex >= allLots.size()) break;
+                
+                models.Lot lot = allLots.get(lotIndex);
+                javax.swing.JButton btn = lotButtons[b][l];
+                
+                // Clear existing listeners to prevent double-clicks
+                for(java.awt.event.ActionListener al : btn.getActionListeners()) btn.removeActionListener(al);
+                
+                btn.addActionListener(e -> {
+                    LotDetailsDialog dialog = new LotDetailsDialog(this, true, lot);
+                    dialog.setLocationRelativeTo(this);
+                    dialog.setVisible(true);
+                    
+                    // Refresh color when dialog closes in case status changed
+                    updateLotColor(finalB, finalL);
+                });
+            }
+        }
     }
 
     /**

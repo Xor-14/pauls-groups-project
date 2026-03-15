@@ -18,77 +18,67 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     /**
      * Creates new form LotDetailsDialog
      */
-    private Lot currentLot; // Add class variable
+    private Lot currentLot;
 
-    public LotDetailsDialog(java.awt.Frame parent, boolean modal, Lot lot) {
+    public LotDetailsDialog(java.awt.Frame parent, boolean modal, models.Lot lot) {
         super(parent, modal);
         this.currentLot = lot;
         initComponents();
         
         jLabel1.setText("LOT DETAILS - " + currentLot.getLotType().toUpperCase());
-        Info1.setText("Block: " + currentLot.getBlockID() + " | Lot ID: " + currentLot.getLotID());
+        Info1.setText(String.format("Block: %d | Lot ID: %d | Lot Area: %.2f sqm | Floor Area: %.2f sqm", 
+                currentLot.getBlockID(), currentLot.getLotID(), currentLot.getLotArea(), currentLot.getFloorArea()));
         Info2.setText("Status: " + currentLot.getStatus());
-        Info3.setText("TCP: PHP " + String.format("%,.2f", currentLot.getTcp()));
+        Info3.setText(String.format("Total Contract Price: PHP %,.2f", currentLot.getTcp()));
         
         models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
-        
-        // Hide UI based on Role
         if (currentUser instanceof models.Agent) {
-            ActionButton1.setVisible(false); // Hide Reserve
-            ActionButton2.setVisible(false); // Hide Buy
-            ActionButton3.setVisible(false); // Hide Sell
+            ActionButton1.setVisible(false); 
+            ActionButton2.setVisible(false); 
+            ActionButton3.setVisible(false); 
         } else {
-            ActionButton3.setVisible(false); // Buyers can't 'Sell'
+            ActionButton3.setVisible(false); 
         }
 
-        // Reserve Action
-        ActionButton1.addActionListener(e -> {
-            if (currentLot.getStatus().equalsIgnoreCase("Available")) {
-                // Reservation has no financing or amortization
-                boolean success = controller.EstateManager.getInstance().requestTransaction(
-                        currentLot.getLotID(), currentUser.getId(), "Reservation", "None", currentLot.getReservationFee(), 0.0);
-                if(success) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Reservation Request Sent!");
-                    this.dispose();
-                }
+        updateFinancingTable(); 
+        
+        // FIX: Utilize ItemListener for robust dropdown event detection
+        financingComboBox.addItemListener(e -> {
+            if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                updateFinancingTable();
             }
         });
 
-        // Buy Action (Triggers PDF Financing Computations)
+        ActionButton1.addActionListener(e -> {
+            if (currentLot.getStatus().equalsIgnoreCase("Available")) {
+                boolean success = controller.EstateManager.getInstance().requestTransaction(
+                        currentLot.getLotID(), currentUser.getId(), "Reservation", "None", currentLot.getReservationFee(), 0.0);
+                if(success) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Reservation Request Sent to Agent!");
+                    this.dispose();
+                }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Lot is not available.");
+            }
+        });
+
         ActionButton2.addActionListener(e -> {
              if (currentLot.getStatus().equalsIgnoreCase("Available")) {
-                String[] options = {"Cash", "Bank Financing", "Pag-IBIG"};
-                int choice = javax.swing.JOptionPane.showOptionDialog(this, "Select Financing Method:", "Purchase", 
-                        javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                
-                if (choice == -1) return; // User closed dialog
-
-                String financingType = options[choice];
+                String financingType = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Cash";
                 double monthlyAmortization = 0.0;
                 double amountToPay = currentLot.getTcp();
 
-                try {
-                    if (choice == 1) { // Bank
-                        String yearsStr = javax.swing.JOptionPane.showInputDialog(this, "Enter Years to Pay (Max 20):");
-                        if (yearsStr == null) return;
-                        int years = Integer.parseInt(yearsStr);
-                        monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), years);
-                        amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
-                    } else if (choice == 2) { // Pag-IBIG
-                        String yearsStr = javax.swing.JOptionPane.showInputDialog(this, "Enter Years to Pay (Max 30):");
-                        if (yearsStr == null) return;
-                        int years = Integer.parseInt(yearsStr);
-                        monthlyAmortization = controller.FinancialCalculator.getPagIbigMonthlyAmortization(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), years);
-                        amountToPay = controller.FinancialCalculator.getPagIbigNetDP(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), currentLot.getReservationFee());
-                    }
-                } catch (Exception ex) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Invalid term entered. " + ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                    return;
+                if (financingType.contains("Bank")) {
+                    amountToPay = controller.FinancialCalculator.getBankNetDP(currentLot.getTcp(), currentLot.getReservationFee());
+                    monthlyAmortization = controller.FinancialCalculator.getBankMonthlyAmortization(currentLot.getTcp(), 20); 
+                } else if (financingType.contains("Pag-IBIG")) {
+                    amountToPay = controller.FinancialCalculator.getPagIbigNetDP(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), currentLot.getReservationFee());
+                    monthlyAmortization = controller.FinancialCalculator.getPagIbigMonthlyAmortization(currentLot.getTcp(), currentLot.getHdmfMaxLoan(), 30); 
                 }
 
                 int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
-                    String.format("Initial Payment (DP/TCP): PHP %,.2f\nMonthly Amortization: PHP %,.2f\nProceed?", amountToPay, monthlyAmortization), 
-                    "Confirm Purchase", javax.swing.JOptionPane.YES_NO_OPTION);
+                    String.format("Selected: %s\nInitial Payment: PHP %,.2f\nProceed?", financingType, amountToPay), 
+                    "Confirm Purchase Request", javax.swing.JOptionPane.YES_NO_OPTION);
 
                 if (confirm == javax.swing.JOptionPane.YES_OPTION) {
                     boolean success = controller.EstateManager.getInstance().requestTransaction(
@@ -98,8 +88,90 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                         this.dispose();
                     }
                 }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Lot is not available.");
             }
         });
+    }
+
+    private void updateFinancingTable() {
+        String selected = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Cash";
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Description", "Amount"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        if (selected.contains("Bank")) {
+            buildBankModel(model);
+        } else if (selected.contains("Pag-IBIG")) {
+            buildPagIbigModel(model);
+        } else {
+            buildCashModel(model);
+        }
+        
+        jTable1.setModel(model);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(250);
+        jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+        
+        // FIX: Force UI repaint on the specific component
+        jTable1.revalidate();
+        jTable1.repaint();
+    }
+
+    // Helper Methods extracted from updateFinancingTable()
+    
+    private void addRow(javax.swing.table.DefaultTableModel model, String description, double amount) {
+        model.addRow(new Object[]{description, String.format("PHP %,.2f", amount)});
+    }
+
+    private void addTextRow(javax.swing.table.DefaultTableModel model, String col1, String col2) {
+        model.addRow(new Object[]{col1, col2});
+    }
+
+    private void buildCashModel(javax.swing.table.DefaultTableModel model) {
+        double tcp = currentLot.getTcp();
+        double rf = currentLot.getReservationFee();
+        addRow(model, "Total Contract Price (TCP)", tcp);
+        addRow(model, "Reservation Fee", rf);
+        addRow(model, "Net Cash Payment", tcp - rf);
+        addTextRow(model, "", "");
+        addTextRow(model, "Select a financing option above", "to view complete breakdowns.");
+    }
+
+    private void buildBankModel(javax.swing.table.DefaultTableModel model) {
+        double tcp = currentLot.getTcp();
+        double rf = currentLot.getReservationFee();
+        addRow(model, "Total Contract Price (TCP)", tcp);
+        addRow(model, "10% Downpayment", controller.FinancialCalculator.getBankGrossDP(tcp));
+        addRow(model, "Less: Reservation Fee", rf);
+        addRow(model, "Net Downpayment", controller.FinancialCalculator.getBankNetDP(tcp, rf));
+        addRow(model, "Loanable Amount", controller.FinancialCalculator.getBankLoanable(tcp));
+        addTextRow(model, "-----------------------------------------", "-------------------------");
+        addTextRow(model, "MONTHLY AMORTIZATION (@ 6.5%)", "");
+        addRow(model, "  - 20 Years", controller.FinancialCalculator.getBankMonthlyAmortization(tcp, 20));
+        addRow(model, "  - 15 Years", controller.FinancialCalculator.getBankMonthlyAmortization(tcp, 15));
+        addRow(model, "  - 10 Years", controller.FinancialCalculator.getBankMonthlyAmortization(tcp, 10));
+        addRow(model, "  - 5 Years", controller.FinancialCalculator.getBankMonthlyAmortization(tcp, 5));
+    }
+
+    private void buildPagIbigModel(javax.swing.table.DefaultTableModel model) {
+        double tcp = currentLot.getTcp();
+        double rf = currentLot.getReservationFee();
+        double hdmf = currentLot.getHdmfMaxLoan();
+        addRow(model, "Total Contract Price (TCP)", tcp);
+        addRow(model, "Loanable Amount (Max)", controller.FinancialCalculator.getPagIbigLoanable(tcp, hdmf));
+        addRow(model, "Gross Equity / Downpayment", controller.FinancialCalculator.getPagIbigGrossDP(tcp, hdmf));
+        addRow(model, "Less: Reservation Fee", rf);
+        addRow(model, "Net Equity", controller.FinancialCalculator.getPagIbigNetDP(tcp, hdmf, rf));
+        addTextRow(model, "-----------------------------------------", "-------------------------");
+        addTextRow(model, "MONTHLY AMORTIZATION (@ 6.38%)", "");
+        addRow(model, "  - 30 Years", controller.FinancialCalculator.getPagIbigMonthlyAmortization(tcp, hdmf, 30));
+        addRow(model, "  - 20 Years", controller.FinancialCalculator.getPagIbigMonthlyAmortization(tcp, hdmf, 20));
+        addRow(model, "  - 10 Years", controller.FinancialCalculator.getPagIbigMonthlyAmortization(tcp, hdmf, 10));
     }
 
     /**
@@ -121,6 +193,8 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ActionButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        financingComboBox = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(30, 30, 30));
@@ -154,7 +228,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ActionButton1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
         ActionButton1.setForeground(new java.awt.Color(255, 255, 255));
         ActionButton1.setText("Reserve");
-        LotDetails.add(ActionButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, -1, -1));
+        LotDetails.add(ActionButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 530, -1, -1));
 
         ActionButton2.setBackground(new java.awt.Color(0, 153, 0));
         ActionButton2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
@@ -165,7 +239,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton2ActionPerformed(evt);
             }
         });
-        LotDetails.add(ActionButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, -1, -1));
+        LotDetails.add(ActionButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 530, -1, -1));
 
         ActionButton3.setBackground(new java.awt.Color(255, 98, 96));
         ActionButton3.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
@@ -176,7 +250,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton3ActionPerformed(evt);
             }
         });
-        LotDetails.add(ActionButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, -1, -1));
+        LotDetails.add(ActionButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 530, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -191,9 +265,22 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 149, 660, 320));
+        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 660, 320));
 
-        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 520));
+        financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spot Cash", "Bank", "Pag-IBIG" }));
+        financingComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                financingComboBoxActionPerformed(evt);
+            }
+        });
+        LotDetails.add(financingComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 130, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Financing:");
+        LotDetails.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+
+        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 580));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -205,6 +292,10 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     private void ActionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ActionButton3ActionPerformed
+
+    private void financingComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_financingComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_financingComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,7 +347,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     private javax.swing.JLabel Info2;
     private javax.swing.JLabel Info3;
     private javax.swing.JPanel LotDetails;
+    private javax.swing.JComboBox<String> financingComboBox;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
