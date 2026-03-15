@@ -81,6 +81,26 @@ public class EstateManager {
         return null;
     }
     
+    public List<SaleTransaction> getBuyerTransactions(int buyerId) {
+        List<SaleTransaction> history = new ArrayList<>();
+        for (SaleTransaction t : transactions) {
+            if (t.getBuyerID() == buyerId) {
+                history.add(t);
+            }
+        }
+        return history;
+    }
+
+    public List<SaleTransaction> getAgentTransactions(int agentId) {
+        List<SaleTransaction> history = new ArrayList<>();
+        for (SaleTransaction t : transactions) {
+            if (t.getAgentID() == agentId) {
+                history.add(t);
+            }
+        }
+        return history;
+    }    
+    
     public boolean requestTransaction(int lotID, int buyerID, String type, String financingType, double amount, double amortization) {
         Lot lot = findLotById(lotID);
         if (lot != null && lot.getStatus().equalsIgnoreCase("Available")) {

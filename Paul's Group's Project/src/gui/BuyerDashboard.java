@@ -244,6 +244,28 @@ public class BuyerDashboard extends javax.swing.JFrame {
         }
     }
     
+    private void loadBuyerHistory() {
+        models.Buyer buyer = (models.Buyer) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getBuyerTransactions(buyer.getId());
+        
+        // Prevent cells from being manually edited by the user
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Type", "Financing", "Amount", "Status"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : history) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), 
+                t.getType(), t.getFinancingType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+            });
+        }
+        buyerHistoryTable.setModel(model);
+    }
+    
     public BuyerDashboard() {
         initComponents();
         imageSlideshow();
@@ -252,6 +274,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         // Backend integration replacements
         attachButtonListeners();
         updateAllLotColors();
+        loadBuyerHistory();
         
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
@@ -432,7 +455,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        ReservationTable = new javax.swing.JTable();
+        buyerHistoryTable = new javax.swing.JTable();
         Computation = new javax.swing.JPanel();
         Title1 = new javax.swing.JLabel();
         computationOverview = new javax.swing.JScrollPane();
@@ -677,7 +700,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         lotsView.setBackground(new java.awt.Color(30, 30, 30));
         lotsView.setMinimumSize(new java.awt.Dimension(930, 1058));
         lotsView.setPreferredSize(new java.awt.Dimension(930, 1058));
-        lotsView.setSize(new java.awt.Dimension(930, 1058));
         lotsView.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Block1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -1439,8 +1461,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Title.setText("MY RESERVATIONS");
         Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 340, 30));
 
-        ReservationTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        ReservationTable.setModel(new javax.swing.table.DefaultTableModel(
+        buyerHistoryTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        buyerHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1451,7 +1473,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 "Name", "Block", "Lot", "Price"
             }
         ));
-        jScrollPane1.setViewportView(ReservationTable);
+        jScrollPane1.setViewportView(buyerHistoryTable);
 
         Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 940, -1));
 
@@ -1895,7 +1917,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
-    private javax.swing.JTable ReservationTable;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
@@ -2003,6 +2024,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel bFilter1;
     private javax.swing.JLabel bgimg;
     private javax.swing.JComboBox<String> blockFilter;
+    private javax.swing.JTable buyerHistoryTable;
     private javax.swing.JPanel computation;
     private javax.swing.JPanel computation1;
     private javax.swing.JPanel computation3;
