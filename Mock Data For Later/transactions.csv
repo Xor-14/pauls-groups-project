@@ -1,1 +1,8 @@
 transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,agentID,status
+1,2026-03-15,Reservation,None,50000.00,0.00,1,1,1,Approved
+2,2026-03-15,Reservation,None,30000.00,0.00,2,1,1,Rejected
+3,2026-03-15,Reservation,None,50000.00,0.00,5,2,1,Approved
+4,2026-03-15,Reservation,None,30000.00,0.00,4,2,1,Rejected
+5,2026-03-15,Purchase,Bank - RCBC,271000.00,20198.30,3,2,1,Approved
+6,2026-03-15,Purchase,Bank - BDO,271000.00,20198.30,22,1,2,Approved
+7,2026-03-15,Purchase,Pag-IBIG Financing,1280000.00,10611.40,23,1,2,Approved
