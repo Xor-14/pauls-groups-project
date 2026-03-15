@@ -52,7 +52,7 @@ public class NewAgentAccountFrame extends javax.swing.JFrame {
         LastName = new javax.swing.JLabel();
         lastName = new javax.swing.JTextField();
         Codename = new javax.swing.JLabel();
-        codeName = new javax.swing.JTextField();
+        agentEmailField = new javax.swing.JTextField();
         Password = new javax.swing.JLabel();
         userPass = new javax.swing.JPasswordField();
         login = new javax.swing.JButton();
@@ -120,18 +120,18 @@ public class NewAgentAccountFrame extends javax.swing.JFrame {
 
         Codename.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Codename.setForeground(new java.awt.Color(255, 255, 255));
-        Codename.setText("Code");
+        Codename.setText("Email");
         LoginForm.add(Codename, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
 
-        codeName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
-        codeName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        codeName.setText("test");
-        codeName.addActionListener(new java.awt.event.ActionListener() {
+        agentEmailField.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
+        agentEmailField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        agentEmailField.setText("email@test.com");
+        agentEmailField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codeNameActionPerformed(evt);
+                agentEmailFieldActionPerformed(evt);
             }
         });
-        LoginForm.add(codeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 320, 40));
+        LoginForm.add(agentEmailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, 320, 40));
 
         Password.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -235,18 +235,30 @@ public class NewAgentAccountFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        AgentAssignment AgentAssignment=new AgentAssignment(this,true);
-        AgentAssignment.setVisible(true);
-        dispose();
+        String fName = firstName.getText();
+        String lName = lastName.getText();
+        String email = agentEmailField.getText(); // Ensure this matches your variable name
+        String password = new String(userPass.getPassword());
+        
+        if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
+        // Pass the captured data directly into the AgentAssignment constructor
+        AgentAssignment assignmentFrame = new AgentAssignment(this, true, fName, lName, email, password);
+        assignmentFrame.setLocationRelativeTo(this);
+        assignmentFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_loginActionPerformed
 
     private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_lastNameActionPerformed
 
-    private void codeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codeNameActionPerformed
+    private void agentEmailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agentEmailFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_codeNameActionPerformed
+    }//GEN-LAST:event_agentEmailFieldActionPerformed
 
     private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
         // TODO add your handling code here:
@@ -307,8 +319,8 @@ public class NewAgentAccountFrame extends javax.swing.JFrame {
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel Password;
     private javax.swing.JLabel Title;
+    private javax.swing.JTextField agentEmailField;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JTextField codeName;
     private javax.swing.JTextField firstName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
