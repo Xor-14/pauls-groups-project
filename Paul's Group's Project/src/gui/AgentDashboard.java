@@ -407,6 +407,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         logOut = new javax.swing.JButton();
         viewReserv = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
+        viewProfile = new javax.swing.JButton();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -562,6 +563,17 @@ public class AgentDashboard extends javax.swing.JFrame {
         Title3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         agentHistoryTable = new javax.swing.JTable();
+        Profile = new javax.swing.JPanel();
+        Title4 = new javax.swing.JLabel();
+        firstName = new javax.swing.JLabel();
+        FirstName = new javax.swing.JTextField();
+        lastName = new javax.swing.JLabel();
+        LastName = new javax.swing.JTextField();
+        Email = new javax.swing.JLabel();
+        email = new javax.swing.JTextField();
+        Password = new javax.swing.JLabel();
+        password = new javax.swing.JTextField();
+        change = new javax.swing.JButton();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -808,7 +820,44 @@ public class AgentDashboard extends javax.swing.JFrame {
                 RefreshActionPerformed(evt);
             }
         });
-        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+
+        viewProfile.setBackground(new java.awt.Color(0, 0, 0));
+        viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewProfile.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfile.setText("   View Profile");
+        viewProfile.setAlignmentY(0.0F);
+        viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewProfile.setBorderPainted(false);
+        viewProfile.setContentAreaFilled(false);
+        viewProfile.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewProfile.setFocusPainted(false);
+        viewProfile.setFocusable(false);
+        viewProfile.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewProfile.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewProfile.setIconTextGap(0);
+        viewProfile.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewProfile.setSelected(true);
+        viewProfile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewProfileMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewProfileMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewProfileMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                viewProfileMousePressed(evt);
+            }
+        });
+        viewProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewProfileActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 280, 40));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1851,6 +1900,90 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         MainContentSeller.addTab("tab2", Transactions);
 
+        Profile.setBackground(new java.awt.Color(30, 30, 30));
+        Profile.setMinimumSize(new java.awt.Dimension(502, 297));
+        Profile.setPreferredSize(new java.awt.Dimension(502, 297));
+        Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title4.setForeground(new java.awt.Color(255, 255, 255));
+        Title4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title4.setText("Account Information");
+        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+
+        firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        firstName.setForeground(new java.awt.Color(255, 255, 255));
+        firstName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        firstName.setText("First Name");
+        Profile.add(firstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 160, 20));
+
+        FirstName.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        FirstName.setForeground(new java.awt.Color(51, 51, 51));
+        FirstName.setText("jTextField1");
+        FirstName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        FirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FirstNameActionPerformed(evt);
+            }
+        });
+        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 20));
+
+        lastName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lastName.setForeground(new java.awt.Color(255, 255, 255));
+        lastName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lastName.setText("Last Name");
+        Profile.add(lastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 160, 20));
+
+        LastName.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        LastName.setForeground(new java.awt.Color(51, 51, 51));
+        LastName.setText("jTextField1");
+        LastName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        LastName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LastNameActionPerformed(evt);
+            }
+        });
+        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 20));
+
+        Email.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        Email.setForeground(new java.awt.Color(255, 255, 255));
+        Email.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Email.setText("Email");
+        Profile.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 160, 20));
+
+        email.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        email.setForeground(new java.awt.Color(51, 51, 51));
+        email.setText("jTextField1");
+        email.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
+        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 20));
+
+        Password.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        Password.setForeground(new java.awt.Color(255, 255, 255));
+        Password.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Password.setText("Password");
+        Profile.add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 160, 20));
+
+        password.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        password.setForeground(new java.awt.Color(51, 51, 51));
+        password.setText("jTextField1");
+        password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
+        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
+
+        change.setText("Update");
+        Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
+
+        MainContentSeller.addTab("tab3", Profile);
+
         getContentPane().add(MainContentSeller, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -2019,6 +2152,46 @@ public class AgentDashboard extends javax.swing.JFrame {
         refreshDashboard();
     }//GEN-LAST:event_RefreshActionPerformed
 
+    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewProfileMouseClicked
+
+    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
+        // TODO add your handling code here:
+        viewProfile.setForeground(entered);
+    }//GEN-LAST:event_viewProfileMouseEntered
+
+    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
+        // TODO add your handling code here:
+        viewProfile.setForeground(normal);
+    }//GEN-LAST:event_viewProfileMouseExited
+
+    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
+        // TODO add your handling code here:
+        viewProfile.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewProfileMousePressed
+
+    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(6);
+    }//GEN-LAST:event_viewProfileActionPerformed
+
+    private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FirstNameActionPerformed
+
+    private void LastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LastNameActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2070,6 +2243,8 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Block5;
     private javax.swing.JPanel Block5Grid;
     private javax.swing.JLabel DashboardLabel;
+    private javax.swing.JLabel Email;
+    private javax.swing.JTextField FirstName;
     private javax.swing.JLabel GroupName;
     private javax.swing.JPanel History;
     private javax.swing.JTextField InfoText29;
@@ -2080,9 +2255,12 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText34;
     private javax.swing.JTextField InfoText35;
     private javax.swing.JTextField InfoText36;
+    private javax.swing.JTextField LastName;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
+    private javax.swing.JLabel Password;
     private javax.swing.JPanel Performance;
+    private javax.swing.JPanel Profile;
     private javax.swing.JButton Refresh;
     private javax.swing.JPanel Report;
     private javax.swing.JPanel Reservations;
@@ -2090,6 +2268,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Title1;
     private javax.swing.JLabel Title2;
     private javax.swing.JLabel Title3;
+    private javax.swing.JLabel Title4;
     private javax.swing.JPanel Transactions;
     private javax.swing.JTable agentHistoryTable;
     private javax.swing.JScrollPane agentPerf;
@@ -2194,6 +2373,9 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
     private javax.swing.JLabel bgimg;
+    private javax.swing.JButton change;
+    private javax.swing.JTextField email;
+    private javax.swing.JLabel firstName;
     private javax.swing.JButton genReport;
     private javax.swing.JLabel info29;
     private javax.swing.JLabel info30;
@@ -2209,9 +2391,11 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lastName;
     private javax.swing.JButton logOut;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
+    private javax.swing.JTextField password;
     private javax.swing.JScrollPane perfOverview;
     private javax.swing.JLabel reportPlaceholder;
     private javax.swing.JScrollPane reservOverview;
@@ -2222,6 +2406,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel reservations;
     private javax.swing.JButton viewLots;
     private javax.swing.JButton viewPerformance;
+    private javax.swing.JButton viewProfile;
     private javax.swing.JButton viewReserv;
     private javax.swing.JButton viewTransactions;
     // End of variables declaration//GEN-END:variables

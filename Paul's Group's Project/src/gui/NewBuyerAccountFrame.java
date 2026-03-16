@@ -91,7 +91,7 @@ public class NewBuyerAccountFrame extends javax.swing.JFrame {
         FirstName.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         FirstName.setForeground(new java.awt.Color(255, 255, 255));
         FirstName.setText("First Name");
-        LoginForm.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, -1));
+        LoginForm.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
 
         firstName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
         firstName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -101,12 +101,12 @@ public class NewBuyerAccountFrame extends javax.swing.JFrame {
                 firstNameActionPerformed(evt);
             }
         });
-        LoginForm.add(firstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 320, 40));
+        LoginForm.add(firstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 320, 40));
 
         LastName.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         LastName.setForeground(new java.awt.Color(255, 255, 255));
         LastName.setText("Last Name");
-        LoginForm.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+        LoginForm.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, -1, -1));
 
         lastName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
         lastName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -116,7 +116,7 @@ public class NewBuyerAccountFrame extends javax.swing.JFrame {
                 lastNameActionPerformed(evt);
             }
         });
-        LoginForm.add(lastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 320, 40));
+        LoginForm.add(lastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 320, 40));
 
         Password.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -138,12 +138,12 @@ public class NewBuyerAccountFrame extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 300, 40));
+        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 300, 40));
 
         noaccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noaccount.setForeground(new java.awt.Color(255, 255, 255));
         noaccount.setText("Already have an account?");
-        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, -1, -1));
+        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
 
         shiftForms.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
         shiftForms.setText("Login");
@@ -159,7 +159,7 @@ public class NewBuyerAccountFrame extends javax.swing.JFrame {
                 shiftFormsActionPerformed(evt);
             }
         });
-        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 450, 80, 20));
+        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 80, 20));
 
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N

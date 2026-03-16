@@ -289,13 +289,18 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         LotDetails.add(Info3, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 121, -1, -1));
 
         ActionButton1.setBackground(new java.awt.Color(0, 78, 122));
-        ActionButton1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        ActionButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ActionButton1.setForeground(new java.awt.Color(255, 255, 255));
         ActionButton1.setText("Reserve");
-        LotDetails.add(ActionButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 590, -1, -1));
+        ActionButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActionButton1ActionPerformed(evt);
+            }
+        });
+        LotDetails.add(ActionButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 680, 120, 35));
 
         ActionButton2.setBackground(new java.awt.Color(0, 153, 0));
-        ActionButton2.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        ActionButton2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ActionButton2.setForeground(new java.awt.Color(255, 255, 255));
         ActionButton2.setText("Buy");
         ActionButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -303,10 +308,10 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton2ActionPerformed(evt);
             }
         });
-        LotDetails.add(ActionButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 590, -1, -1));
+        LotDetails.add(ActionButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 680, 120, 35));
 
         ActionButton3.setBackground(new java.awt.Color(255, 98, 96));
-        ActionButton3.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
+        ActionButton3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         ActionButton3.setForeground(new java.awt.Color(255, 255, 255));
         ActionButton3.setText("Sell");
         ActionButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -314,7 +319,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 ActionButton3ActionPerformed(evt);
             }
         });
-        LotDetails.add(ActionButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 590, -1, -1));
+        LotDetails.add(ActionButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 680, 120, 35));
 
         tableRFO.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -329,20 +334,21 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tableRFO);
 
-        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 660, 110));
+        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 670, 140));
 
+        financingComboBox.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spot Cash", "Bank", "Pag-IBIG" }));
         financingComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 financingComboBoxActionPerformed(evt);
             }
         });
-        LotDetails.add(financingComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 130, -1));
+        LotDetails.add(financingComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 130, -1));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Financing:");
-        LotDetails.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
+        LotDetails.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
         tableLoan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -357,7 +363,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(tableLoan);
 
-        LotDetails.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 660, 110));
+        LotDetails.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 670, 140));
 
         tableLotInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -372,9 +378,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane3.setViewportView(tableLotInfo);
 
-        LotDetails.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 660, 100));
+        LotDetails.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 670, 140));
 
-        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 640));
+        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1450, 740));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -390,6 +396,10 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     private void financingComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_financingComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_financingComboBoxActionPerformed
+
+    private void ActionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ActionButton1ActionPerformed
 
     /**
      * @param args the command line arguments
