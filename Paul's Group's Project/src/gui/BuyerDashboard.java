@@ -321,6 +321,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         transaction = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
+        viewProfile = new javax.swing.JButton();
         MainContentBuyer = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -474,6 +475,17 @@ public class BuyerDashboard extends javax.swing.JFrame {
         info16 = new javax.swing.JLabel();
         InfoText16 = new javax.swing.JTextField();
         Logout = new javax.swing.JPanel();
+        Profile = new javax.swing.JPanel();
+        Title2 = new javax.swing.JLabel();
+        firstName = new javax.swing.JLabel();
+        FirstName = new javax.swing.JTextField();
+        lastName = new javax.swing.JLabel();
+        LastName = new javax.swing.JTextField();
+        Email = new javax.swing.JLabel();
+        email = new javax.swing.JTextField();
+        Password = new javax.swing.JLabel();
+        password = new javax.swing.JTextField();
+        change = new javax.swing.JButton();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -650,6 +662,43 @@ public class BuyerDashboard extends javax.swing.JFrame {
             }
         });
         BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+
+        viewProfile.setBackground(new java.awt.Color(0, 0, 0));
+        viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewProfile.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfile.setText("   View Profile");
+        viewProfile.setAlignmentY(0.0F);
+        viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewProfile.setBorderPainted(false);
+        viewProfile.setContentAreaFilled(false);
+        viewProfile.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewProfile.setFocusPainted(false);
+        viewProfile.setFocusable(false);
+        viewProfile.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewProfile.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewProfile.setIconTextGap(0);
+        viewProfile.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewProfile.setSelected(true);
+        viewProfile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewProfileMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewProfileMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewProfileMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                viewProfileMousePressed(evt);
+            }
+        });
+        viewProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewProfileActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 280, 40));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1637,6 +1686,90 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         MainContentBuyer.addTab("tab4", Logout);
 
+        Profile.setBackground(new java.awt.Color(30, 30, 30));
+        Profile.setMinimumSize(new java.awt.Dimension(502, 297));
+        Profile.setPreferredSize(new java.awt.Dimension(502, 297));
+        Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title2.setForeground(new java.awt.Color(255, 255, 255));
+        Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title2.setText("Account Information");
+        Profile.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+
+        firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        firstName.setForeground(new java.awt.Color(255, 255, 255));
+        firstName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        firstName.setText("First Name");
+        Profile.add(firstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 160, 20));
+
+        FirstName.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        FirstName.setForeground(new java.awt.Color(51, 51, 51));
+        FirstName.setText("jTextField1");
+        FirstName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        FirstName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FirstNameActionPerformed(evt);
+            }
+        });
+        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 20));
+
+        lastName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        lastName.setForeground(new java.awt.Color(255, 255, 255));
+        lastName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lastName.setText("Last Name");
+        Profile.add(lastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 160, 20));
+
+        LastName.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        LastName.setForeground(new java.awt.Color(51, 51, 51));
+        LastName.setText("jTextField1");
+        LastName.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        LastName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LastNameActionPerformed(evt);
+            }
+        });
+        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 20));
+
+        Email.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        Email.setForeground(new java.awt.Color(255, 255, 255));
+        Email.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Email.setText("Email");
+        Profile.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 160, 20));
+
+        email.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        email.setForeground(new java.awt.Color(51, 51, 51));
+        email.setText("jTextField1");
+        email.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        email.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailActionPerformed(evt);
+            }
+        });
+        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 20));
+
+        Password.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        Password.setForeground(new java.awt.Color(255, 255, 255));
+        Password.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Password.setText("Password");
+        Profile.add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 210, 160, 20));
+
+        password.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        password.setForeground(new java.awt.Color(51, 51, 51));
+        password.setText("jTextField1");
+        password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
+        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
+
+        change.setText("Update");
+        Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
+
+        MainContentBuyer.addTab("tab3", Profile);
+
         getContentPane().add(MainContentBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1748,6 +1881,46 @@ public class BuyerDashboard extends javax.swing.JFrame {
         refreshDashboard();
     }//GEN-LAST:event_RefreshActionPerformed
 
+    private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FirstNameActionPerformed
+
+    private void LastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LastNameActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewProfileMouseClicked
+
+    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
+        // TODO add your handling code here:
+        viewProfile.setForeground(entered);
+    }//GEN-LAST:event_viewProfileMouseEntered
+
+    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
+        // TODO add your handling code here:
+        viewProfile.setForeground(normal);
+    }//GEN-LAST:event_viewProfileMouseExited
+
+    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
+        // TODO add your handling code here:
+        viewProfile.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewProfileMousePressed
+
+    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(5);
+    }//GEN-LAST:event_viewProfileActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1798,6 +1971,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel BuyerSideBar;
     private javax.swing.JPanel Computation;
     private javax.swing.JLabel DashboardLabel;
+    private javax.swing.JLabel Email;
+    private javax.swing.JTextField FirstName;
     private javax.swing.JLabel GroupName;
     private javax.swing.JTextField InfoText1;
     private javax.swing.JTextField InfoText10;
@@ -1811,13 +1986,17 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText3;
     private javax.swing.JTextField InfoText4;
     private javax.swing.JTextField InfoText9;
+    private javax.swing.JTextField LastName;
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
+    private javax.swing.JLabel Password;
+    private javax.swing.JPanel Profile;
     private javax.swing.JButton Refresh;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
+    private javax.swing.JLabel Title2;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;
@@ -1920,6 +2099,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l9;
     private javax.swing.JLabel bgimg;
     private javax.swing.JTable buyerHistoryTable;
+    private javax.swing.JButton change;
     private javax.swing.JPanel computation;
     private javax.swing.JPanel computation1;
     private javax.swing.JPanel computation3;
@@ -1928,6 +2108,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel computationTitle;
     private javax.swing.JLabel computationTitle2;
     private javax.swing.JLabel computationTitle3;
+    private javax.swing.JTextField email;
+    private javax.swing.JLabel firstName;
     private javax.swing.JLabel info1;
     private javax.swing.JLabel info10;
     private javax.swing.JLabel info11;
@@ -1941,11 +2123,14 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel info4;
     private javax.swing.JLabel info9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lastName;
     private javax.swing.JButton logOut;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
+    private javax.swing.JTextField password;
     private javax.swing.JButton reqComputation;
     private javax.swing.JButton transaction;
     private javax.swing.JButton viewLots;
+    private javax.swing.JButton viewProfile;
     // End of variables declaration//GEN-END:variables
 }
