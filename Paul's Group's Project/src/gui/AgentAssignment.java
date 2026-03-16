@@ -18,13 +18,31 @@ public class AgentAssignment extends javax.swing.JDialog {
      * Creates new form LotDetailsDialog
      */
     
-    public AgentAssignment(java.awt.Frame parent, boolean modal) {
+    // 1. Add these variables at the top of the class
+    private String fName, lName, email, password;
+
+    // 2. Replace the default constructor with this one
+    public AgentAssignment(java.awt.Frame parent, boolean modal, String fName, String lName, String email, String password) {
         super(parent, modal);
+        this.fName = fName;
+        this.lName = lName;
+        this.email = email;
+        this.password = password;
         initComponents();
-        clickedcolor = new Color(0,0,0);
-        entered = new Color(110, 110, 110);
-        normal = new Color(255,255,255);
- 
+    }
+    
+    private void registerWithBlock(int blockNumber) {
+        boolean success = controller.UserManager.getInstance().registerAgent(fName, lName, email, password, blockNumber);
+        
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Account Created! You are assigned to Block " + blockNumber);
+            new AgentLoginFrame().setVisible(true);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Email already exists!", "Registration Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            new NewAgentAccountFrame().setVisible(true);
+            this.dispose();
+        }
     }
 
     /**
@@ -133,83 +151,32 @@ public class AgentAssignment extends javax.swing.JDialog {
 
     private void block1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block1ActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
-        dispose();
+        registerWithBlock(1);
     }//GEN-LAST:event_block1ActionPerformed
 
     private void block2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block2ActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
-        dispose();
+        registerWithBlock(2);
     }//GEN-LAST:event_block2ActionPerformed
 
     private void block3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block3ActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
-        dispose();
+        registerWithBlock(3);
     }//GEN-LAST:event_block3ActionPerformed
 
     private void block4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block4ActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
-        dispose();
+        registerWithBlock(4);
     }//GEN-LAST:event_block4ActionPerformed
 
     private void block5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block5ActionPerformed
         // TODO add your handling code here:
-        AgentDashboard AgentDashboard=new AgentDashboard();
-        AgentDashboard.setVisible(true);
-        dispose();
+        registerWithBlock(5);
     }//GEN-LAST:event_block5ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AgentAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AgentAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AgentAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AgentAssignment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                AgentAssignment dialog = new AgentAssignment(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AgentAssignment;

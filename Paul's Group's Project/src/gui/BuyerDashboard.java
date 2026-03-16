@@ -13,6 +13,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import controller.EstateManager;
+import models.Lot;
+import java.util.List;
+
 /**
  *
  * @author xor
@@ -24,9 +28,9 @@ public class BuyerDashboard extends javax.swing.JFrame {
      */ 
     private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
     private int imageIndex = 0;
+    private LotFilterPanel customFilterPanel;
     
-    
-   private void imageSlideshow() {
+    private void imageSlideshow() {
 
     Timer timer = new Timer(8000, e -> {
         imageIndex = (imageIndex + 1) % imgslides.length;
@@ -35,7 +39,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
             new ImageIcon(getClass().getResource(imgslides[imageIndex])));
     });
     timer.start();
-}
+    }
    /** 
     * Colors
      */ 
@@ -184,117 +188,121 @@ public class BuyerDashboard extends javax.swing.JFrame {
     lotButtons[4][19] = b5_l20;
 
 }
-    
-    String[][] lotStatus = new String[5][20];
-    String[][] lotType = new String[5][20];
-    double[][] lotPrice = new double[5][20];
-    
-    private void initializeLots(){
-
-    for(int b=0;b<5;b++){
-        for(int l=0;l<20;l++){
-
-            lotStatus[b][l] = "Vacant";
-            lotType[b][l] = "Standard Lot";
-            lotPrice[b][l] = 500000 + (l*10000);
-
+    private void updateAllLotColors() {
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
+                updateLotColor(b, l);
+            }
         }
     }
-
-}
-    public void updateLotColor(int b,int l){
-
-    JButton btn = lotButtons[b][l];
-
-    btn.setOpaque(true);
-
-    if(lotStatus[b][l].equals("Vacant"))
-        btn.setBackground(vacant);
-
-    if(lotStatus[b][l].equals("Reserved"))
-        btn.setBackground(reserved);
-
-    if(lotStatus[b][l].equals("Occupied"))
-        btn.setBackground(occupied);
     
-    btn.setOpaque(true);
-    btn.setContentAreaFilled(true);
-    btn.setBorderPainted(false);
-}
-    private void updateAllLotColors(){
+    public void updateLotColor(int b, int l){
+        JButton btn = lotButtons[b][l];
+        int lotIndex = (b * 20) + l;
+        Lot lot = EstateManager.getInstance().getAllLots().get(lotIndex);
 
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
+        btn.setOpaque(true);
 
-            updateLotColor(b,l);
-
+        String status = lot.getStatus();
+        if(status.equalsIgnoreCase("Available")) {
+            btn.setBackground(vacant);
+        } else if(status.equalsIgnoreCase("Reserved")) {
+            btn.setBackground(reserved);
+        } else {
+            btn.setBackground(occupied);
         }
+        
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(false);
     }
-
-}
-    public void applyFilters(){
-
-    String status = statusFilter.getSelectedItem().toString();
-    String type = lotFilter.getSelectedItem().toString();
-    String price = priceFilter.getSelectedItem().toString();
-    String block = blockFilter.getSelectedItem().toString();
-
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
-
-            boolean show = true;
-
-            // STATUS FILTER
-            if(!status.equals("All") && !lotStatus[b][l].equals(status)){
-                show = false;
+    
+    public void applyFilters() {
+    java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+    for (int b = 0; b < 5; b++) {
+        for (int l = 0; l < 20; l++) {
+            int lotIndex = (b * 20) + l;
+            if (lotIndex < allLots.size()) 
+                {
+                    lotButtons[b][l].setVisible(customFilterPanel.evaluateLot(allLots.get(lotIndex)));
+                }
             }
-
-            // TYPE FILTER
-            if(!type.equals("All") && !lotType[b][l].equals(type)){
-                show = false;
-            }
-
-            // PRICE FILTER
-            if(price.equals("Max 500000") && lotPrice[b][l] > 500000){
-                show = false;
-            }
-
-            if(price.equals("Max 750000") && lotPrice[b][l] > 750000){
-                show = false;
-            }
-
-            if(price.equals("Max 1000000") && lotPrice[b][l] > 1000000){
-                show = false;
-            }
-
-            // BLOCK FILTER
-            if(!block.equals("All") && !block.equals("Block " + (b+1))){
-                show = false;
-            }
-
-            lotButtons[b][l].setVisible(show);
-
+        }   
+    }
+    
+    private void loadBuyerHistory() {
+        models.Buyer buyer = (models.Buyer) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getBuyerTransactions(buyer.getId());
+        
+        // Prevent cells from being manually edited by the user
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Type", "Financing", "Amount", "Status"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : history) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), 
+                t.getType(), t.getFinancingType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+            });
         }
+        buyerHistoryTable.setModel(model);
     }
-
-}
-
+    
     public BuyerDashboard() {
         initComponents();
+        customFilterPanel = new LotFilterPanel(this::applyFilters);
+        Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
         imageSlideshow();
         mapButtons();
-        initializeLots();
-        lotStatus[1][5]="Reserved";
-        lotStatus[2][4]="Vacant";
-        lotStatus[0][1]="Occupied";
+        
+        // Backend integration replacements
+        attachButtonListeners();
         updateAllLotColors();
+        loadBuyerHistory();
+        
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
- 
+    }
+    
+    private void attachButtonListeners() {
+        List<Lot> allLots = EstateManager.getInstance().getAllLots();
         
+        for(int b = 0; b < 5; b++) {
+            for(int l = 0; l < 20; l++) {
+                // Calculate the 1D list index (0-99) from the 2D grid coordinates
+                int lotIndex = (b * 20) + l;
+                if (lotIndex >= allLots.size()) break; // Safety check
+                
+                Lot lot = allLots.get(lotIndex);
+                JButton btn = lotButtons[b][l];
+                
+                int finalB = b;
+                int finalL = l;
+                
+                // Attach click event
+                btn.addActionListener(e -> {
+                    // Pass the specific Lot object to the dialog
+                    LotDetailsDialog dialog = new LotDetailsDialog(this, true, lot);
+                    dialog.setLocationRelativeTo(this);
+                    dialog.setVisible(true);
+                    
+                    // Refresh color when dialog closes in case user reserved it
+                    updateLotColor(finalB, finalL);
+                });
+            }
+        }
     }
  
+    private void refreshDashboard() {
+        controller.EstateManager.getInstance().refreshData();
+        updateAllLotColors();
+        applyFilters();
+        loadBuyerHistory();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -312,6 +320,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         reqComputation = new javax.swing.JButton();
         transaction = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
         MainContentBuyer = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -426,21 +435,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
-        filteringPanel = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
-        sFilter = new javax.swing.JLabel();
-        statusFilter = new javax.swing.JComboBox<>();
-        bFilter1 = new javax.swing.JLabel();
-        blockFilter = new javax.swing.JComboBox<>();
-        lFilter = new javax.swing.JLabel();
-        lotFilter = new javax.swing.JComboBox<>();
-        pFilter = new javax.swing.JLabel();
-        priceFilter = new javax.swing.JComboBox<>();
-        applyFilter = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        ReservationTable = new javax.swing.JTable();
+        buyerHistoryTable = new javax.swing.JTable();
         Computation = new javax.swing.JPanel();
         Title1 = new javax.swing.JLabel();
         computationOverview = new javax.swing.JScrollPane();
@@ -501,7 +499,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 30));
+        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -645,6 +643,14 @@ public class BuyerDashboard extends javax.swing.JFrame {
         });
         BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 40));
 
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
         Lots.setBackground(new java.awt.Color(30, 30, 30));
@@ -685,7 +691,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         lotsView.setBackground(new java.awt.Color(30, 30, 30));
         lotsView.setMinimumSize(new java.awt.Dimension(930, 1058));
         lotsView.setPreferredSize(new java.awt.Dimension(930, 1058));
-        lotsView.setSize(new java.awt.Dimension(930, 1058));
         lotsView.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Block1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -1357,85 +1362,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         Lots.add(lotsOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1000, 590));
 
-        filteringPanel.setBackground(new java.awt.Color(30, 30, 30));
-        filteringPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        title.setText("Filters:");
-        filteringPanel.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 30));
-
-        sFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        sFilter.setForeground(new java.awt.Color(255, 255, 255));
-        sFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        sFilter.setText("Status:");
-        filteringPanel.add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 60, 30));
-
-        statusFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        statusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Vacant", "Reserved", "Occupied" }));
-        statusFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 60, 90, -1));
-
-        bFilter1.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        bFilter1.setForeground(new java.awt.Color(255, 255, 255));
-        bFilter1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        bFilter1.setText("Block:");
-        filteringPanel.add(bFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 60, 60, 30));
-
-        blockFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        blockFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Block 1", "Block 2", "Block 3", "Block 4", "Block 5" }));
-        blockFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blockFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 60, -1, -1));
-
-        lFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        lFilter.setForeground(new java.awt.Color(255, 255, 255));
-        lFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lFilter.setText("Lot Size:");
-        filteringPanel.add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
-
-        lotFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Standard Lot (~400–500 sqm)", "Premium Lot (~500–650 sqm)", "Corner Lot (~650+ sqm)" }));
-        lotFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lotFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 60, -1, -1));
-
-        pFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        pFilter.setForeground(new java.awt.Color(255, 255, 255));
-        pFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pFilter.setText("Max Price:");
-        filteringPanel.add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
-
-        priceFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 500000", "Max 750000", "Max 1000000" }));
-        priceFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
-
-        applyFilter.setText("Apply Filter");
-        applyFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applyFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(applyFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 100, -1, -1));
-
-        Lots.add(filteringPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 130));
-
         MainContentBuyer.addTab("tab1", Lots);
 
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
@@ -1447,8 +1373,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Title.setText("MY RESERVATIONS");
         Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 340, 30));
 
-        ReservationTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        ReservationTable.setModel(new javax.swing.table.DefaultTableModel(
+        buyerHistoryTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        buyerHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1459,7 +1385,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 "Name", "Block", "Lot", "Price"
             }
         ));
-        jScrollPane1.setViewportView(ReservationTable);
+        jScrollPane1.setViewportView(buyerHistoryTable);
 
         Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 940, -1));
 
@@ -1723,6 +1649,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
         // TODO add your handling code here:
         MainContentBuyer.setSelectedIndex(0);
+        refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
     private void reqComputationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqComputationActionPerformed
@@ -1816,26 +1743,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
         logOut.setForeground(normal);
     }//GEN-LAST:event_logOutMouseExited
 
-    private void statusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFilterActionPerformed
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_statusFilterActionPerformed
-
-    private void blockFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_blockFilterActionPerformed
-
-    private void lotFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lotFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lotFilterActionPerformed
-
-    private void priceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_priceFilterActionPerformed
-
-    private void applyFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyFilterActionPerformed
-        // TODO add your handling code here:
-        applyFilters();
-    }//GEN-LAST:event_applyFilterActionPerformed
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1903,11 +1814,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
-    private javax.swing.JTable ReservationTable;
+    private javax.swing.JButton Refresh;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
-    private javax.swing.JButton applyFilter;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;
@@ -2008,9 +1918,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l7;
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
-    private javax.swing.JLabel bFilter1;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JComboBox<String> blockFilter;
+    private javax.swing.JTable buyerHistoryTable;
     private javax.swing.JPanel computation;
     private javax.swing.JPanel computation1;
     private javax.swing.JPanel computation3;
@@ -2019,7 +1928,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel computationTitle;
     private javax.swing.JLabel computationTitle2;
     private javax.swing.JLabel computationTitle3;
-    private javax.swing.JPanel filteringPanel;
     private javax.swing.JLabel info1;
     private javax.swing.JLabel info10;
     private javax.swing.JLabel info11;
@@ -2033,17 +1941,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel info4;
     private javax.swing.JLabel info9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lFilter;
     private javax.swing.JButton logOut;
-    private javax.swing.JComboBox<String> lotFilter;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
-    private javax.swing.JLabel pFilter;
-    private javax.swing.JComboBox<String> priceFilter;
     private javax.swing.JButton reqComputation;
-    private javax.swing.JLabel sFilter;
-    private javax.swing.JComboBox<String> statusFilter;
-    private javax.swing.JLabel title;
     private javax.swing.JButton transaction;
     private javax.swing.JButton viewLots;
     // End of variables declaration//GEN-END:variables

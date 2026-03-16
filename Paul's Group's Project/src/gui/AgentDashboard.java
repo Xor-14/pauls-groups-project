@@ -24,6 +24,7 @@ public class AgentDashboard extends javax.swing.JFrame {
      */ 
     private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
     private int imageIndex = 0;
+    private LotFilterPanel customFilterPanel;
     
    private void imageSlideshow() {
 
@@ -45,6 +46,8 @@ public class AgentDashboard extends javax.swing.JFrame {
         
    /** 
     * Creating Lots Status (Buttons) for future reference
+     * @param btn
+     * @param status
      */ 
    public void setLotStatus(JButton btn, String status){
 
@@ -183,43 +186,30 @@ public class AgentDashboard extends javax.swing.JFrame {
     lotButtons[4][19] = b5_l20;
 
 }
-    
-    String[][] lotStatus = new String[5][20];
-    String[][] lotType = new String[5][20];
-    double[][] lotPrice = new double[5][20];
-    
-    private void initializeLots(){
 
-    for(int b=0;b<5;b++){
-        for(int l=0;l<20;l++){
+    public void updateLotColor(int b, int l) {
+        javax.swing.JButton btn = lotButtons[b][l];
+        int lotIndex = (b * 20) + l;
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
 
-            lotStatus[b][l] = "Vacant";
-            lotType[b][l] = "Standard Lot";
-            lotPrice[b][l] = 500000 + (l*10000);
+        if (lotIndex >= allLots.size()) return;
 
+        models.Lot lot = allLots.get(lotIndex);
+        btn.setOpaque(true);
+
+        String status = lot.getStatus();
+        if (status.equalsIgnoreCase("Available")) {
+            btn.setBackground(vacant); // Green
+        } else if (status.equalsIgnoreCase("Reserved") || status.toLowerCase().contains("pending")) {
+            btn.setBackground(reserved); // Blue
+        } else {
+            btn.setBackground(occupied); // Red
         }
+        
+        btn.setContentAreaFilled(true);
+        btn.setBorderPainted(false);
     }
-
-}
-    public void updateLotColor(int b,int l){
-
-    JButton btn = lotButtons[b][l];
-
-    btn.setOpaque(true);
-
-    if(lotStatus[b][l].equals("Vacant"))
-        btn.setBackground(vacant);
-
-    if(lotStatus[b][l].equals("Reserved"))
-        btn.setBackground(reserved);
-
-    if(lotStatus[b][l].equals("Occupied"))
-        btn.setBackground(occupied);
     
-    btn.setOpaque(true);
-    btn.setContentAreaFilled(true);
-    btn.setBorderPainted(false);
-}
     private void updateAllLotColors(){
 
     for(int b = 0; b < 5; b++){
@@ -227,73 +217,176 @@ public class AgentDashboard extends javax.swing.JFrame {
 
             updateLotColor(b,l);
 
+            }
         }
     }
-
-}
-    public void applyFilters(){
-
-    String status = statusFilter.getSelectedItem().toString();
-    String type = lotFilter.getSelectedItem().toString();
-    String price = priceFilter.getSelectedItem().toString();
-    String block = blockFilter.getSelectedItem().toString();
-
-    for(int b = 0; b < 5; b++){
-        for(int l = 0; l < 20; l++){
-
-            boolean show = true;
-
-            // STATUS FILTER
-            if(!status.equals("All") && !lotStatus[b][l].equals(status)){
-                show = false;
-            }
-
-            // TYPE FILTER
-            if(!type.equals("All") && !lotType[b][l].equals(type)){
-                show = false;
-            }
-
-            // PRICE FILTER
-            if(price.equals("Max 500000") && lotPrice[b][l] > 500000){
-                show = false;
-            }
-
-            if(price.equals("Max 750000") && lotPrice[b][l] > 750000){
-                show = false;
-            }
-
-            if(price.equals("Max 1000000") && lotPrice[b][l] > 1000000){
-                show = false;
-            }
-
-            // BLOCK FILTER
-            if(!block.equals("All") && !block.equals("Block " + (b+1))){
-                show = false;
-            }
-
-            lotButtons[b][l].setVisible(show);
-
-        }
-    }
-
-}
 
     public AgentDashboard() {
         initComponents();
+        customFilterPanel = new LotFilterPanel(this::applyFilters);
+        Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
         imageSlideshow();
         mapButtons();
-        initializeLots();
-        lotStatus[1][5]="Reserved";
-        lotStatus[2][4]="Vacant";
-        lotStatus[0][1]="Occupied";
+        attachButtonListeners();
+        
         updateAllLotColors();
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
- 
-        
+        loadPendingTransactions();
+        loadAgentHistory();
+    }
+    
+    public void applyFilters() {
+    java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+    for (int b = 0; b < 5; b++) {
+        for (int l = 0; l < 20; l++) {
+            int lotIndex = (b * 20) + l;
+            if (lotIndex < allLots.size()) 
+                {
+                    lotButtons[b][l].setVisible(customFilterPanel.evaluateLot(allLots.get(lotIndex)));
+                }
+            }
+        }   
     }
  
+    private void loadPendingTransactions() {
+        reservations.removeAll(); 
+        
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> pending = controller.EstateManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
+        
+        for (models.SaleTransaction t : pending) {
+            reservations.add(createTransactionCard(t, agent.getId()));
+        }
+        
+        reservations.revalidate();
+        reservations.repaint();
+        // Hard refresh on the parent viewport to ensure the scroll pane updates
+        if(reservations.getParent() != null) {
+            reservations.getParent().revalidate();
+            reservations.getParent().repaint();
+        }
+    }
+
+    private javax.swing.JPanel createTransactionCard(models.SaleTransaction t, int agentId) {
+        javax.swing.JPanel card = new javax.swing.JPanel();
+        card.setBackground(new java.awt.Color(45, 45, 45)); // Dark gray match
+        card.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100), 1, true));
+        card.setLayout(new java.awt.GridLayout(1, 5, 10, 10)); // 1 row, 5 columns
+
+        // 1. Type Label
+        javax.swing.JLabel typeLabel = new javax.swing.JLabel(t.getType() + " Request");
+        typeLabel.setForeground(java.awt.Color.WHITE);
+        typeLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        card.add(typeLabel);
+
+        // 2. Buyer ID / Financing
+        javax.swing.JLabel buyerLabel = new javax.swing.JLabel("<html>Buyer ID: " + t.getBuyerID() + "<br>Financing: " + t.getFinancingType() + "</html>");
+        buyerLabel.setForeground(java.awt.Color.LIGHT_GRAY);
+        card.add(buyerLabel);
+
+        // 3. Location Label
+        models.Lot lot = controller.EstateManager.getInstance().findLotById(t.getLotID());
+        javax.swing.JLabel locLabel = new javax.swing.JLabel("Block " + lot.getBlockID() + " - Lot " + lot.getLotID());
+        locLabel.setForeground(java.awt.Color.WHITE);
+        card.add(locLabel);
+
+        // 4. Amount Label
+        javax.swing.JLabel amtLabel = new javax.swing.JLabel(String.format("PHP %,.2f", t.getAmount()));
+        amtLabel.setForeground(java.awt.Color.WHITE);
+        card.add(amtLabel);
+
+        // 5. Buttons Panel
+        javax.swing.JPanel btnPanel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnPanel.setOpaque(false);
+        
+        javax.swing.JButton approveBtn = new javax.swing.JButton("✓");
+        approveBtn.setBackground(new java.awt.Color(0, 153, 0));
+        approveBtn.setForeground(java.awt.Color.WHITE);
+        
+        javax.swing.JButton rejectBtn = new javax.swing.JButton("X");
+        rejectBtn.setBackground(new java.awt.Color(204, 0, 0));
+        rejectBtn.setForeground(java.awt.Color.WHITE);
+
+        approveBtn.addActionListener(e -> {
+            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
+            loadPendingTransactions();
+            loadAgentHistory();
+        });
+
+        rejectBtn.addActionListener(e -> {
+            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
+            loadPendingTransactions();
+            loadAgentHistory();
+        });
+
+        btnPanel.add(approveBtn);
+        btnPanel.add(rejectBtn);
+        card.add(btnPanel);
+
+        return card;
+    }
+    
+    private void loadAgentHistory() {
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Buyer ID", "Type", "Amount", "Status"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : history) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getBuyerID(),
+                t.getType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+            });
+        }
+        agentHistoryTable.setModel(model);
+    }
+    
+    private void attachButtonListeners() {
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+        
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
+                int finalB = b;
+                int finalL = l;
+                int lotIndex = (b * 20) + l;
+                
+                if (lotIndex >= allLots.size()) break;
+                
+                models.Lot lot = allLots.get(lotIndex);
+                javax.swing.JButton btn = lotButtons[b][l];
+                
+                // Clear existing listeners to prevent double-clicks
+                for(java.awt.event.ActionListener al : btn.getActionListeners()) btn.removeActionListener(al);
+                
+                btn.addActionListener(e -> {
+                    LotDetailsDialog dialog = new LotDetailsDialog(this, true, lot);
+                    dialog.setLocationRelativeTo(this);
+                    dialog.setVisible(true);
+                    
+                    // Refresh color when dialog closes in case status changed
+                    updateLotColor(finalB, finalL);
+                });
+            }
+        }
+    }
+    
+    private void refreshDashboard() {
+        controller.EstateManager.getInstance().refreshData();
+        updateAllLotColors();
+        applyFilters();
+        loadPendingTransactions();
+        loadAgentHistory();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -308,10 +401,12 @@ public class AgentDashboard extends javax.swing.JFrame {
         DashboardLabel = new javax.swing.JLabel();
         GroupName = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
-        viewReserv = new javax.swing.JButton();
+        viewTransactions = new javax.swing.JButton();
         viewPerformance = new javax.swing.JButton();
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
+        viewReserv = new javax.swing.JButton();
+        Refresh = new javax.swing.JButton();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -426,17 +521,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
-        filteringPanel = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
-        sFilter = new javax.swing.JLabel();
-        statusFilter = new javax.swing.JComboBox<>();
-        bFilter1 = new javax.swing.JLabel();
-        blockFilter = new javax.swing.JComboBox<>();
-        lFilter = new javax.swing.JLabel();
-        lotFilter = new javax.swing.JComboBox<>();
-        pFilter = new javax.swing.JLabel();
-        priceFilter = new javax.swing.JComboBox<>();
-        applyFilter = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         reservOverview = new javax.swing.JScrollPane();
@@ -474,6 +558,10 @@ public class AgentDashboard extends javax.swing.JFrame {
         Report = new javax.swing.JPanel();
         Title2 = new javax.swing.JLabel();
         reportPlaceholder = new javax.swing.JLabel();
+        Transactions = new javax.swing.JPanel();
+        Title3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        agentHistoryTable = new javax.swing.JTable();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -499,7 +587,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 30));
+        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -538,39 +626,39 @@ public class AgentDashboard extends javax.swing.JFrame {
         });
         AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 340, 40));
 
-        viewReserv.setBackground(new java.awt.Color(0, 0, 0));
-        viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewReserv.setForeground(new java.awt.Color(255, 255, 255));
-        viewReserv.setText("   Reservations");
-        viewReserv.setAlignmentY(0.0F);
-        viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewReserv.setBorderPainted(false);
-        viewReserv.setContentAreaFilled(false);
-        viewReserv.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewReserv.setFocusPainted(false);
-        viewReserv.setFocusable(false);
-        viewReserv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewReserv.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewReserv.setIconTextGap(0);
-        viewReserv.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewReserv.setSelected(true);
-        viewReserv.addMouseListener(new java.awt.event.MouseAdapter() {
+        viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
+        viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
+        viewTransactions.setText("Transactions");
+        viewTransactions.setAlignmentY(0.0F);
+        viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewTransactions.setBorderPainted(false);
+        viewTransactions.setContentAreaFilled(false);
+        viewTransactions.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewTransactions.setFocusPainted(false);
+        viewTransactions.setFocusable(false);
+        viewTransactions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setIconTextGap(0);
+        viewTransactions.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewTransactions.setSelected(true);
+        viewTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewReservMouseClicked(evt);
+                viewTransactionsMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewReservMouseEntered(evt);
+                viewTransactionsMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewReservMouseExited(evt);
+                viewTransactionsMouseExited(evt);
             }
         });
-        viewReserv.addActionListener(new java.awt.event.ActionListener() {
+        viewTransactions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewReservActionPerformed(evt);
+                viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 340, 40));
 
         viewPerformance.setBackground(new java.awt.Color(0, 0, 0));
         viewPerformance.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -607,7 +695,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewPerformanceActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 340, 40));
+        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 340, 40));
 
         genReport.setBackground(new java.awt.Color(0, 0, 0));
         genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -644,7 +732,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 340, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 340, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -678,7 +766,49 @@ public class AgentDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 340, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 340, 40));
+
+        viewReserv.setBackground(new java.awt.Color(0, 0, 0));
+        viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewReserv.setForeground(new java.awt.Color(255, 255, 255));
+        viewReserv.setText("   Reservations");
+        viewReserv.setAlignmentY(0.0F);
+        viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewReserv.setBorderPainted(false);
+        viewReserv.setContentAreaFilled(false);
+        viewReserv.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewReserv.setFocusPainted(false);
+        viewReserv.setFocusable(false);
+        viewReserv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewReserv.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewReserv.setIconTextGap(0);
+        viewReserv.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewReserv.setSelected(true);
+        viewReserv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewReservMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewReservMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewReservMouseExited(evt);
+            }
+        });
+        viewReserv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReservActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -720,7 +850,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         lotsView.setBackground(new java.awt.Color(30, 30, 30));
         lotsView.setMinimumSize(new java.awt.Dimension(930, 1058));
         lotsView.setPreferredSize(new java.awt.Dimension(930, 1058));
-        lotsView.setSize(new java.awt.Dimension(930, 1058));
         lotsView.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Block1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -1392,85 +1521,6 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         Lots.add(lotsOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1000, 590));
 
-        filteringPanel.setBackground(new java.awt.Color(30, 30, 30));
-        filteringPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        title.setText("Filters:");
-        filteringPanel.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 30));
-
-        sFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        sFilter.setForeground(new java.awt.Color(255, 255, 255));
-        sFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        sFilter.setText("Status:");
-        filteringPanel.add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 60, 30));
-
-        statusFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        statusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Vacant", "Reserved", "Occupied" }));
-        statusFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                statusFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 60, 90, -1));
-
-        bFilter1.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        bFilter1.setForeground(new java.awt.Color(255, 255, 255));
-        bFilter1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        bFilter1.setText("Block:");
-        filteringPanel.add(bFilter1, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 60, 60, 30));
-
-        blockFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        blockFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Block 1", "Block 2", "Block 3", "Block 4", "Block 5" }));
-        blockFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                blockFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 60, -1, -1));
-
-        lFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        lFilter.setForeground(new java.awt.Color(255, 255, 255));
-        lFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lFilter.setText("Lot Size:");
-        filteringPanel.add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
-
-        lotFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        lotFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Standard Lot (~400–500 sqm)", "Premium Lot (~500–650 sqm)", "Corner Lot (~650+ sqm)" }));
-        lotFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lotFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 60, -1, -1));
-
-        pFilter.setFont(new java.awt.Font("New Peninim MT", 1, 18)); // NOI18N
-        pFilter.setForeground(new java.awt.Color(255, 255, 255));
-        pFilter.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pFilter.setText("Max Price:");
-        filteringPanel.add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
-
-        priceFilter.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        priceFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Max 500000", "Max 750000", "Max 1000000" }));
-        priceFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                priceFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
-
-        applyFilter.setText("Apply Filter");
-        applyFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                applyFilterActionPerformed(evt);
-            }
-        });
-        filteringPanel.add(applyFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 100, -1, -1));
-
-        Lots.add(filteringPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 130));
-
         MainContentSeller.addTab("tab1", Lots);
 
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
@@ -1775,6 +1825,32 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         MainContentSeller.addTab("tab4", Report);
 
+        Transactions.setBackground(new java.awt.Color(30, 30, 30));
+        Transactions.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title3.setForeground(new java.awt.Color(255, 255, 255));
+        Title3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title3.setText("Transaction History");
+        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+
+        agentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(agentHistoryTable);
+
+        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+
+        MainContentSeller.addTab("tab2", Transactions);
+
         getContentPane().add(MainContentSeller, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1787,6 +1863,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
         // TODO add your handling code here:
         MainContentSeller.setSelectedIndex(0);
+        refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
     private void viewPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPerformanceActionPerformed
@@ -1794,10 +1871,10 @@ public class AgentDashboard extends javax.swing.JFrame {
         MainContentSeller.setSelectedIndex(2);
     }//GEN-LAST:event_viewPerformanceActionPerformed
 
-    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+    private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(1);
-    }//GEN-LAST:event_viewReservActionPerformed
+        MainContentSeller.setSelectedIndex(4);
+    }//GEN-LAST:event_viewTransactionsActionPerformed
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         // TODO add your handling code here:
@@ -1850,20 +1927,20 @@ public class AgentDashboard extends javax.swing.JFrame {
         viewPerformance.setForeground(clickedcolor);
     }//GEN-LAST:event_viewPerformanceMouseClicked
 
-    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+    private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
         // TODO add your handling code here:
-        viewReserv.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewReservMouseClicked
+        viewTransactions.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewTransactionsMouseClicked
 
-    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+    private void viewTransactionsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseEntered
         // TODO add your handling code here:
-        viewReserv.setForeground(entered);
-    }//GEN-LAST:event_viewReservMouseEntered
+        viewTransactions.setForeground(entered);
+    }//GEN-LAST:event_viewTransactionsMouseEntered
 
-    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+    private void viewTransactionsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseExited
         // TODO add your handling code here:
-        viewReserv.setForeground(normal);
-    }//GEN-LAST:event_viewReservMouseExited
+        viewTransactions.setForeground(normal);
+    }//GEN-LAST:event_viewTransactionsMouseExited
 
     private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
         // TODO add your handling code here:
@@ -1879,27 +1956,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         logOut.setForeground(normal);
     }//GEN-LAST:event_logOutMouseExited
-
-    private void statusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_statusFilterActionPerformed
-
-    private void blockFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blockFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_blockFilterActionPerformed
-
-    private void lotFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lotFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lotFilterActionPerformed
-
-    private void priceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_priceFilterActionPerformed
-
-    private void applyFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyFilterActionPerformed
-        // TODO add your handling code here:
-        applyFilters();
-    }//GEN-LAST:event_applyFilterActionPerformed
 
     private void genReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseClicked
         // TODO add your handling code here:
@@ -1925,14 +1981,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         MainContentSeller.setSelectedIndex(3);
     }//GEN-LAST:event_genReportActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
-
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -1940,6 +1988,36 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseClicked
+
+    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseEntered
+
+    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseExited
+
+    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(1);
+    }//GEN-LAST:event_viewReservActionPerformed
+
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        // TODO add your handling code here:
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2005,13 +2083,16 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JPanel Performance;
+    private javax.swing.JButton Refresh;
     private javax.swing.JPanel Report;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
     private javax.swing.JLabel Title2;
+    private javax.swing.JLabel Title3;
+    private javax.swing.JPanel Transactions;
+    private javax.swing.JTable agentHistoryTable;
     private javax.swing.JScrollPane agentPerf;
-    private javax.swing.JButton applyFilter;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;
@@ -2112,10 +2193,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l7;
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
-    private javax.swing.JLabel bFilter1;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JComboBox<String> blockFilter;
-    private javax.swing.JPanel filteringPanel;
     private javax.swing.JButton genReport;
     private javax.swing.JLabel info29;
     private javax.swing.JLabel info30;
@@ -2129,15 +2207,12 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lFilter;
     private javax.swing.JButton logOut;
-    private javax.swing.JComboBox<String> lotFilter;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
-    private javax.swing.JLabel pFilter;
     private javax.swing.JScrollPane perfOverview;
-    private javax.swing.JComboBox<String> priceFilter;
     private javax.swing.JLabel reportPlaceholder;
     private javax.swing.JScrollPane reservOverview;
     private javax.swing.JPanel reservation1;
@@ -2145,11 +2220,9 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JLabel reservationTitle1;
     private javax.swing.JPanel reservations;
-    private javax.swing.JLabel sFilter;
-    private javax.swing.JComboBox<String> statusFilter;
-    private javax.swing.JLabel title;
     private javax.swing.JButton viewLots;
     private javax.swing.JButton viewPerformance;
     private javax.swing.JButton viewReserv;
+    private javax.swing.JButton viewTransactions;
     // End of variables declaration//GEN-END:variables
 }

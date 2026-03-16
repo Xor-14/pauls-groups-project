@@ -8,10 +8,10 @@
  * @author Paul Joel D. Perez <pjdperez@mymail.mapua.edu.ph>
  */
 
-package controller;
+package models;
 
-import models.Lot;
-
-public interface LotFactory {
-    Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status);
+public class Buyer extends User {
+    public Buyer(int id, String firstName, String lastName, String email, String password) {
+        super(id, firstName, lastName, email, password);
+    }
 }

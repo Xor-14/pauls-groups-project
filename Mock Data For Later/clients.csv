@@ -1,2 +1,3 @@
 id,firstName,lastName,email,password
-1,John,Doe,buyer1@test.com,pass123
+1,Test,Buyer,buyer@test.com,pass123
+2,Paul,Perez,paul@test.com,pass123
