@@ -563,6 +563,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         btnExportTXT = new javax.swing.JButton();
         btnGenerateReport = new javax.swing.JButton();
         btnExportPDF = new javax.swing.JButton();
+        btnExportCSV = new javax.swing.JButton();
         Transactions = new javax.swing.JPanel();
         Title3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -1900,6 +1901,14 @@ public class AgentDashboard extends javax.swing.JFrame {
         });
         Report.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
 
+        btnExportCSV.setText("Export as CSV");
+        btnExportCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportCSVActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportCSV, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
+
         MainContentSeller.addTab("tab4", Report);
 
         Transactions.setBackground(new java.awt.Color(30, 30, 30));
@@ -2223,8 +2232,9 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
-        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), "Agent_Report.txt");
-        if (success) javax.swing.JOptionPane.showMessageDialog(this, "Saved as Agent_Report.txt");
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent.getId());
+        if (success) javax.swing.JOptionPane.showMessageDialog(this, "Text Report saved to Downloads.");
     }//GEN-LAST:event_btnExportTXTActionPerformed
 
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
@@ -2237,18 +2247,27 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
-        try {
-            // Requires iText7 library in project dependencies
-            com.itextpdf.kernel.pdf.PdfWriter writer = new com.itextpdf.kernel.pdf.PdfWriter("Agent_Report.pdf");
-            com.itextpdf.kernel.pdf.PdfDocument pdf = new com.itextpdf.kernel.pdf.PdfDocument(writer);
-            com.itextpdf.layout.Document document = new com.itextpdf.layout.Document(pdf);
-            document.add(new com.itextpdf.layout.element.Paragraph(reportTextArea.getText()));
-            document.close();
-            javax.swing.JOptionPane.showMessageDialog(this, "Saved as Agent_Report.pdf");
-        } catch (Exception e) {
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent.getId());
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "PDF Report saved to Downloads.");
+        } else {
             javax.swing.JOptionPane.showMessageDialog(this, "PDF Export Failed. Ensure iText7 libraries are loaded.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExportPDFActionPerformed
+
+    private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
+        // TODO add your handling code here:
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> transactions = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        
+        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent.getId());
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "CSV Report saved to Downloads.");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "CSV Export Failed.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportCSVActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2431,6 +2450,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
     private javax.swing.JLabel bgimg;
+    private javax.swing.JButton btnExportCSV;
     private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnExportTXT;
     private javax.swing.JButton btnGenerateReport;

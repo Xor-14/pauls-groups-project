@@ -19,11 +19,17 @@ import java.util.List;
 public class UserManager {
     private List<Buyer> buyers;
     private List<Agent> agents;
+    private List<Admin> admins;
     private User currentUser;
 
     private UserManager() {
         buyers = CSVDatabase.loadBuyers();
         agents = CSVDatabase.loadAgents();
+        admins = CSVDatabase.loadAdmins();
+        
+        if (admins.isEmpty()) {
+            registerAdmin("System", "Admin", "admin", "admin");
+        }
     }
     
     private static class InstanceHolder {
@@ -35,9 +41,10 @@ public class UserManager {
     }
 
     public User login(String email, String password) {
-        if (email.equals("admin") && password.equals("admin")) {
-            currentUser = new Admin(0, "System", "Admin", email, password);
-            return currentUser;
+        for (Admin admin : admins) {
+            if (admin.getEmail().equals(email) && admin.getPassword().equals(password)) {
+                currentUser = admin; return admin;
+            }
         }
         for (Agent a : agents) {
             if (a.getEmail().equals(email) && a.getPassword().equals(password)) {
@@ -50,6 +57,16 @@ public class UserManager {
             }
         }
         return null;
+    }
+    
+    public boolean registerAdmin(String firstName, String lastName, String email, String password) {
+        for (Admin admin : admins) {
+            if (admin.getEmail().equals(email)) return false; 
+        }
+        int newId = admins.size() + 1;
+        admins.add(new Admin(newId, firstName, lastName, email, password));
+        CSVDatabase.saveAdmins(admins);
+        return true;
     }
 
     public void deleteUser(int userId, String role) {
@@ -81,6 +98,14 @@ public class UserManager {
         agents.add(new Agent(newId, firstName, lastName, email, password, assignedBlock, 0.0));
         CSVDatabase.saveAgents(agents);
         return true;
+    }
+    
+    public Agent getAgentById(int id) {
+        return agents.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
+    }
+
+    public Buyer getBuyerById(int id) {
+        return buyers.stream().filter(b -> b.getId() == id).findFirst().orElse(null);
     }
 
     public User getCurrentUser() { return currentUser; }
