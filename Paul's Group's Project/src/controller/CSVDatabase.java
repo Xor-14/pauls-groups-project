@@ -207,4 +207,34 @@ public class CSVDatabase {
         } catch (Exception e) { System.err.println("Error writing audit.csv: " + e.getMessage()); }
     }
     
+    public static final String FINANCE_FILE = "../Mock Data For Later/finance_settings.csv";
+
+    // Generic CSV Reader
+    public static List<String[]> readCSV(String filePath) {
+        List<String[]> data = new ArrayList<>();
+        File file = new File(filePath);
+        if (!file.exists()) return data;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            br.readLine(); // Skip header
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    data.add(line.split(","));
+                }
+            }
+        } catch (Exception e) { System.err.println("Read Error (" + filePath + "): " + e.getMessage()); }
+        return data;
+    }
+
+    // Generic CSV Writer
+    public static void writeCSV(String filePath, String header, List<String[]> data) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            bw.write(header + "\n");
+            for (String[] row : data) {
+                bw.write(String.join(",", row) + "\n");
+            }
+        } catch (Exception e) { System.err.println("Write Error (" + filePath + "): " + e.getMessage()); }
+    }
+    
 }

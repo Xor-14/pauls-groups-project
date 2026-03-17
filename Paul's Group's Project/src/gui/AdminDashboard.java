@@ -236,6 +236,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         loadPendingTransactions();
         loadAgentHistory();
         loadAuditLogs();
+        loadFinanceSettings();
     }
     
     public void applyFilters() {
@@ -430,6 +431,18 @@ public class AdminDashboard extends javax.swing.JFrame {
         }
         auditTable.setModel(model);
     }
+    
+    private void loadFinanceSettings() {
+        controller.FinanceManager fm = controller.FinanceManager.getInstance();
+        txtBdoRate.setText(String.valueOf(fm.getBdoRate()));
+        txtBpiRate.setText(String.valueOf(fm.getBpiRate()));
+        txtRcbcRate.setText(String.valueOf(fm.getRcbcRate()));
+        txtPagIbigRate.setText(String.valueOf(fm.getPagIbigRate()));
+        txtDownPayment.setText(String.valueOf(fm.getDownPaymentPercent()));
+        txtMaxLoan.setText(String.valueOf(fm.getPagIbigMaxLoan()));
+        txtMiscFee.setText(String.valueOf(fm.getMiscFeePercent()));
+        txtResFee.setText(String.valueOf(fm.getReservationFee()));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -445,7 +458,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         GroupName = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
         viewTransactions = new javax.swing.JButton();
-        viewPerformance = new javax.swing.JButton();
+        viewFinanceSettings = new javax.swing.JButton();
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         viewReserv = new javax.swing.JButton();
@@ -612,6 +625,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         Title3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         agentHistoryTable = new javax.swing.JTable();
+        AuditLogsPanel = new javax.swing.JPanel();
+        Title6 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        auditTable = new javax.swing.JTable();
         Profile = new javax.swing.JPanel();
         Title4 = new javax.swing.JLabel();
         firstName = new javax.swing.JLabel();
@@ -623,10 +640,24 @@ public class AdminDashboard extends javax.swing.JFrame {
         Password = new javax.swing.JLabel();
         password = new javax.swing.JTextField();
         change = new javax.swing.JButton();
-        AuditLogsPanel = new javax.swing.JPanel();
-        Title6 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        auditTable = new javax.swing.JTable();
+        FinanceSettingsPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtBdoRate = new javax.swing.JTextField();
+        txtBpiRate = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtRcbcRate = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtPagIbigRate = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDownPayment = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtMaxLoan = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtMiscFee = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtResFee = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        btnUpdateFinance = new javax.swing.JButton();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -725,42 +756,42 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
         AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 340, 40));
 
-        viewPerformance.setBackground(new java.awt.Color(0, 0, 0));
-        viewPerformance.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewPerformance.setForeground(new java.awt.Color(255, 255, 255));
-        viewPerformance.setText("   Performance");
-        viewPerformance.setAlignmentY(0.0F);
-        viewPerformance.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewPerformance.setBorderPainted(false);
-        viewPerformance.setContentAreaFilled(false);
-        viewPerformance.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewPerformance.setFocusPainted(false);
-        viewPerformance.setFocusable(false);
-        viewPerformance.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewPerformance.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewPerformance.setIconTextGap(0);
-        viewPerformance.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewPerformance.setSelected(true);
-        viewPerformance.addMouseListener(new java.awt.event.MouseAdapter() {
+        viewFinanceSettings.setBackground(new java.awt.Color(0, 0, 0));
+        viewFinanceSettings.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewFinanceSettings.setForeground(new java.awt.Color(255, 255, 255));
+        viewFinanceSettings.setText("Finance Settings");
+        viewFinanceSettings.setAlignmentY(0.0F);
+        viewFinanceSettings.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewFinanceSettings.setBorderPainted(false);
+        viewFinanceSettings.setContentAreaFilled(false);
+        viewFinanceSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewFinanceSettings.setFocusPainted(false);
+        viewFinanceSettings.setFocusable(false);
+        viewFinanceSettings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setIconTextGap(0);
+        viewFinanceSettings.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewFinanceSettings.setSelected(true);
+        viewFinanceSettings.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseClicked(evt);
+                viewFinanceSettingsMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseEntered(evt);
+                viewFinanceSettingsMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseExited(evt);
+                viewFinanceSettingsMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                viewPerformanceMousePressed(evt);
+                viewFinanceSettingsMousePressed(evt);
             }
         });
-        viewPerformance.addActionListener(new java.awt.event.ActionListener() {
+        viewFinanceSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewPerformanceActionPerformed(evt);
+                viewFinanceSettingsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 340, 40));
+        AgentSideBar.add(viewFinanceSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 340, 40));
 
         genReport.setBackground(new java.awt.Color(0, 0, 0));
         genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -797,7 +828,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 340, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 340, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -947,7 +978,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAuditLogsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 450, 340, 50));
+        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 340, 50));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -2022,6 +2053,34 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         MainContentSeller.addTab("tab2", Transactions);
 
+        AuditLogsPanel.setBackground(new java.awt.Color(30, 30, 30));
+        AuditLogsPanel.setMinimumSize(new java.awt.Dimension(502, 297));
+        AuditLogsPanel.setPreferredSize(new java.awt.Dimension(502, 297));
+        AuditLogsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title6.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title6.setForeground(new java.awt.Color(255, 255, 255));
+        Title6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title6.setText("Audit Logs");
+        AuditLogsPanel.add(Title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+
+        auditTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(auditTable);
+
+        AuditLogsPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+
+        MainContentSeller.addTab("tab3", AuditLogsPanel);
+
         Profile.setBackground(new java.awt.Color(30, 30, 30));
         Profile.setMinimumSize(new java.awt.Dimension(502, 297));
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
@@ -2106,33 +2165,55 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         MainContentSeller.addTab("tab3", Profile);
 
-        AuditLogsPanel.setBackground(new java.awt.Color(30, 30, 30));
-        AuditLogsPanel.setMinimumSize(new java.awt.Dimension(502, 297));
-        AuditLogsPanel.setPreferredSize(new java.awt.Dimension(502, 297));
-        AuditLogsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        FinanceSettingsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title6.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        Title6.setForeground(new java.awt.Color(255, 255, 255));
-        Title6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title6.setText("Audit Logs");
-        AuditLogsPanel.add(Title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        jLabel1.setText("BDO Rate: ");
+        FinanceSettingsPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, 40));
 
-        auditTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        txtBdoRate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBdoRateActionPerformed(evt);
             }
-        ));
-        jScrollPane3.setViewportView(auditTable);
+        });
+        FinanceSettingsPanel.add(txtBdoRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 110, 40));
+        FinanceSettingsPanel.add(txtBpiRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 110, 40));
 
-        AuditLogsPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        jLabel2.setText("BPI Rate: ");
+        FinanceSettingsPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 100, 40));
+        FinanceSettingsPanel.add(txtRcbcRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 110, 40));
 
-        MainContentSeller.addTab("tab3", AuditLogsPanel);
+        jLabel3.setText("RCBC Rate: ");
+        FinanceSettingsPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 100, 40));
+        FinanceSettingsPanel.add(txtPagIbigRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 110, 40));
+
+        jLabel4.setText("Pag-IBIG Rate: ");
+        FinanceSettingsPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 100, 40));
+        FinanceSettingsPanel.add(txtDownPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 110, 40));
+
+        jLabel5.setText("Downpayment (%):");
+        FinanceSettingsPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 120, 40));
+        FinanceSettingsPanel.add(txtMaxLoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 110, 40));
+
+        jLabel6.setText("Max Loanable Amt.:");
+        FinanceSettingsPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 100, 40));
+        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 110, 40));
+
+        jLabel7.setText("Misc. Fee:");
+        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 100, 40));
+        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 390, 110, 40));
+
+        jLabel8.setText("Reservation Fee:");
+        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 100, 40));
+
+        btnUpdateFinance.setText("Update Finance Settings");
+        btnUpdateFinance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateFinanceActionPerformed(evt);
+            }
+        });
+        FinanceSettingsPanel.add(btnUpdateFinance, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 240, -1));
+
+        MainContentSeller.addTab("tab8", FinanceSettingsPanel);
 
         getContentPane().add(MainContentSeller, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
@@ -2149,10 +2230,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
-    private void viewPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPerformanceActionPerformed
+    private void viewFinanceSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFinanceSettingsActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(2);
-    }//GEN-LAST:event_viewPerformanceActionPerformed
+        MainContentSeller.setSelectedIndex(7);
+    }//GEN-LAST:event_viewFinanceSettingsActionPerformed
 
     private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
         // TODO add your handling code here:
@@ -2190,25 +2271,25 @@ public class AdminDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
 
-    private void viewPerformanceMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseEntered
+    private void viewFinanceSettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseEntered
         // TODO add your handling code here:
-         viewPerformance.setForeground(entered);
-    }//GEN-LAST:event_viewPerformanceMouseEntered
+         viewFinanceSettings.setForeground(entered);
+    }//GEN-LAST:event_viewFinanceSettingsMouseEntered
 
-    private void viewPerformanceMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseExited
+    private void viewFinanceSettingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseExited
         // TODO add your handling code here:
-        viewPerformance.setForeground(normal);
-    }//GEN-LAST:event_viewPerformanceMouseExited
+        viewFinanceSettings.setForeground(normal);
+    }//GEN-LAST:event_viewFinanceSettingsMouseExited
 
-    private void viewPerformanceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMousePressed
+    private void viewFinanceSettingsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMousePressed
         // TODO add your handling code here:
-        viewPerformance.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewPerformanceMousePressed
+        viewFinanceSettings.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewFinanceSettingsMousePressed
 
-    private void viewPerformanceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseClicked
+    private void viewFinanceSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseClicked
         // TODO add your handling code here:
-        viewPerformance.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewPerformanceMouseClicked
+        viewFinanceSettings.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewFinanceSettingsMouseClicked
 
     private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
         // TODO add your handling code here:
@@ -2323,7 +2404,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(5);
+        MainContentSeller.setSelectedIndex(6);
     }//GEN-LAST:event_viewProfileActionPerformed
 
     private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
@@ -2400,9 +2481,36 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void btnAuditLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditLogsActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(6); // Adjust index to match the Audit panel
+        MainContentSeller.setSelectedIndex(5); // Adjust index to match the Audit panel
         loadAuditLogs(); // Refresh data on view
     }//GEN-LAST:event_btnAuditLogsActionPerformed
+
+    private void txtBdoRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBdoRateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBdoRateActionPerformed
+
+    private void btnUpdateFinanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateFinanceActionPerformed
+        // TODO add your handling code here:
+        try {
+            double bdo = Double.parseDouble(txtBdoRate.getText());
+            double bpi = Double.parseDouble(txtBpiRate.getText());
+            double rcbc = Double.parseDouble(txtRcbcRate.getText());
+            double pagibig = Double.parseDouble(txtPagIbigRate.getText());
+            double dp = Double.parseDouble(txtDownPayment.getText());
+            double maxLoan = Double.parseDouble(txtMaxLoan.getText());
+            double misc = Double.parseDouble(txtMiscFee.getText());
+            double res = Double.parseDouble(txtResFee.getText());
+            
+            controller.FinanceManager.getInstance().updateSettings(bdo, bpi, rcbc, pagibig, dp, maxLoan, misc, res);
+            
+            models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated 8-parameter finance rates.");
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated.");
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateFinanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2461,6 +2569,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Block5Grid;
     private javax.swing.JLabel DashboardLabel;
     private javax.swing.JLabel Email;
+    private javax.swing.JPanel FinanceSettingsPanel;
     private javax.swing.JTextField FirstName;
     private javax.swing.JLabel GroupName;
     private javax.swing.JPanel History;
@@ -2597,6 +2706,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnExportPDF;
     private javax.swing.JButton btnExportTXT;
     private javax.swing.JButton btnGenerateReport;
+    private javax.swing.JButton btnUpdateFinance;
     private javax.swing.JButton change;
     private javax.swing.JTextField email;
     private javax.swing.JLabel firstName;
@@ -2613,6 +2723,14 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2630,8 +2748,16 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JLabel reservationTitle1;
     private javax.swing.JPanel reservations;
+    private javax.swing.JTextField txtBdoRate;
+    private javax.swing.JTextField txtBpiRate;
+    private javax.swing.JTextField txtDownPayment;
+    private javax.swing.JTextField txtMaxLoan;
+    private javax.swing.JTextField txtMiscFee;
+    private javax.swing.JTextField txtPagIbigRate;
+    private javax.swing.JTextField txtRcbcRate;
+    private javax.swing.JTextField txtResFee;
+    private javax.swing.JButton viewFinanceSettings;
     private javax.swing.JButton viewLots;
-    private javax.swing.JButton viewPerformance;
     private javax.swing.JButton viewProfile;
     private javax.swing.JButton viewReserv;
     private javax.swing.JButton viewTransactions;
