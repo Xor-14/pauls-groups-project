@@ -220,23 +220,27 @@ public class AgentLoginFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        String email = userName.getText();
-        String password = new String(userPass.getPassword());
+        String email = userName.getText(); // Adjust variable name if needed
+        String password = new String(userPass.getPassword()); // Adjust variable name if needed
         
         models.User user = controller.UserManager.getInstance().login(email, password);
-
-        if (user instanceof models.Agent) {
-            AgentDashboard dashboard = new AgentDashboard();
-            dashboard.setVisible(true);
+        
+        if (user instanceof models.Admin) {
+            new AdminDashboard().setVisible(true);
             this.dispose();
+        } else if (user instanceof models.Agent) {
+            new AgentDashboard().setVisible(true);
+            this.dispose();
+        } else if (user instanceof models.Buyer) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Buyers must use the Client Portal.", "Access Denied", javax.swing.JOptionPane.WARNING_MESSAGE);
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Agent Credentials!", "Login Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Credentials", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
 
     private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
         // TODO add your handling code here:
-        NewAgentAccountFrame NewAgentAccountFrame=new NewAgentAccountFrame();
+        RegisterAccountFrame NewAgentAccountFrame=new RegisterAccountFrame();
         NewAgentAccountFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_shiftFormsActionPerformed

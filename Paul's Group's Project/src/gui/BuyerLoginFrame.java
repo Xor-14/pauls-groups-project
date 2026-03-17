@@ -214,15 +214,19 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
             BuyerDashboard dashboard = new BuyerDashboard();
             dashboard.setVisible(true);
             this.dispose();
-        } else {
+        } 
+        else if(user instanceof models.Agent || user instanceof models.Admin) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Staff must use the Staff Portal.", "Access Denied", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+        else {
             javax.swing.JOptionPane.showMessageDialog(this, "Invalid Buyer Credentials!", "Login Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
 
     private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
         // TODO add your handling code here:
-        NewBuyerAccountFrame NewBuyerAccountFrame=new NewBuyerAccountFrame();
-        NewBuyerAccountFrame.setVisible(true);
+        RegisterAccountFrame registerFrame=new RegisterAccountFrame();
+        registerFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_shiftFormsActionPerformed
 

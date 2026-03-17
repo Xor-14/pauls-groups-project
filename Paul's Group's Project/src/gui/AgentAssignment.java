@@ -40,7 +40,7 @@ public class AgentAssignment extends javax.swing.JDialog {
             this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Email already exists!", "Registration Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-            new NewAgentAccountFrame().setVisible(true);
+            new RegisterAccountFrame().setVisible(true);
             this.dispose();
         }
     }

@@ -11,7 +11,8 @@ import javax.swing.Timer;
  *
  * @author xor
  */
-public class AdminLoginFrame extends javax.swing.JFrame {
+public class RegisterAccountFrame extends javax.swing.JFrame {
+    
      /**
      * Creates new form BuyerLoginFrame
      */ 
@@ -29,7 +30,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     timer.start();
 }
 
-    public AdminLoginFrame() {
+    public RegisterAccountFrame() {
         initComponents();
         imageSlideshow();
     }
@@ -46,16 +47,18 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         GroupName = new javax.swing.JLabel();
         LoginForm = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
-        Username = new javax.swing.JLabel();
-        userName = new javax.swing.JTextField();
+        FirstName = new javax.swing.JLabel();
+        firstName = new javax.swing.JTextField();
+        LastName = new javax.swing.JLabel();
+        lastName = new javax.swing.JTextField();
+        Codename = new javax.swing.JLabel();
+        emailField = new javax.swing.JTextField();
         Password = new javax.swing.JLabel();
         userPass = new javax.swing.JPasswordField();
-        Code = new javax.swing.JLabel();
-        codePass = new javax.swing.JPasswordField();
+        login = new javax.swing.JButton();
         noaccount = new javax.swing.JLabel();
         shiftForms = new javax.swing.JButton();
-        login = new javax.swing.JButton();
-        switchAccount = new javax.swing.JButton();
+        roleComboBox = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         bgimg = new javax.swing.JLabel();
@@ -81,29 +84,59 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         Title.setFont(new java.awt.Font("Arial", 1, 32)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Title.setText("<html>Welcome, Agent!</html>");
+        Title.setText("<html>Register Account</html>");
         Title.setToolTipText("");
-        LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 400, -1));
+        LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 400, -1));
 
-        Username.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
-        Username.setForeground(new java.awt.Color(255, 255, 255));
-        Username.setText("Username");
-        LoginForm.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 95, -1, -1));
+        FirstName.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
+        FirstName.setForeground(new java.awt.Color(255, 255, 255));
+        FirstName.setText("First Name");
+        LoginForm.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
-        userName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
-        userName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        userName.setText("test");
-        userName.addActionListener(new java.awt.event.ActionListener() {
+        firstName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
+        firstName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        firstName.setText("test");
+        firstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userNameActionPerformed(evt);
+                firstNameActionPerformed(evt);
             }
         });
-        LoginForm.add(userName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 115, 320, 40));
+        LoginForm.add(firstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 320, 40));
+
+        LastName.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
+        LastName.setForeground(new java.awt.Color(255, 255, 255));
+        LastName.setText("Last Name");
+        LoginForm.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, -1, -1));
+
+        lastName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
+        lastName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        lastName.setText("test");
+        lastName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastNameActionPerformed(evt);
+            }
+        });
+        LoginForm.add(lastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 320, 40));
+
+        Codename.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
+        Codename.setForeground(new java.awt.Color(255, 255, 255));
+        Codename.setText("Email");
+        LoginForm.add(Codename, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+
+        emailField.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
+        emailField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        emailField.setText("email@test.com");
+        emailField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailFieldActionPerformed(evt);
+            }
+        });
+        LoginForm.add(emailField, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 320, 40));
 
         Password.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Password.setForeground(new java.awt.Color(255, 255, 255));
         Password.setText("Password");
-        LoginForm.add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
+        LoginForm.add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 310, -1, -1));
 
         userPass.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
         userPass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -113,30 +146,32 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                 userPassActionPerformed(evt);
             }
         });
-        LoginForm.add(userPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 320, 40));
+        LoginForm.add(userPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 320, 40));
 
-        Code.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
-        Code.setForeground(new java.awt.Color(255, 255, 255));
-        Code.setText("Code");
-        LoginForm.add(Code, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 265, -1, -1));
-
-        codePass.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
-        codePass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        codePass.setText("jPasswordField1");
-        codePass.addActionListener(new java.awt.event.ActionListener() {
+        login.setBackground(new java.awt.Color(0, 0, 0));
+        login.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        login.setForeground(new java.awt.Color(255, 255, 255));
+        login.setText("Sign Up");
+        login.setAlignmentY(0.0F);
+        login.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        login.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        login.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        login.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        login.setOpaque(true);
+        login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codePassActionPerformed(evt);
+                loginActionPerformed(evt);
             }
         });
-        LoginForm.add(codePass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 285, 320, 40));
+        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 300, 40));
 
         noaccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noaccount.setForeground(new java.awt.Color(255, 255, 255));
-        noaccount.setText("Don't have an account?");
-        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
+        noaccount.setText("Already have an account?");
+        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
 
         shiftForms.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
-        shiftForms.setText("Register");
+        shiftForms.setText("Login");
         shiftForms.setAlignmentY(0.0F);
         shiftForms.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         shiftForms.setBorderPainted(false);
@@ -149,44 +184,15 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                 shiftFormsActionPerformed(evt);
             }
         });
-        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 405, 80, 20));
+        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 80, 20));
 
-        login.setBackground(new java.awt.Color(0, 0, 0));
-        login.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        login.setForeground(new java.awt.Color(255, 255, 255));
-        login.setText("Login");
-        login.setAlignmentY(0.0F);
-        login.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        login.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        login.setFocusPainted(false);
-        login.setFocusable(false);
-        login.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        login.setIconTextGap(0);
-        login.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        login.setSelected(true);
-        login.addActionListener(new java.awt.event.ActionListener() {
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buyer", "Agent", "Admin" }));
+        roleComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginActionPerformed(evt);
+                roleComboBoxActionPerformed(evt);
             }
         });
-        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 300, 40));
-
-        switchAccount.setBackground(new java.awt.Color(102, 102, 102));
-        switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
-        switchAccount.setForeground(new java.awt.Color(255, 255, 255));
-        switchAccount.setText("Switch to Buyer's Account");
-        switchAccount.setAlignmentY(0.0F);
-        switchAccount.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        switchAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        switchAccount.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        switchAccount.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        switchAccount.setOpaque(true);
-        switchAccount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                switchAccountActionPerformed(evt);
-            }
-        });
-        LoginForm.add(switchAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 340, 20));
+        LoginForm.add(roleComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 62, 120, 30));
 
         getContentPane().add(LoginForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 162, 401, 474));
 
@@ -210,47 +216,67 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void userNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userNameActionPerformed
+    private void firstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_userNameActionPerformed
+    }//GEN-LAST:event_firstNameActionPerformed
+
+    private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
+        // TODO add your handling code here:
+        String fName = firstName.getText();
+        String lName = lastName.getText();
+        String email = emailField.getText(); // Ensure this matches your variable name
+        String password = new String(userPass.getPassword());
+        
+        String role = roleComboBox.getSelectedItem().toString();
+        
+        if (role.equals("Buyer")) {
+            boolean success = controller.UserManager.getInstance().registerBuyer(fName, lName, email, password);
+            if (success) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Buyer Account Created Successfully.");
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (role.equals("Admin")) {
+            boolean success = controller.UserManager.getInstance().registerAdmin(fName, lName, email, password);
+            if (success) {
+                controller.EstateManager.getInstance().logAudit("ADMIN_REGISTERED", 0, "New admin created: " + email);
+                javax.swing.JOptionPane.showMessageDialog(this, "Admin Account Created Successfully.");
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (role.equals("Agent")) {
+            // Pass the captured data directly into the AgentAssignment constructor
+            AgentAssignment assignmentFrame = new AgentAssignment(this, true, fName, lName, email, password);
+            assignmentFrame.setLocationRelativeTo(this);
+            assignmentFrame.setVisible(true);
+            this.dispose();
+        }        
+    }//GEN-LAST:event_loginActionPerformed
+
+    private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastNameActionPerformed
+
+    private void emailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailFieldActionPerformed
+
+    private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
+        // TODO add your handling code here:
+        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
+        BuyerLoginFrame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_shiftFormsActionPerformed
 
     private void userPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userPassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userPassActionPerformed
 
-    private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
+    private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
         // TODO add your handling code here:
-            String email = userName.getText();
-        String password = new String(userPass.getPassword());
-
-        models.User user = controller.UserManager.getInstance().login(email, password);
-
-        if (user instanceof models.Admin) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Admin Login Successful");
-            // Open Admin Dashboard here
-            this.dispose();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Admin Credentials", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_loginActionPerformed
-
-    private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
-        // TODO add your handling code here:
-        NewAgentAccountFrame NewAgentAccountFrame=new NewAgentAccountFrame();
-        NewAgentAccountFrame.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_shiftFormsActionPerformed
-
-    private void codePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codePassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codePassActionPerformed
-
-    private void switchAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchAccountActionPerformed
-        // TODO add your handling code here:
-        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
-        BuyerLoginFrame.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_switchAccountActionPerformed
+    }//GEN-LAST:event_roleComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,13 +295,13 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAccountFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAccountFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAccountFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterAccountFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -285,27 +311,29 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminLoginFrame().setVisible(true);
+                new RegisterAccountFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Code;
+    private javax.swing.JLabel Codename;
+    private javax.swing.JLabel FirstName;
     private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel LastName;
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel Password;
     private javax.swing.JLabel Title;
-    private javax.swing.JLabel Username;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JPasswordField codePass;
+    private javax.swing.JTextField emailField;
+    private javax.swing.JTextField firstName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField lastName;
     private javax.swing.JButton login;
     private javax.swing.JLabel noaccount;
+    private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JButton shiftForms;
-    private javax.swing.JButton switchAccount;
-    private javax.swing.JTextField userName;
     private javax.swing.JPasswordField userPass;
     // End of variables declaration//GEN-END:variables
 }
