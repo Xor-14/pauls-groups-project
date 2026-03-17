@@ -1,1 +1,3 @@
 id,firstName,lastName,email,password
+1,System,Admin,admin,admin
+2,Euan,Ridulme,euan@test.com,pass123

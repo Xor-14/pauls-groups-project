@@ -220,7 +220,11 @@ public class CSVDatabase {
             String line;
             while ((line = br.readLine()) != null) {
                 if (!line.trim().isEmpty()) {
-                    data.add(line.split(","));
+                    String[] row = line.split(",");
+                    // Prevents IndexOutOfBounds and empty string parsing errors
+                    if (row.length > 0 && !row[0].trim().isEmpty()) {
+                        data.add(row);
+                    }
                 }
             }
         } catch (Exception e) { System.err.println("Read Error (" + filePath + "): " + e.getMessage()); }

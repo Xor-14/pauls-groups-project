@@ -253,22 +253,33 @@ public class AdminDashboard extends javax.swing.JFrame {
     }
  
     private void loadPendingTransactions() {
-        reservations.removeAll(); 
+        // Retrieve all transactions and manually filter for 'Pending'
+        java.util.List<models.SaleTransaction> all = controller.TransactionManager.getInstance().getAllTransactions();
+        java.util.List<models.SaleTransaction> pending = new java.util.ArrayList<>();
         
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> pending = controller.TransactionManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
+        for(models.SaleTransaction t : all) {
+            if(t.getStatus().equalsIgnoreCase("Pending")) {
+                pending.add(t);
+            }
+        }
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Buyer ID", "Type", "Amount"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
         
         for (models.SaleTransaction t : pending) {
-            reservations.add(createTransactionCard(t, agent.getId()));
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getBuyerID(),
+                t.getType(), String.format("PHP %,.2f", t.getAmount())
+            });
         }
         
-        reservations.revalidate();
-        reservations.repaint();
-        // Hard refresh on the parent viewport to ensure the scroll pane updates
-        if(reservations.getParent() != null) {
-            reservations.getParent().revalidate();
-            reservations.getParent().repaint();
-        }
+        // Ensure this matches your NetBeans table variable name (e.g., pendingTable)
+        transactionTable.setModel(model);
     }
 
     private javax.swing.JPanel createTransactionCard(models.SaleTransaction t, int agentId) {
@@ -350,7 +361,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 t.getType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
             });
         }
-        agentHistoryTable.setModel(model);
+        transactionTable.setModel(model);
     }
     
     private void attachButtonListeners() {
@@ -624,7 +635,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         Transactions = new javax.swing.JPanel();
         Title3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        agentHistoryTable = new javax.swing.JTable();
+        transactionTable = new javax.swing.JTable();
         AuditLogsPanel = new javax.swing.JPanel();
         Title6 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -2036,7 +2047,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         Title3.setText("Transaction History");
         Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
 
-        agentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
+        transactionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -2047,7 +2058,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(agentHistoryTable);
+        jScrollPane1.setViewportView(transactionTable);
 
         Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
 
@@ -2597,7 +2608,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Title4;
     private javax.swing.JLabel Title6;
     private javax.swing.JPanel Transactions;
-    private javax.swing.JTable agentHistoryTable;
     private javax.swing.JScrollPane agentPerf;
     private javax.swing.JTable auditTable;
     private javax.swing.JButton b1_l1;
@@ -2748,6 +2758,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel reservationTitle;
     private javax.swing.JLabel reservationTitle1;
     private javax.swing.JPanel reservations;
+    private javax.swing.JTable transactionTable;
     private javax.swing.JTextField txtBdoRate;
     private javax.swing.JTextField txtBpiRate;
     private javax.swing.JTextField txtDownPayment;

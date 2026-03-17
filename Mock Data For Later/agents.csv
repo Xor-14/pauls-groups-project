@@ -1,2 +1,3 @@
 id,firstName,lastName,email,password,assignedBlock,totalSales
-1,Test,Agent,agent@test.com,pass123,1,0
+1,Test,Agent,agent@test.com,pass123,1,281000.00
+2,Trishia,Custodio,trishia@test.com,pass123,2,523725.00
