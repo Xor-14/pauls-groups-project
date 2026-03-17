@@ -87,7 +87,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
         Username.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Username.setForeground(new java.awt.Color(255, 255, 255));
-        Username.setText("Username");
+        Username.setText("Email");
         LoginForm.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 95, -1, -1));
 
         userName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
@@ -117,7 +117,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
         Code.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Code.setForeground(new java.awt.Color(255, 255, 255));
-        Code.setText("Code");
+        Code.setText("Code (Deprecated, pls turn to \"Confirm Password)");
         LoginForm.add(Code, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 265, -1, -1));
 
         codePass.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N

@@ -87,7 +87,7 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
 
         Username.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Username.setForeground(new java.awt.Color(255, 255, 255));
-        Username.setText("Username");
+        Username.setText("Email");
         LoginForm.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 135, -1, -1));
 
         userName.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N

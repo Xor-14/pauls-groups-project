@@ -72,7 +72,7 @@ public class StartingPage extends javax.swing.JFrame {
         start.setForeground(new java.awt.Color(255, 255, 255));
         start.setText("Click Here to Start");
         start.setAlignmentY(0.0F);
-        start.setBorder(null);
+        start.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         start.setContentAreaFilled(false);
         start.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         start.setFocusPainted(false);
@@ -101,7 +101,7 @@ public class StartingPage extends javax.swing.JFrame {
                 startActionPerformed(evt);
             }
         });
-        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, 400, 40));
+        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 400, 40));
 
         jPanel1.setBackground(new java.awt.Color(30, 30, 30));
         jPanel1.setFocusable(false);
