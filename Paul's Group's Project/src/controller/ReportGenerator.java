@@ -28,7 +28,7 @@ import models.Buyer;
 public class ReportGenerator {
 
     private static String getDynamicFileName(int agentId, String extension) {
-        Agent agent = UserManager.getInstance().getAgentById(agentId);
+        Agent agent = (Agent) UserManager.getInstance().getUserById(agentId,"Agent");
         String name = (agent != null) ? agent.getFirstName() + "_" + agent.getLastName() : "Unknown_Agent";
         // Remove spaces to ensure safe filenames
         return name.replaceAll("\\s+", "_") + "_Report" + extension;
@@ -40,7 +40,7 @@ public class ReportGenerator {
     }
 
     public static String buildReportString(List<SaleTransaction> transactions, int agentId) {
-        Agent agent = UserManager.getInstance().getAgentById(agentId);
+        Agent agent = (Agent) UserManager.getInstance().getUserById(agentId,"Agent");
         String agentName = (agent != null) ? agent.getFirstName() + " " + agent.getLastName() : "Unknown Agent";
 
         StringBuilder sb = new StringBuilder();
@@ -53,7 +53,7 @@ public class ReportGenerator {
         int count = 0;
         for (SaleTransaction t : transactions) {
             if (t.getAgentID() == agentId && t.getStatus().equals("Approved")) {
-                Buyer buyer = UserManager.getInstance().getBuyerById(t.getBuyerID());
+                Buyer buyer = (Buyer) UserManager.getInstance().getUserById(t.getBuyerID(), "Buyer");
                 String buyerName = (buyer != null) ? buyer.getFirstName() + " " + buyer.getLastName() : "Unknown Buyer";
 
                 sb.append(String.format("Trans ID: %d | Lot: %d | Buyer: %s (ID: %d) | %s | PHP %,.2f\n", 
@@ -105,7 +105,7 @@ public class ReportGenerator {
             
             for (SaleTransaction t : transactions) {
                 if (t.getAgentID() == agentId && t.getStatus().equals("Approved")) {
-                    Buyer buyer = UserManager.getInstance().getBuyerById(t.getBuyerID());
+                    Buyer buyer = (Buyer) UserManager.getInstance().getUserById(t.getBuyerID(), "Buyer");
                     String buyerName = (buyer != null) ? buyer.getFirstName() + " " + buyer.getLastName() : "Unknown Buyer";
                     
                     // Format row data

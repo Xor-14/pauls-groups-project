@@ -255,7 +255,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         reservations.removeAll(); 
         
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> pending = controller.EstateManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
+        java.util.List<models.SaleTransaction> pending = controller.TransactionManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
         
         for (models.SaleTransaction t : pending) {
             reservations.add(createTransactionCard(t, agent.getId()));
@@ -311,14 +311,14 @@ public class AdminDashboard extends javax.swing.JFrame {
         rejectBtn.setForeground(java.awt.Color.WHITE);
 
         approveBtn.addActionListener(e -> {
-            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
             loadPendingTransactions();
             loadAgentHistory();
         });
 
         rejectBtn.addActionListener(e -> {
-            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
             loadPendingTransactions();
             loadAgentHistory();
@@ -333,7 +333,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     private void loadAgentHistory() {
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -390,7 +390,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                             
                             // Log the override
                             String detail = String.format("Admin overridden Lot %d from %s to %s", lot.getLotID(), oldStatus, newStatus);
-                            controller.EstateManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), detail);
+                            controller.AuditManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), detail);
                             
                             updateLotColor(finalB, finalL);
                             javax.swing.JOptionPane.showMessageDialog(this, "Lot status updated successfully.");
@@ -411,7 +411,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     private void loadAuditLogs() {
         // Assuming CSVDatabase has a loadAuditLogs method returning List<AuditLog>
-        java.util.List<models.AuditLog> logs = controller.CSVDatabase.loadAuditLogs();
+        java.util.List<models.AuditLog> logs = controller.AuditManager.getInstance().getLogs();
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -2353,7 +2353,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        String data = controller.ReportGenerator.buildReportString(controller.EstateManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
         reportTextArea.setText(data);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
@@ -2372,7 +2372,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> transactions = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
         
         boolean success = controller.ReportGenerator.exportToCSV(transactions, agent.getId());
         if (success) {

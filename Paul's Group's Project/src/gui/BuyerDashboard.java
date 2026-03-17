@@ -231,7 +231,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     
     private void loadBuyerHistory() {
         models.Buyer buyer = (models.Buyer) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getBuyerTransactions(buyer.getId());
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getBuyerTransactions(buyer.getId());
         
         // Prevent cells from being manually edited by the user
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(

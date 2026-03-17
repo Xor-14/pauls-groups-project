@@ -50,7 +50,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
 
         ActionButton1.addActionListener(e -> {
             if (currentLot.getStatus().equalsIgnoreCase("Available")) {
-                boolean success = controller.EstateManager.getInstance().requestTransaction(
+                boolean success = controller.TransactionManager.getInstance().requestTransaction(
                         currentLot.getLotID(), currentUser.getId(), "Reservation", "None", currentLot.getReservationFee(), 0.0);
                 if(success) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Reservation Request Sent to Agent!");
@@ -149,7 +149,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
 
             if (confirm == javax.swing.JOptionPane.YES_OPTION) {
 //                models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
-                boolean success = controller.EstateManager.getInstance().requestTransaction(
+                boolean success = controller.TransactionManager.getInstance().requestTransaction(
                     currentLot.getLotID(), currentUser.getId(), "Purchase", financingType, amountToPay, monthlyAmortization);
                 if(success) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Purchase Request Sent to Agent!");

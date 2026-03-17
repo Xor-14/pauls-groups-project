@@ -28,7 +28,7 @@ public class UserManager {
         admins = CSVDatabase.loadAdmins();
         
         if (admins.isEmpty()) {
-            registerAdmin("System", "Admin", "admin", "admin");
+            register(new Admin(0, "System", "Admin", "admin", "admin"));
         }
     }
     
@@ -36,9 +36,7 @@ public class UserManager {
         private static final UserManager INSTANCE = new UserManager();
     }
 
-    public static UserManager getInstance() {
-        return InstanceHolder.INSTANCE;
-    }
+    public static UserManager getInstance() { return InstanceHolder.INSTANCE; }
 
     public User login(String email, String password) {
         for (Admin admin : admins) {
@@ -59,15 +57,39 @@ public class UserManager {
         return null;
     }
     
-    public boolean registerAdmin(String firstName, String lastName, String email, String password) {
-        for (Admin admin : admins) {
-            if (admin.getEmail().equals(email)) return false; 
+    public boolean register(User user) {
+        if (isEmailTaken(user.getEmail())) return false;
+        
+        if (user instanceof Admin) {
+            user.setId(admins.size() + 1);
+            admins.add((Admin) user);
+            CSVDatabase.saveAdmins(admins);
+            AuditManager.getInstance().logAudit("ADMIN_REGISTERED", user.getId(), "New admin created: " + user.getEmail());
+        } else if (user instanceof Agent) {
+            user.setId(agents.size() + 1);
+            agents.add((Agent) user);
+            CSVDatabase.saveAgents(agents);
+            AuditManager.getInstance().logAudit("AGENT_REGISTERED", user.getId(), "New agent created: " + user.getEmail());
+        } else if (user instanceof Buyer) {
+            user.setId(buyers.size() + 1);
+            buyers.add((Buyer) user);
+            CSVDatabase.saveBuyers(buyers);
+            AuditManager.getInstance().logAudit("BUYER_REGISTERED", user.getId(), "New buyer created: " + user.getEmail());
         }
-        int newId = admins.size() + 1;
-        admins.add(new Admin(newId, firstName, lastName, email, password));
-        CSVDatabase.saveAdmins(admins);
-        EstateManager.getInstance().logAudit("ADMIN_REGISTERED", newId, "New admin created: " + email);
         return true;
+    }
+
+    private boolean isEmailTaken(String email) {
+        return admins.stream().anyMatch(a -> a.getEmail().equals(email)) ||
+               agents.stream().anyMatch(a -> a.getEmail().equals(email)) ||
+               buyers.stream().anyMatch(b -> b.getEmail().equals(email));
+    }
+
+    public User getUserById(int id, String role) {
+        if (role.equalsIgnoreCase("Admin")) return admins.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        if (role.equalsIgnoreCase("Agent")) return agents.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        if (role.equalsIgnoreCase("Buyer")) return buyers.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
+        return null;
     }
 
     public void deleteUser(int userId, String role) {
@@ -78,40 +100,10 @@ public class UserManager {
             buyers.removeIf(b -> b.getId() == userId);
             CSVDatabase.saveBuyers(buyers);
         }
-        EstateManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin deleted " + role + " ID " + userId);
+        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin deleted " + role + " ID " + userId);
     }
 
-    public boolean registerBuyer(String firstName, String lastName, String email, String password) {
-        for (Buyer b : buyers) {
-            if (b.getEmail().equals(email)) return false; 
-        }
-        int newId = buyers.size() + 1;
-        buyers.add(new Buyer(newId, firstName, lastName, email, password));
-        CSVDatabase.saveBuyers(buyers);
-        EstateManager.getInstance().logAudit("BUYER_REGISTERED", newId, "New buyer created: " + email);
-        return true;
-    }
-
-    public boolean registerAgent(String firstName, String lastName, String email, String password, int assignedBlock) {
-        for (Agent a : agents) {
-            if (a.getEmail().equals(email)) return false;
-        }
-        int newId = agents.size() + 1;
-        agents.add(new Agent(newId, firstName, lastName, email, password, assignedBlock, 0.0));
-        CSVDatabase.saveAgents(agents);
-        EstateManager.getInstance().logAudit("AGENT_REGISTERED", newId, "New agent created: " + email);
-        return true;
-    }
-    
-    public Agent getAgentById(int id) {
-        return agents.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
-    }
-
-    public Buyer getBuyerById(int id) {
-        return buyers.stream().filter(b -> b.getId() == id).findFirst().orElse(null);
-    }
-
-    public User getCurrentUser() { return currentUser; }
-    public void logout() { currentUser = null; }
-    public List<Agent> getAgents() { return agents; }
+    public User getCurrentUser() {return currentUser;}
+    public void logout() {currentUser = null;}
+    public List<Agent> getAgents() {return agents;}
 }

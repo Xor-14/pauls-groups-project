@@ -256,7 +256,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         }
         
         if (role.equals("Buyer")) {
-            boolean success = controller.UserManager.getInstance().registerBuyer(fName, lName, email, password);
+            boolean success = controller.UserManager.getInstance().register(new models.Buyer(0, fName, lName, email, password));
             if (success) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Buyer Account Created Successfully.");
                 new BuyerLoginFrame().setVisible(true);
@@ -265,7 +265,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Registration Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } else if (role.equals("Admin")) {
-            boolean success = controller.UserManager.getInstance().registerAdmin(fName, lName, email, password);
+            boolean success = controller.UserManager.getInstance().register(new models.Admin(0, fName, lName, email, password));
             if (success) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Admin Account Created Successfully.");
                 new StaffLoginFrame().setVisible(true);

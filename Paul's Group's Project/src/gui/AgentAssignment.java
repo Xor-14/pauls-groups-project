@@ -32,7 +32,7 @@ public class AgentAssignment extends javax.swing.JDialog {
     }
     
     private void registerWithBlock(int blockNumber) {
-        boolean success = controller.UserManager.getInstance().registerAgent(fName, lName, email, password, blockNumber);
+        boolean success = controller.UserManager.getInstance().register(new models.Agent(0, fName, lName, email, password, blockNumber, 0.0));
         
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "Account Created! You are assigned to Block " + blockNumber);
