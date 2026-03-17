@@ -230,13 +230,16 @@ public class AdminDashboard extends javax.swing.JFrame {
         attachButtonListeners();
         
         updateAllLotColors();
-        clickedcolor = new Color(0,0,0);
-        entered = new Color(110, 110, 110);
-        normal = new Color(255,255,255);
+        clickedcolor = new java.awt.Color(0,0,0);
+        entered = new java.awt.Color(110, 110, 110);
+        normal = new java.awt.Color(255,255,255);
+        
+        // Add all data loading functions here
         loadPendingTransactions();
         loadAdminHistory();
         loadAuditLogs();
         loadFinanceSettings();
+        loadAllTransactions();
     }
     
     public void applyFilters() {
@@ -380,7 +383,6 @@ public class AdminDashboard extends javax.swing.JFrame {
                 models.Lot lot = allLots.get(lotIndex);
                 javax.swing.JButton btn = lotButtons[b][l];
                 
-                // Clear existing listeners to prevent double-firing
                 for(java.awt.event.ActionListener al : btn.getActionListeners()) {
                     btn.removeActionListener(al);
                 }
@@ -398,10 +400,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                         
                         if (!oldStatus.equals(newStatus)) {
                             lot.setStatus(newStatus);
-                            // Persist changes to CSV
-                            controller.CSVDatabase.saveLots(controller.EstateManager.getInstance().getAllLots());
+                            // Rerouted to the new EstateManager encapsulation
+                            controller.EstateManager.getInstance().saveLots();
                             
-                            // Log the override
                             String detail = String.format("Admin overridden Lot %d from %s to %s", lot.getLotID(), oldStatus, newStatus);
                             controller.AuditManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), detail);
                             
@@ -416,10 +417,35 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     private void refreshDashboard() {
         controller.EstateManager.getInstance().refreshData();
+        controller.TransactionManager.getInstance().refreshData(); // Ensure transactions fetch latest CSV data
         updateAllLotColors();
         applyFilters();
+        
+        // Refresh all tables
         loadPendingTransactions();
         loadAdminHistory();
+        loadAllTransactions();
+    }
+    
+    private void loadAllTransactions() {
+        java.util.List<models.SaleTransaction> allTransactions = controller.TransactionManager.getInstance().getAllTransactions();
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Agent ID", "Buyer ID", "Type", "Financing", "Amount", "Status"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : allTransactions) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getAgentID(), t.getBuyerID(),
+                t.getType(), t.getFinancingType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+            });
+        }
+        
+        transactionTable.setModel(model); 
     }
     
     private void loadAuditLogs() {

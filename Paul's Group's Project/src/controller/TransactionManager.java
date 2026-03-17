@@ -19,7 +19,7 @@ public class TransactionManager {
     private List<SaleTransaction> transactions;
 
     private TransactionManager() {
-        transactions = CSVDatabase.loadTransactions();
+        transactions = loadTransactions();
     }
     
     private static class InstanceHolder {
@@ -30,21 +30,39 @@ public class TransactionManager {
         return InstanceHolder.INSTANCE;
     }
 
+    private List<SaleTransaction> loadTransactions() {
+        List<SaleTransaction> list = new ArrayList<>();
+        for(String[] v : CSVDatabase.readCSV(CSVDatabase.TRANSACTIONS_FILE)) {
+            if(v.length >= 10) {
+                list.add(new SaleTransaction(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), 
+                    Double.parseDouble(v[4].trim()), Double.parseDouble(v[5].trim()), Integer.parseInt(v[6].trim()), 
+                    Integer.parseInt(v[7].trim()), Integer.parseInt(v[8].trim()), v[9].trim()));
+            }
+        }
+        return list;
+    }
+
+    public void saveTransactions() {
+        List<String[]> data = new ArrayList<>();
+        for(SaleTransaction t : transactions) {
+            data.add(new String[]{String.valueOf(t.getTransactionID()), t.getDate(), t.getType(), t.getFinancingType(), 
+                String.valueOf(t.getAmount()), String.valueOf(t.getMonthlyAmortization()), String.valueOf(t.getLotID()), 
+                String.valueOf(t.getBuyerID()), String.valueOf(t.getAgentID()), t.getStatus()});
+        }
+        CSVDatabase.writeCSV(CSVDatabase.TRANSACTIONS_FILE, "transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,agentID,status", data);
+    }
+
     public List<SaleTransaction> getAllTransactions() { return transactions; }
 
     public List<SaleTransaction> getBuyerTransactions(int buyerId) {
         List<SaleTransaction> history = new ArrayList<>();
-        for (SaleTransaction t : transactions) {
-            if (t.getBuyerID() == buyerId) history.add(t);
-        }
+        for (SaleTransaction t : transactions) if (t.getBuyerID() == buyerId) history.add(t);
         return history;
     }
 
     public List<SaleTransaction> getAgentTransactions(int agentId) {
         List<SaleTransaction> history = new ArrayList<>();
-        for (SaleTransaction t : transactions) {
-            if (t.getAgentID() == agentId) history.add(t);
-        }
+        for (SaleTransaction t : transactions) if (t.getAgentID() == agentId) history.add(t);
         return history;
     }    
     
@@ -58,8 +76,8 @@ public class TransactionManager {
             
             transactions.add(new SaleTransaction(newId, date, type, financingType, amount, amortization, lotID, buyerID, 0, "Pending"));
             
-            CSVDatabase.saveLots(EstateManager.getInstance().getAllLots());
-            CSVDatabase.saveTransactions(transactions);
+            EstateManager.getInstance().saveLots();
+            saveTransactions();
             return true;
         }
         return false;
@@ -78,9 +96,7 @@ public class TransactionManager {
 
     public void resolveTransaction(int transactionId, int agentId, boolean approve) {
         SaleTransaction target = null;
-        for (SaleTransaction t : transactions) {
-            if (t.getTransactionID() == transactionId) target = t;
-        }
+        for (SaleTransaction t : transactions) if (t.getTransactionID() == transactionId) target = t;
         if (target == null) return;
 
         Lot lot = EstateManager.getInstance().findLotById(target.getLotID());
@@ -93,7 +109,7 @@ public class TransactionManager {
                 for (models.Agent a : UserManager.getInstance().getAgents()) {
                     if (a.getId() == agentId) {
                         a.addSale(target.getAmount());
-                        CSVDatabase.saveAgents(UserManager.getInstance().getAgents());
+                        UserManager.getInstance().saveAgents();
                         break;
                     }
                 }
@@ -105,11 +121,11 @@ public class TransactionManager {
             AuditManager.getInstance().logAudit("TRANSACTION_REJECTED", agentId, "Rejected TransID " + transactionId + " for Lot " + lot.getLotID());
         }
         
-        CSVDatabase.saveLots(EstateManager.getInstance().getAllLots());
-        CSVDatabase.saveTransactions(transactions);
+        EstateManager.getInstance().saveLots();
+        saveTransactions();
     }
     
     public void refreshData() {
-        this.transactions = CSVDatabase.loadTransactions();
+        this.transactions = loadTransactions();
     }
 }

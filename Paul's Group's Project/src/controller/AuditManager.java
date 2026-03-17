@@ -10,6 +10,7 @@
 
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import models.AuditLog;
 
@@ -25,15 +26,24 @@ public class AuditManager {
         return InstanceHolder.INSTANCE; 
     }
 
+    public List<AuditLog> getLogs() {
+        List<AuditLog> logs = new ArrayList<>();
+        for(String[] v : CSVDatabase.readCSV(CSVDatabase.AUDIT_FILE)) {
+            if(v.length >= 5) logs.add(new AuditLog(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), Integer.parseInt(v[3].trim()), v[4].trim()));
+        }
+        return logs;
+    }
+
     public void logAudit(String actionType, int userId, String details) {
-        List<AuditLog> logs = CSVDatabase.loadAuditLogs();
+        List<AuditLog> logs = getLogs();
         int newId = logs.size() + 1;
         String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         logs.add(new AuditLog(newId, timestamp, actionType, userId, details));
-        CSVDatabase.saveAuditLogs(logs);
-    }
-    
-    public List<AuditLog> getLogs() {
-        return CSVDatabase.loadAuditLogs();
+
+        List<String[]> data = new ArrayList<>();
+        for(AuditLog log : logs) {
+            data.add(new String[]{String.valueOf(log.getLogId()), log.getTimestamp(), log.getActionType(), String.valueOf(log.getUserId()), log.getDetails().replace(",", ";")});
+        }
+        CSVDatabase.writeCSV(CSVDatabase.AUDIT_FILE, "logId,timestamp,actionType,userId,details", data);
     }
 }

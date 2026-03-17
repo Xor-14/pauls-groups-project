@@ -20,7 +20,7 @@ public class EstateManager {
     private List<Block> blocks;
 
     private EstateManager() {
-        allLots = CSVDatabase.loadLots();
+        allLots = loadLots();
         initializeBlocks();
     }
     
@@ -29,6 +29,34 @@ public class EstateManager {
     }
 
     public static EstateManager getInstance() { return InstanceHolder.INSTANCE; }
+
+    private List<Lot> loadLots() {
+        List<Lot> lots = new ArrayList<>();
+        LotFactory factory = new ConcreteLotFactory();
+        List<String[]> data = CSVDatabase.readCSV(CSVDatabase.LOTS_FILE);
+        
+        for (String[] v : data) {
+            if (v.length < 9) continue;
+            try {
+                lots.add(factory.createLot(v[7].trim(), Integer.parseInt(v[0].trim()), Integer.parseInt(v[1].trim()), 
+                    Double.parseDouble(v[2].trim()), Double.parseDouble(v[3].trim()), Double.parseDouble(v[4].trim()), 
+                    Double.parseDouble(v[5].trim()), Double.parseDouble(v[6].trim()), v[8].trim()));
+            } catch (Exception e) { System.err.println("Lot parsing error: " + e.getMessage()); }
+        }
+        return lots;
+    }
+
+    public void saveLots() {
+        List<String[]> data = new ArrayList<>();
+        for (Lot lot : allLots) {
+            data.add(new String[]{
+                String.valueOf(lot.getLotID()), String.valueOf(lot.getBlockID()), String.valueOf(lot.getLotArea()), 
+                String.valueOf(lot.getFloorArea()), String.valueOf(lot.getTcp()), String.valueOf(lot.getReservationFee()), 
+                String.valueOf(lot.getHdmfMaxLoan()), lot.getLotType(), lot.getStatus()
+            });
+        }
+        CSVDatabase.writeCSV(CSVDatabase.LOTS_FILE, "lotID,blockID,lotArea,floorArea,tcp,rf,hdmfMax,type,status", data);
+    }
 
     private void initializeBlocks() {
         blocks = new ArrayList<>();
@@ -57,7 +85,7 @@ public class EstateManager {
         for (Lot lot : allLots) {
             if (lot.getLotID() == lotID && "Available".equalsIgnoreCase(lot.getStatus())) {
                 lot.setStatus("Reserved");
-                CSVDatabase.saveLots(allLots); 
+                saveLots(); 
                 return true;
             }
         }
@@ -72,16 +100,16 @@ public class EstateManager {
     }
     
     public void refreshData() {
-        this.allLots = CSVDatabase.loadLots();
+        this.allLots = loadLots();
         initializeBlocks(); 
     }
     
     public void adminOverrideLotStatus(int lotId, String newStatus) {
-        models.Lot lot = findLotById(lotId);
+        Lot lot = findLotById(lotId);
         if (lot != null) {
             String oldStatus = lot.getStatus();
             lot.setStatus(newStatus);
-            CSVDatabase.saveLots(allLots);
+            saveLots();
             AuditManager.getInstance().logAudit("ADMIN_OVERRIDE", 0, "Lot " + lotId + " changed from " + oldStatus + " to " + newStatus);
         }
     }
