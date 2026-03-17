@@ -10,6 +10,7 @@
 
 package controller;
 
+import models.Admin;
 import models.Agent;
 import models.Buyer;
 import models.Lot;
@@ -22,6 +23,7 @@ public class CSVDatabase {
     private static final String LOTS_FILE = "../Mock Data For Later/lots.csv";
     private static final String CLIENTS_FILE = "../Mock Data For Later/clients.csv";
     private static final String AGENTS_FILE = "../Mock Data For Later/agents.csv";
+    private static final String ADMINS_FILE = "../Mock Data For Later/admins.csv";
     private static final String TRANSACTIONS_FILE = "../Mock Data For Later/transactions.csv";
     private static final String AUDIT_FILE = "../Mock Data For Later/audit.csv";
 
@@ -113,6 +115,32 @@ public class CSVDatabase {
                 bw.write(String.format("%d,%s,%s,%s,%s,%d,%.2f\n", a.getId(), a.getFirstName(), a.getLastName(), a.getEmail(), a.getPassword(), a.getAssignedBlock(), a.getTotalSales()));
             }
         } catch (Exception e) { System.err.println("Error writing agents.csv: " + e.getMessage()); }
+    }
+    
+    public static List<Admin> loadAdmins() {
+        List<Admin> admins = new ArrayList<>();
+        File file = new File(ADMINS_FILE);
+        if (!file.exists()) return admins; // Return empty if file does not exist yet
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            br.readLine(); // Skip header
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                String[] v = line.split(",");
+                admins.add(new Admin(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), v[4].trim()));
+            }
+        } catch (Exception e) { System.err.println("Error reading admins.csv: " + e.getMessage()); }
+        return admins;
+    }
+
+    public static void saveAdmins(List<Admin> admins) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ADMINS_FILE))) {
+            bw.write("id,firstName,lastName,email,password\n");
+            for (Admin a : admins) {
+                bw.write(String.format("%d,%s,%s,%s,%s\n", a.getId(), a.getFirstName(), a.getLastName(), a.getEmail(), a.getPassword()));
+            }
+        } catch (Exception e) { System.err.println("Error writing admins.csv: " + e.getMessage()); }
     }
     
     public static List<SaleTransaction> loadTransactions() {
