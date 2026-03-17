@@ -10,6 +10,7 @@
 
 package controller;
 
+import models.Admin;
 import models.Agent;
 import models.Buyer;
 import models.User;
@@ -34,19 +35,32 @@ public class UserManager {
     }
 
     public User login(String email, String password) {
+        if (email.equals("admin") && password.equals("admin")) {
+            currentUser = new Admin(0, "System", "Admin", email, password);
+            return currentUser;
+        }
         for (Agent a : agents) {
             if (a.getEmail().equals(email) && a.getPassword().equals(password)) {
-                currentUser = a;
-                return a;
+                currentUser = a; return a;
             }
         }
         for (Buyer b : buyers) {
             if (b.getEmail().equals(email) && b.getPassword().equals(password)) {
-                currentUser = b;
-                return b;
+                currentUser = b; return b;
             }
         }
         return null;
+    }
+
+    public void deleteUser(int userId, String role) {
+        if (role.equals("Agent")) {
+            agents.removeIf(a -> a.getId() == userId);
+            CSVDatabase.saveAgents(agents);
+        } else if (role.equals("Buyer")) {
+            buyers.removeIf(b -> b.getId() == userId);
+            CSVDatabase.saveBuyers(buyers);
+        }
+        EstateManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin deleted " + role + " ID " + userId);
     }
 
     public boolean registerBuyer(String firstName, String lastName, String email, String password) {

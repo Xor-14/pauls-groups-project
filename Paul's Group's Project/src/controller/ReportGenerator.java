@@ -10,35 +10,42 @@
 
 package controller;
 
-import models.Lot;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import models.SaleTransaction;
 
 public class ReportGenerator {
 
-    public static void generateTextReport() {
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String filename = "Inventory_Report_" + timestamp + ".txt";
+    public static String buildReportString(List<SaleTransaction> transactions, int agentId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ESTATE SALES REPORT\n");
+        sb.append("Generated: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append("\n");
+        sb.append("Agent ID: ").append(agentId).append("\n");
+        sb.append("--------------------------------------------------\n");
         
-        try (FileWriter writer = new FileWriter(filename)) {
-            writer.write("REAL ESTATE INVENTORY REPORT\n");
-            writer.write("Generated: " + new Date().toString() + "\n\n");
-            writer.write(String.format("%-8s %-8s %-12s %-12s %-15s %-15s %-12s\n", 
-                "Lot ID", "Block ID", "Lot Area", "Floor Area", "TCP (PHP)", "Type", "Status"));
-            writer.write("----------------------------------------------------------------------------------------\n");
-            
-            List<Lot> lots = EstateManager.getInstance().getAllLots();
-            for (Lot lot : lots) {
-                writer.write(String.format("%-8d %-8d %-12.2f %-12.2f %-15.2f %-15s %-12s\n", 
-                    lot.getLotID(), lot.getBlockID(), lot.getLotArea(), lot.getFloorArea(), 
-                    lot.getTcp(), lot.getLotType(), lot.getStatus()));
+        double totalSales = 0;
+        int count = 0;
+        for (SaleTransaction t : transactions) {
+            if (t.getAgentID() == agentId && t.getStatus().equals("Approved")) {
+                sb.append(String.format("Trans ID: %d | Lot: %d | %s | PHP %,.2f\n", 
+                        t.getTransactionID(), t.getLotID(), t.getFinancingType(), t.getAmount()));
+                totalSales += t.getAmount();
+                count++;
             }
-            System.out.println("Report successfully generated: " + filename);
-        } catch (IOException e) {
-            System.err.println("Failed to generate report: " + e.getMessage());
         }
+        sb.append("--------------------------------------------------\n");
+        sb.append("Total Approved Transactions: ").append(count).append("\n");
+        sb.append(String.format("Total Sales Volume: PHP %,.2f\n", totalSales));
+        return sb.toString();
+    }
+
+    public static boolean exportToTXT(String content, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write(content);
+            return true;
+        } catch (IOException e) { return false; }
     }
 }

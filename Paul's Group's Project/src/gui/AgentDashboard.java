@@ -558,7 +558,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         Report = new javax.swing.JPanel();
         Title2 = new javax.swing.JLabel();
-        reportPlaceholder = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        reportTextArea = new javax.swing.JTextArea();
+        btnExportTXT = new javax.swing.JButton();
+        btnGenerateReport = new javax.swing.JButton();
+        btnExportPDF = new javax.swing.JButton();
         Transactions = new javax.swing.JPanel();
         Title3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -1866,11 +1870,35 @@ public class AgentDashboard extends javax.swing.JFrame {
         Title2.setText("REPORT");
         Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 340, 60));
 
-        reportPlaceholder.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        reportPlaceholder.setForeground(new java.awt.Color(255, 255, 255));
-        reportPlaceholder.setText("placeholder");
-        reportPlaceholder.setToolTipText("");
-        Report.add(reportPlaceholder, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 980, 630));
+        reportTextArea.setColumns(20);
+        reportTextArea.setRows(5);
+        jScrollPane2.setViewportView(reportTextArea);
+
+        Report.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 960, 560));
+
+        btnExportTXT.setText("Export as Text");
+        btnExportTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportTXTActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+
+        btnGenerateReport.setText("Generate");
+        btnGenerateReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerateReportActionPerformed(evt);
+            }
+        });
+        Report.add(btnGenerateReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        btnExportPDF.setText("Export as PDF");
+        btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportPDFActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
 
         MainContentSeller.addTab("tab4", Report);
 
@@ -2192,6 +2220,36 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordActionPerformed
 
+    private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
+        // TODO add your handling code here:
+        if (reportTextArea.getText().isEmpty()) return;
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), "Agent_Report.txt");
+        if (success) javax.swing.JOptionPane.showMessageDialog(this, "Saved as Agent_Report.txt");
+    }//GEN-LAST:event_btnExportTXTActionPerformed
+
+    private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
+        // TODO add your handling code here:
+        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
+        String data = controller.ReportGenerator.buildReportString(controller.EstateManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
+        reportTextArea.setText(data);
+    }//GEN-LAST:event_btnGenerateReportActionPerformed
+
+    private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
+        // TODO add your handling code here:
+        if (reportTextArea.getText().isEmpty()) return;
+        try {
+            // Requires iText7 library in project dependencies
+            com.itextpdf.kernel.pdf.PdfWriter writer = new com.itextpdf.kernel.pdf.PdfWriter("Agent_Report.pdf");
+            com.itextpdf.kernel.pdf.PdfDocument pdf = new com.itextpdf.kernel.pdf.PdfDocument(writer);
+            com.itextpdf.layout.Document document = new com.itextpdf.layout.Document(pdf);
+            document.add(new com.itextpdf.layout.element.Paragraph(reportTextArea.getText()));
+            document.close();
+            javax.swing.JOptionPane.showMessageDialog(this, "Saved as Agent_Report.pdf");
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "PDF Export Failed. Ensure iText7 libraries are loaded.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportPDFActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2373,6 +2431,9 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
     private javax.swing.JLabel bgimg;
+    private javax.swing.JButton btnExportPDF;
+    private javax.swing.JButton btnExportTXT;
+    private javax.swing.JButton btnGenerateReport;
     private javax.swing.JButton change;
     private javax.swing.JTextField email;
     private javax.swing.JLabel firstName;
@@ -2390,6 +2451,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lastName;
     private javax.swing.JButton logOut;
@@ -2397,7 +2459,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel lotsView;
     private javax.swing.JTextField password;
     private javax.swing.JScrollPane perfOverview;
-    private javax.swing.JLabel reportPlaceholder;
+    private javax.swing.JTextArea reportTextArea;
     private javax.swing.JScrollPane reservOverview;
     private javax.swing.JPanel reservation1;
     private javax.swing.JPanel reservation2;

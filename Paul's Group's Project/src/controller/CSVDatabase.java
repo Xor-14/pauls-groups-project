@@ -22,8 +22,8 @@ public class CSVDatabase {
     private static final String LOTS_FILE = "../Mock Data For Later/lots.csv";
     private static final String CLIENTS_FILE = "../Mock Data For Later/clients.csv";
     private static final String AGENTS_FILE = "../Mock Data For Later/agents.csv";
-        private static final String TRANSACTIONS_FILE = "../Mock Data For Later/transactions.csv";
-
+    private static final String TRANSACTIONS_FILE = "../Mock Data For Later/transactions.csv";
+    private static final String AUDIT_FILE = "../Mock Data For Later/audit.csv";
 
     public static List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();
@@ -143,6 +143,29 @@ public class CSVDatabase {
                     t.getBuyerID(), t.getAgentID(), t.getStatus()));
             }
         } catch (Exception e) { System.err.println("Error writing transactions.csv: " + e.getMessage()); }
+    }
+ 
+    public static java.util.List<models.AuditLog> loadAuditLogs() {
+        java.util.List<models.AuditLog> logs = new java.util.ArrayList<>();
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(AUDIT_FILE))) {
+            br.readLine(); 
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                String[] v = line.split(",", 5);
+                logs.add(new models.AuditLog(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), Integer.parseInt(v[3].trim()), v[4].trim()));
+            }
+        } catch (Exception e) { System.err.println("Error reading audit.csv: " + e.getMessage()); }
+        return logs;
+    }
+
+    public static void saveAuditLogs(java.util.List<models.AuditLog> logs) {
+        try (java.io.BufferedWriter bw = new java.io.BufferedWriter(new java.io.FileWriter(AUDIT_FILE))) {
+            bw.write("logId,timestamp,actionType,userId,details\n");
+            for (models.AuditLog log : logs) {
+                bw.write(String.format("%d,%s,%s,%d,%s\n", log.getLogId(), log.getTimestamp(), log.getActionType(), log.getUserId(), log.getDetails().replace(",", ";")));
+            }
+        } catch (Exception e) { System.err.println("Error writing audit.csv: " + e.getMessage()); }
     }
     
 }

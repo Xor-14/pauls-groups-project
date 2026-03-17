@@ -49,6 +49,9 @@
           </Border>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="LoginDialog_LoginDetails"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
