@@ -11,7 +11,7 @@ import javax.swing.Timer;
  *
  * @author xor
  */
-public class AgentLoginFrame extends javax.swing.JFrame {
+public class StaffLoginFrame extends javax.swing.JFrame {
      /**
      * Creates new form BuyerLoginFrame
      */ 
@@ -29,7 +29,7 @@ public class AgentLoginFrame extends javax.swing.JFrame {
     timer.start();
 }
 
-    public AgentLoginFrame() {
+    public StaffLoginFrame() {
         initComponents();
         imageSlideshow();
     }
@@ -81,7 +81,7 @@ public class AgentLoginFrame extends javax.swing.JFrame {
         Title.setFont(new java.awt.Font("Arial", 1, 32)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Title.setText("<html>Welcome, Agent!</html>");
+        Title.setText("<html>Welcome, Staff!</html>");
         Title.setToolTipText("");
         LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 400, -1));
 
@@ -174,7 +174,7 @@ public class AgentLoginFrame extends javax.swing.JFrame {
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
         switchAccount.setForeground(new java.awt.Color(255, 255, 255));
-        switchAccount.setText("Switch to Buyer's Account");
+        switchAccount.setText("Switch to Buyer's Portal");
         switchAccount.setAlignmentY(0.0F);
         switchAccount.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         switchAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -273,21 +273,23 @@ public class AgentLoginFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AgentLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AgentLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AgentLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AgentLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AgentLoginFrame().setVisible(true);
+                new StaffLoginFrame().setVisible(true);
             }
         });
     }

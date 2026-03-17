@@ -57,8 +57,9 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         userPass = new javax.swing.JPasswordField();
         login = new javax.swing.JButton();
         noaccount = new javax.swing.JLabel();
-        shiftForms = new javax.swing.JButton();
+        logAsStaff = new javax.swing.JButton();
         roleComboBox = new javax.swing.JComboBox<>();
+        logAsBuyer = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         bgimg = new javax.swing.JLabel();
@@ -168,23 +169,23 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         noaccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noaccount.setForeground(new java.awt.Color(255, 255, 255));
         noaccount.setText("Already have an account?");
-        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, -1));
+        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, -1, -1));
 
-        shiftForms.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
-        shiftForms.setText("Login");
-        shiftForms.setAlignmentY(0.0F);
-        shiftForms.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        shiftForms.setBorderPainted(false);
-        shiftForms.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        shiftForms.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        shiftForms.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        shiftForms.setOpaque(true);
-        shiftForms.addActionListener(new java.awt.event.ActionListener() {
+        logAsStaff.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
+        logAsStaff.setText("Login as Staff");
+        logAsStaff.setAlignmentY(0.0F);
+        logAsStaff.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        logAsStaff.setBorderPainted(false);
+        logAsStaff.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        logAsStaff.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        logAsStaff.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        logAsStaff.setOpaque(true);
+        logAsStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shiftFormsActionPerformed(evt);
+                logAsStaffActionPerformed(evt);
             }
         });
-        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 80, 20));
+        LoginForm.add(logAsStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 440, 80, 20));
 
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buyer", "Agent", "Admin" }));
         roleComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -193,6 +194,22 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
             }
         });
         LoginForm.add(roleComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 62, 120, 30));
+
+        logAsBuyer.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
+        logAsBuyer.setText("Login as Buyer");
+        logAsBuyer.setAlignmentY(0.0F);
+        logAsBuyer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        logAsBuyer.setBorderPainted(false);
+        logAsBuyer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        logAsBuyer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        logAsBuyer.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        logAsBuyer.setOpaque(true);
+        logAsBuyer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logAsBuyerActionPerformed(evt);
+            }
+        });
+        LoginForm.add(logAsBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, 80, 20));
 
         getContentPane().add(LoginForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 162, 401, 474));
 
@@ -222,37 +239,46 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        String fName = firstName.getText();
-        String lName = lastName.getText();
-        String email = emailField.getText(); // Ensure this matches your variable name
-        String password = new String(userPass.getPassword());
-        
+        String fName = firstName.getText().trim();
+        String lName = lastName.getText().trim();
+        String email = emailField.getText().trim();
+        String password = new String(userPass.getPassword()).trim();
         String role = roleComboBox.getSelectedItem().toString();
+        
+        // Input Sanitation
+        if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "All fields are required.", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (fName.contains(",") || lName.contains(",") || email.contains(",") || password.contains(",")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Commas are not allowed in input fields.", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         if (role.equals("Buyer")) {
             boolean success = controller.UserManager.getInstance().registerBuyer(fName, lName, email, password);
             if (success) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Buyer Account Created Successfully.");
+                new BuyerLoginFrame().setVisible(true);
                 this.dispose();
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Registration Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } else if (role.equals("Admin")) {
             boolean success = controller.UserManager.getInstance().registerAdmin(fName, lName, email, password);
             if (success) {
-                controller.EstateManager.getInstance().logAudit("ADMIN_REGISTERED", 0, "New admin created: " + email);
                 javax.swing.JOptionPane.showMessageDialog(this, "Admin Account Created Successfully.");
+                new StaffLoginFrame().setVisible(true);
                 this.dispose();
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, "Email already exists.", "Registration Failed", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } else if (role.equals("Agent")) {
-            // Pass the captured data directly into the AgentAssignment constructor
             AgentAssignment assignmentFrame = new AgentAssignment(this, true, fName, lName, email, password);
             assignmentFrame.setLocationRelativeTo(this);
             assignmentFrame.setVisible(true);
             this.dispose();
-        }        
+        }
     }//GEN-LAST:event_loginActionPerformed
 
     private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
@@ -263,12 +289,12 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailFieldActionPerformed
 
-    private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
+    private void logAsStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logAsStaffActionPerformed
         // TODO add your handling code here:
-        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
-        BuyerLoginFrame.setVisible(true);
+        StaffLoginFrame loginFrame = new StaffLoginFrame();
+        loginFrame.setVisible(true);
         dispose();
-    }//GEN-LAST:event_shiftFormsActionPerformed
+    }//GEN-LAST:event_logAsStaffActionPerformed
 
     private void userPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userPassActionPerformed
         // TODO add your handling code here:
@@ -277,6 +303,13 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
     private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_roleComboBoxActionPerformed
+
+    private void logAsBuyerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logAsBuyerActionPerformed
+        // TODO add your handling code here:
+        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
+        BuyerLoginFrame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logAsBuyerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -330,10 +363,11 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField lastName;
+    private javax.swing.JButton logAsBuyer;
+    private javax.swing.JButton logAsStaff;
     private javax.swing.JButton login;
     private javax.swing.JLabel noaccount;
     private javax.swing.JComboBox<String> roleComboBox;
-    private javax.swing.JButton shiftForms;
     private javax.swing.JPasswordField userPass;
     // End of variables declaration//GEN-END:variables
 }

@@ -159,7 +159,7 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
         switchAccount.setForeground(new java.awt.Color(255, 255, 255));
-        switchAccount.setText("Switch to Seller's Account");
+        switchAccount.setText("Switch to Staff Portal");
         switchAccount.setAlignmentY(0.0F);
         switchAccount.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         switchAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -232,7 +232,7 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
 
     private void switchAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchAccountActionPerformed
         // TODO add your handling code here:
-        AgentLoginFrame AgentLoginFrame=new AgentLoginFrame();
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
         AgentLoginFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_switchAccountActionPerformed

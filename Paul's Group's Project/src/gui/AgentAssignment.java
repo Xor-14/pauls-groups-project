@@ -36,7 +36,7 @@ public class AgentAssignment extends javax.swing.JDialog {
         
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "Account Created! You are assigned to Block " + blockNumber);
-            new AgentLoginFrame().setVisible(true);
+            new StaffLoginFrame().setVisible(true);
             this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Email already exists!", "Registration Error", javax.swing.JOptionPane.ERROR_MESSAGE);

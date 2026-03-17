@@ -2048,7 +2048,7 @@ public class AgentDashboard extends javax.swing.JFrame {
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         // TODO add your handling code here:
-        AgentLoginFrame AgentLoginFrame=new AgentLoginFrame();
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
         AgentLoginFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_logOutActionPerformed

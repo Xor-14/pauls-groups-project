@@ -2,3 +2,4 @@ id,firstName,lastName,email,password
 1,admin,admin,admin@test.com,pass123
 2,Darrell,Capa,darrell@test.com,pass123
 3,Gloren,Fuentes,gloren@test.com,pass123
+4,Joe,Smith,joe@test.com,pass123

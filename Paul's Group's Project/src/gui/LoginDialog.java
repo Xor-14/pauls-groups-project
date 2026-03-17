@@ -134,7 +134,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private void ActionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButton3ActionPerformed
         // TODO add your handling code here:
-        AgentLoginFrame AgentLoginFrame=new AgentLoginFrame();
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
         AgentLoginFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ActionButton3ActionPerformed
