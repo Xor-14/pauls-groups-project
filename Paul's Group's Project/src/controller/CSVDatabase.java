@@ -175,15 +175,26 @@ public class CSVDatabase {
  
     public static java.util.List<models.AuditLog> loadAuditLogs() {
         java.util.List<models.AuditLog> logs = new java.util.ArrayList<>();
-        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(AUDIT_FILE))) {
+        java.io.File file = new java.io.File(AUDIT_FILE);
+        
+        // Prevent FileNotFoundException if file is missing
+        if (!file.exists()) return logs; 
+
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(file))) {
             br.readLine(); 
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 String[] v = line.split(",", 5);
+                
+                // Prevent ArrayOutOfBoundsException on malformed data
+                if (v.length < 5) continue; 
+                
                 logs.add(new models.AuditLog(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), Integer.parseInt(v[3].trim()), v[4].trim()));
             }
-        } catch (Exception e) { System.err.println("Error reading audit.csv: " + e.getMessage()); }
+        } catch (Exception e) { 
+            System.err.println("Error reading audit.csv: " + e.getMessage()); 
+        }
         return logs;
     }
 

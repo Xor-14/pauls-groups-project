@@ -66,6 +66,7 @@ public class UserManager {
         int newId = admins.size() + 1;
         admins.add(new Admin(newId, firstName, lastName, email, password));
         CSVDatabase.saveAdmins(admins);
+        EstateManager.getInstance().logAudit("ADMIN_REGISTERED", newId, "New admin created: " + email);
         return true;
     }
 
@@ -87,6 +88,7 @@ public class UserManager {
         int newId = buyers.size() + 1;
         buyers.add(new Buyer(newId, firstName, lastName, email, password));
         CSVDatabase.saveBuyers(buyers);
+        EstateManager.getInstance().logAudit("BUYER_REGISTERED", newId, "New buyer created: " + email);
         return true;
     }
 
@@ -97,6 +99,7 @@ public class UserManager {
         int newId = agents.size() + 1;
         agents.add(new Agent(newId, firstName, lastName, email, password, assignedBlock, 0.0));
         CSVDatabase.saveAgents(agents);
+        EstateManager.getInstance().logAudit("AGENT_REGISTERED", newId, "New agent created: " + email);
         return true;
     }
     
