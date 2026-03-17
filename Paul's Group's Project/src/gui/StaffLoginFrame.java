@@ -11,7 +11,7 @@ import javax.swing.Timer;
  *
  * @author xor
  */
-public class AdminLoginFrame extends javax.swing.JFrame {
+public class StaffLoginFrame extends javax.swing.JFrame {
      /**
      * Creates new form BuyerLoginFrame
      */ 
@@ -29,7 +29,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
     timer.start();
 }
 
-    public AdminLoginFrame() {
+    public StaffLoginFrame() {
         initComponents();
         imageSlideshow();
     }
@@ -81,7 +81,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         Title.setFont(new java.awt.Font("Arial", 1, 32)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Title.setText("<html>Welcome, Agent!</html>");
+        Title.setText("<html>Welcome, Staff!</html>");
         Title.setToolTipText("");
         LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 400, -1));
 
@@ -174,7 +174,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
         switchAccount.setForeground(new java.awt.Color(255, 255, 255));
-        switchAccount.setText("Switch to Buyer's Account");
+        switchAccount.setText("Switch to Buyer's Portal");
         switchAccount.setAlignmentY(0.0F);
         switchAccount.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         switchAccount.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -220,23 +220,27 @@ public class AdminLoginFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-            String email = userName.getText();
-        String password = new String(userPass.getPassword());
-
+        String email = userName.getText().trim(); 
+        String password = new String(userPass.getPassword()).trim(); 
+        
         models.User user = controller.UserManager.getInstance().login(email, password);
-
+        
         if (user instanceof models.Admin) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Admin Login Successful");
-            // Open Admin Dashboard here
+            new AdminDashboard().setVisible(true);
             this.dispose();
+        } else if (user instanceof models.Agent) {
+            new AgentDashboard().setVisible(true);
+            this.dispose();
+        } else if (user instanceof models.Buyer) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Buyers must use the Client Portal.", "Access Denied", javax.swing.JOptionPane.WARNING_MESSAGE);
         } else {
-            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Admin Credentials", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid Credentials", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loginActionPerformed
 
     private void shiftFormsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shiftFormsActionPerformed
         // TODO add your handling code here:
-        NewAgentAccountFrame NewAgentAccountFrame=new NewAgentAccountFrame();
+        RegisterAccountFrame NewAgentAccountFrame=new RegisterAccountFrame();
         NewAgentAccountFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_shiftFormsActionPerformed
@@ -269,13 +273,13 @@ public class AdminLoginFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(StaffLoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -285,7 +289,7 @@ public class AdminLoginFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminLoginFrame().setVisible(true);
+                new StaffLoginFrame().setVisible(true);
             }
         });
     }

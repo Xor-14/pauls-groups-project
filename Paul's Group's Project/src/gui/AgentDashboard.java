@@ -254,7 +254,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         reservations.removeAll(); 
         
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> pending = controller.EstateManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
+        java.util.List<models.SaleTransaction> pending = controller.TransactionManager.getInstance().getPendingTransactionsForAgent(agent.getAssignedBlock());
         
         for (models.SaleTransaction t : pending) {
             reservations.add(createTransactionCard(t, agent.getId()));
@@ -310,14 +310,14 @@ public class AgentDashboard extends javax.swing.JFrame {
         rejectBtn.setForeground(java.awt.Color.WHITE);
 
         approveBtn.addActionListener(e -> {
-            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
             loadPendingTransactions();
             loadAgentHistory();
         });
 
         rejectBtn.addActionListener(e -> {
-            controller.EstateManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
             loadPendingTransactions();
             loadAgentHistory();
@@ -332,7 +332,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     
     private void loadAgentHistory() {
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -2048,7 +2048,7 @@ public class AgentDashboard extends javax.swing.JFrame {
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         // TODO add your handling code here:
-        AgentLoginFrame AgentLoginFrame=new AgentLoginFrame();
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
         AgentLoginFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_logOutActionPerformed
@@ -2233,14 +2233,14 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent.getId());
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent);
         if (success) javax.swing.JOptionPane.showMessageDialog(this, "Text Report saved to Downloads.");
     }//GEN-LAST:event_btnExportTXTActionPerformed
 
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        String data = controller.ReportGenerator.buildReportString(controller.EstateManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent);
         reportTextArea.setText(data);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
@@ -2248,7 +2248,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent.getId());
+        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "PDF Report saved to Downloads.");
         } else {
@@ -2259,9 +2259,9 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> transactions = controller.EstateManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
         
-        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent.getId());
+        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "CSV Report saved to Downloads.");
         } else {

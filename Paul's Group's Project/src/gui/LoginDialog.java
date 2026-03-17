@@ -76,7 +76,7 @@ public class LoginDialog extends javax.swing.JDialog {
         ActionButton3.setBackground(new java.awt.Color(255, 98, 96));
         ActionButton3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         ActionButton3.setForeground(new java.awt.Color(255, 255, 255));
-        ActionButton3.setText("Login as an Agent");
+        ActionButton3.setText("Login as Staff");
         ActionButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ActionButton3MouseClicked(evt);
@@ -134,7 +134,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private void ActionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActionButton3ActionPerformed
         // TODO add your handling code here:
-        AgentLoginFrame AgentLoginFrame=new AgentLoginFrame();
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
         AgentLoginFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ActionButton3ActionPerformed

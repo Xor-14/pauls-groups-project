@@ -13,15 +13,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import controller.EstateManager;
-import models.Lot;
-import java.util.List;
-
 /**
  *
  * @author xor
  */
-public class BuyerDashboard extends javax.swing.JFrame {
+public class AdminDashboard extends javax.swing.JFrame {
     
      /**
      * 
@@ -30,7 +26,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private int imageIndex = 0;
     private LotFilterPanel customFilterPanel;
     
-    private void imageSlideshow() {
+   private void imageSlideshow() {
 
     Timer timer = new Timer(8000, e -> {
         imageIndex = (imageIndex + 1) % imgslides.length;
@@ -39,7 +35,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
             new ImageIcon(getClass().getResource(imgslides[imageIndex])));
     });
     timer.start();
-    }
+}
    /** 
     * Colors
      */ 
@@ -50,6 +46,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
         
    /** 
     * Creating Lots Status (Buttons) for future reference
+     * @param btn
+     * @param status
      */ 
    public void setLotStatus(JButton btn, String status){
 
@@ -188,32 +186,60 @@ public class BuyerDashboard extends javax.swing.JFrame {
     lotButtons[4][19] = b5_l20;
 
 }
-    private void updateAllLotColors() {
-        for (int b = 0; b < 5; b++) {
-            for (int l = 0; l < 20; l++) {
-                updateLotColor(b, l);
-            }
-        }
-    }
-    
-    public void updateLotColor(int b, int l){
-        JButton btn = lotButtons[b][l];
-        int lotIndex = (b * 20) + l;
-        Lot lot = EstateManager.getInstance().getAllLots().get(lotIndex);
 
+    public void updateLotColor(int b, int l) {
+        javax.swing.JButton btn = lotButtons[b][l];
+        int lotIndex = (b * 20) + l;
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+
+        if (lotIndex >= allLots.size()) return;
+
+        models.Lot lot = allLots.get(lotIndex);
         btn.setOpaque(true);
 
         String status = lot.getStatus();
-        if(status.equalsIgnoreCase("Available")) {
-            btn.setBackground(vacant);
-        } else if(status.equalsIgnoreCase("Reserved")) {
-            btn.setBackground(reserved);
+        if (status.equalsIgnoreCase("Available")) {
+            btn.setBackground(vacant); // Green
+        } else if (status.equalsIgnoreCase("Reserved") || status.toLowerCase().contains("pending")) {
+            btn.setBackground(reserved); // Blue
         } else {
-            btn.setBackground(occupied);
+            btn.setBackground(occupied); // Red
         }
         
         btn.setContentAreaFilled(true);
         btn.setBorderPainted(false);
+    }
+    
+    private void updateAllLotColors(){
+
+    for(int b = 0; b < 5; b++){
+        for(int l = 0; l < 20; l++){
+
+            updateLotColor(b,l);
+
+            }
+        }
+    }
+
+    public AdminDashboard() {
+        initComponents();
+        customFilterPanel = new LotFilterPanel(this::applyFilters);
+        Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
+        imageSlideshow();
+        mapButtons();
+        attachButtonListeners();
+        
+        updateAllLotColors();
+        clickedcolor = new java.awt.Color(0,0,0);
+        entered = new java.awt.Color(110, 110, 110);
+        normal = new java.awt.Color(255,255,255);
+        
+        // Add all data loading functions here
+        loadPendingTransactions();
+        loadAdminHistory();
+        loadAuditLogs();
+        loadFinanceSettings();
+        loadAllTransactions();
     }
     
     public void applyFilters() {
@@ -228,15 +254,105 @@ public class BuyerDashboard extends javax.swing.JFrame {
             }
         }   
     }
-    
-    private void loadBuyerHistory() {
-        models.Buyer buyer = (models.Buyer) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getBuyerTransactions(buyer.getId());
+ 
+    private void loadPendingTransactions() {
+        // Retrieve all transactions and manually filter for 'Pending'
+        java.util.List<models.SaleTransaction> all = controller.TransactionManager.getInstance().getAllTransactions();
+        java.util.List<models.SaleTransaction> pending = new java.util.ArrayList<>();
         
-        // Prevent cells from being manually edited by the user
+        for(models.SaleTransaction t : all) {
+            if(t.getStatus().equalsIgnoreCase("Pending")) {
+                pending.add(t);
+            }
+        }
+        
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
-            new String [] {"Trans. ID", "Date", "Lot ID", "Type", "Financing", "Amount", "Status"}
+            new String [] {"Trans. ID", "Date", "Lot ID", "Buyer ID", "Type", "Amount"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : pending) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getBuyerID(),
+                t.getType(), String.format("PHP %,.2f", t.getAmount())
+            });
+        }
+        
+        // Ensure this matches your NetBeans table variable name (e.g., pendingTable)
+        transactionTable.setModel(model);
+    }
+
+    private javax.swing.JPanel createTransactionCard(models.SaleTransaction t, int agentId) {
+        javax.swing.JPanel card = new javax.swing.JPanel();
+        card.setBackground(new java.awt.Color(45, 45, 45)); // Dark gray match
+        card.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(100, 100, 100), 1, true));
+        card.setLayout(new java.awt.GridLayout(1, 5, 10, 10)); // 1 row, 5 columns
+
+        // 1. Type Label
+        javax.swing.JLabel typeLabel = new javax.swing.JLabel(t.getType() + " Request");
+        typeLabel.setForeground(java.awt.Color.WHITE);
+        typeLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        card.add(typeLabel);
+
+        // 2. Buyer ID / Financing
+        javax.swing.JLabel buyerLabel = new javax.swing.JLabel("<html>Buyer ID: " + t.getBuyerID() + "<br>Financing: " + t.getFinancingType() + "</html>");
+        buyerLabel.setForeground(java.awt.Color.LIGHT_GRAY);
+        card.add(buyerLabel);
+
+        // 3. Location Label
+        models.Lot lot = controller.EstateManager.getInstance().findLotById(t.getLotID());
+        javax.swing.JLabel locLabel = new javax.swing.JLabel("Block " + lot.getBlockID() + " - Lot " + lot.getLotID());
+        locLabel.setForeground(java.awt.Color.WHITE);
+        card.add(locLabel);
+
+        // 4. Amount Label
+        javax.swing.JLabel amtLabel = new javax.swing.JLabel(String.format("PHP %,.2f", t.getAmount()));
+        amtLabel.setForeground(java.awt.Color.WHITE);
+        card.add(amtLabel);
+
+        // 5. Buttons Panel
+        javax.swing.JPanel btnPanel = new javax.swing.JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        btnPanel.setOpaque(false);
+        
+        javax.swing.JButton approveBtn = new javax.swing.JButton("✓");
+        approveBtn.setBackground(new java.awt.Color(0, 153, 0));
+        approveBtn.setForeground(java.awt.Color.WHITE);
+        
+        javax.swing.JButton rejectBtn = new javax.swing.JButton("X");
+        rejectBtn.setBackground(new java.awt.Color(204, 0, 0));
+        rejectBtn.setForeground(java.awt.Color.WHITE);
+
+        approveBtn.addActionListener(e -> {
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
+            loadPendingTransactions();
+            loadAdminHistory();
+        });
+
+        rejectBtn.addActionListener(e -> {
+            controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
+            javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
+            loadPendingTransactions();
+            loadAdminHistory();
+        });
+
+        btnPanel.add(approveBtn);
+        btnPanel.add(rejectBtn);
+        card.add(btnPanel);
+
+        return card;
+    }
+    
+    private void loadAdminHistory() {
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAllTransactions();
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Buyer ID", "Type", "Amount", "Status"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
@@ -244,64 +360,126 @@ public class BuyerDashboard extends javax.swing.JFrame {
         
         for (models.SaleTransaction t : history) {
             model.addRow(new Object[]{
-                t.getTransactionID(), t.getDate(), t.getLotID(), 
-                t.getType(), t.getFinancingType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getBuyerID(),
+                t.getType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
             });
         }
-        buyerHistoryTable.setModel(model);
-    }
-    
-    public BuyerDashboard() {
-        initComponents();
-        customFilterPanel = new LotFilterPanel(this::applyFilters);
-        Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
-        imageSlideshow();
-        mapButtons();
         
-        // Backend integration replacements
-        attachButtonListeners();
-        updateAllLotColors();
-        loadBuyerHistory();
-        
-        clickedcolor = new Color(0,0,0);
-        entered = new Color(110, 110, 110);
-        normal = new Color(255,255,255);
+        jTable1.setModel(model); 
     }
     
     private void attachButtonListeners() {
-        List<Lot> allLots = EstateManager.getInstance().getAllLots();
+        java.util.List<models.Lot> allLots = controller.EstateManager.getInstance().getAllLots();
+        models.Admin currentAdmin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
         
-        for(int b = 0; b < 5; b++) {
-            for(int l = 0; l < 20; l++) {
-                // Calculate the 1D list index (0-99) from the 2D grid coordinates
-                int lotIndex = (b * 20) + l;
-                if (lotIndex >= allLots.size()) break; // Safety check
-                
-                Lot lot = allLots.get(lotIndex);
-                JButton btn = lotButtons[b][l];
-                
+        for (int b = 0; b < 5; b++) {
+            for (int l = 0; l < 20; l++) {
                 int finalB = b;
                 int finalL = l;
+                int lotIndex = (b * 20) + l;
                 
-                // Attach click event
+                if (lotIndex >= allLots.size()) break;
+                
+                models.Lot lot = allLots.get(lotIndex);
+                javax.swing.JButton btn = lotButtons[b][l];
+                
+                for(java.awt.event.ActionListener al : btn.getActionListeners()) {
+                    btn.removeActionListener(al);
+                }
+                
                 btn.addActionListener(e -> {
-                    // Pass the specific Lot object to the dialog
-                    LotDetailsDialog dialog = new LotDetailsDialog(this, true, lot);
-                    dialog.setLocationRelativeTo(this);
-                    dialog.setVisible(true);
-                    
-                    // Refresh color when dialog closes in case user reserved it
-                    updateLotColor(finalB, finalL);
+                    String[] options = {"Available", "Reserved", "Occupied", "Cancel"};
+                    int choice = javax.swing.JOptionPane.showOptionDialog(this,
+                        "Override Status for Block " + lot.getBlockID() + " - Lot " + lot.getLotID(),
+                        "Admin Override", javax.swing.JOptionPane.DEFAULT_OPTION,
+                        javax.swing.JOptionPane.WARNING_MESSAGE, null, options, options[3]);
+                        
+                    if (choice >= 0 && choice < 3) {
+                        String oldStatus = lot.getStatus();
+                        String newStatus = options[choice];
+                        
+                        if (!oldStatus.equals(newStatus)) {
+                            lot.setStatus(newStatus);
+                            // Rerouted to the new EstateManager encapsulation
+                            controller.EstateManager.getInstance().saveLots();
+                            
+                            String detail = String.format("Admin overridden Lot %d from %s to %s", lot.getLotID(), oldStatus, newStatus);
+                            controller.AuditManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), detail);
+                            
+                            updateLotColor(finalB, finalL);
+                            javax.swing.JOptionPane.showMessageDialog(this, "Lot status updated successfully.");
+                        }
+                    }
                 });
             }
         }
     }
- 
+    
     private void refreshDashboard() {
         controller.EstateManager.getInstance().refreshData();
+        controller.TransactionManager.getInstance().refreshData(); // Ensure transactions fetch latest CSV data
         updateAllLotColors();
         applyFilters();
-        loadBuyerHistory();
+        
+        // Refresh all tables
+        loadPendingTransactions();
+        loadAdminHistory();
+        loadAllTransactions();
+    }
+    
+    private void loadAllTransactions() {
+        java.util.List<models.SaleTransaction> allTransactions = controller.TransactionManager.getInstance().getAllTransactions();
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Trans. ID", "Date", "Lot ID", "Agent ID", "Buyer ID", "Type", "Financing", "Amount", "Status"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        for (models.SaleTransaction t : allTransactions) {
+            model.addRow(new Object[]{
+                t.getTransactionID(), t.getDate(), t.getLotID(), t.getAgentID(), t.getBuyerID(),
+                t.getType(), t.getFinancingType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
+            });
+        }
+        
+        transactionTable.setModel(model); 
+    }
+    
+    private void loadAuditLogs() {
+        // Assuming CSVDatabase has a loadAuditLogs method returning List<AuditLog>
+        java.util.List<models.AuditLog> logs = controller.AuditManager.getInstance().getLogs();
+        
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Log ID", "Timestamp", "Action", "User ID", "Details"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) { return false; }
+        };
+        
+        // Reverse iterate to show newest logs at the top
+        for (int i = logs.size() - 1; i >= 0; i--) {
+            models.AuditLog log = logs.get(i);
+            model.addRow(new Object[]{
+                log.getLogId(), log.getTimestamp(), log.getActionType(), log.getUserId(), log.getDetails()
+            });
+        }
+        auditTable.setModel(model);
+    }
+    
+    private void loadFinanceSettings() {
+        controller.FinanceManager fm = controller.FinanceManager.getInstance();
+        txtBdoRate.setText(String.valueOf(fm.getBdoRate()));
+        txtBpiRate.setText(String.valueOf(fm.getBpiRate()));
+        txtRcbcRate.setText(String.valueOf(fm.getRcbcRate()));
+        txtPagIbigRate.setText(String.valueOf(fm.getPagIbigRate()));
+        txtDownPayment.setText(String.valueOf(fm.getDownPaymentPercent()));
+        txtMaxLoan.setText(String.valueOf(fm.getPagIbigMaxLoan()));
+        txtMiscFee.setText(String.valueOf(fm.getMiscFeePercent()));
+        txtResFee.setText(String.valueOf(fm.getReservationFee()));
     }
 
     /**
@@ -313,16 +491,19 @@ public class BuyerDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        BuyerSideBar = new javax.swing.JPanel();
+        AgentSideBar = new javax.swing.JPanel();
         DashboardLabel = new javax.swing.JLabel();
         GroupName = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
-        reqComputation = new javax.swing.JButton();
-        transaction = new javax.swing.JButton();
+        viewTransactions = new javax.swing.JButton();
+        viewFinanceSettings = new javax.swing.JButton();
+        genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
+        viewReserv = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
         viewProfile = new javax.swing.JButton();
-        MainContentBuyer = new javax.swing.JTabbedPane();
+        btnAuditLogs = new javax.swing.JButton();
+        MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
         lotsView = new javax.swing.JPanel();
@@ -438,45 +619,56 @@ public class BuyerDashboard extends javax.swing.JFrame {
         b5_l20 = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        buyerHistoryTable = new javax.swing.JTable();
-        Computation = new javax.swing.JPanel();
+        reservOverview = new javax.swing.JScrollPane();
+        reservations = new javax.swing.JPanel();
+        reservation1 = new javax.swing.JPanel();
+        reservationTitle = new javax.swing.JLabel();
+        info29 = new javax.swing.JLabel();
+        InfoText29 = new javax.swing.JTextField();
+        info30 = new javax.swing.JLabel();
+        InfoText30 = new javax.swing.JTextField();
+        info31 = new javax.swing.JLabel();
+        InfoText31 = new javax.swing.JTextField();
+        info32 = new javax.swing.JLabel();
+        InfoText32 = new javax.swing.JTextField();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        reservation2 = new javax.swing.JPanel();
+        reservationTitle1 = new javax.swing.JLabel();
+        info33 = new javax.swing.JLabel();
+        InfoText33 = new javax.swing.JTextField();
+        info34 = new javax.swing.JLabel();
+        InfoText34 = new javax.swing.JTextField();
+        info35 = new javax.swing.JLabel();
+        InfoText35 = new javax.swing.JTextField();
+        info36 = new javax.swing.JLabel();
+        InfoText36 = new javax.swing.JTextField();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        Performance = new javax.swing.JPanel();
         Title1 = new javax.swing.JLabel();
-        computationOverview = new javax.swing.JScrollPane();
-        computation = new javax.swing.JPanel();
-        computation1 = new javax.swing.JPanel();
-        computationTitle = new javax.swing.JLabel();
-        info1 = new javax.swing.JLabel();
-        InfoText1 = new javax.swing.JTextField();
-        info2 = new javax.swing.JLabel();
-        InfoText2 = new javax.swing.JTextField();
-        info3 = new javax.swing.JLabel();
-        InfoText3 = new javax.swing.JTextField();
-        info4 = new javax.swing.JLabel();
-        InfoText4 = new javax.swing.JTextField();
-        computation3 = new javax.swing.JPanel();
-        computationTitle2 = new javax.swing.JLabel();
-        info9 = new javax.swing.JLabel();
-        InfoText9 = new javax.swing.JTextField();
-        info10 = new javax.swing.JLabel();
-        InfoText10 = new javax.swing.JTextField();
-        info11 = new javax.swing.JLabel();
-        InfoText11 = new javax.swing.JTextField();
-        info12 = new javax.swing.JLabel();
-        InfoText12 = new javax.swing.JTextField();
-        computation4 = new javax.swing.JPanel();
-        computationTitle3 = new javax.swing.JLabel();
-        info13 = new javax.swing.JLabel();
-        InfoText13 = new javax.swing.JTextField();
-        info14 = new javax.swing.JLabel();
-        InfoText14 = new javax.swing.JTextField();
-        info15 = new javax.swing.JLabel();
-        InfoText15 = new javax.swing.JTextField();
-        info16 = new javax.swing.JLabel();
-        InfoText16 = new javax.swing.JTextField();
-        Logout = new javax.swing.JPanel();
-        Profile = new javax.swing.JPanel();
+        agentPerf = new javax.swing.JScrollPane();
+        History = new javax.swing.JPanel();
+        perfOverview = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        Report = new javax.swing.JPanel();
         Title2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        reportTextArea = new javax.swing.JTextArea();
+        btnExportTXT = new javax.swing.JButton();
+        btnGenerateReport = new javax.swing.JButton();
+        btnExportPDF = new javax.swing.JButton();
+        btnExportCSV = new javax.swing.JButton();
+        Transactions = new javax.swing.JPanel();
+        Title3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        transactionTable = new javax.swing.JTable();
+        AuditLogsPanel = new javax.swing.JPanel();
+        Title6 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        auditTable = new javax.swing.JTable();
+        Profile = new javax.swing.JPanel();
+        Title4 = new javax.swing.JLabel();
         firstName = new javax.swing.JLabel();
         FirstName = new javax.swing.JTextField();
         lastName = new javax.swing.JLabel();
@@ -486,6 +678,24 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Password = new javax.swing.JLabel();
         password = new javax.swing.JTextField();
         change = new javax.swing.JButton();
+        FinanceSettingsPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtBdoRate = new javax.swing.JTextField();
+        txtBpiRate = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtRcbcRate = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtPagIbigRate = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDownPayment = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtMaxLoan = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtMiscFee = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtResFee = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        btnUpdateFinance = new javax.swing.JButton();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -494,24 +704,24 @@ public class BuyerDashboard extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1279, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        BuyerSideBar.setBackground(new java.awt.Color(30, 30, 30));
-        BuyerSideBar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        BuyerSideBar.setFocusable(false);
-        BuyerSideBar.setMaximumSize(new java.awt.Dimension(1280, 92));
-        BuyerSideBar.setMinimumSize(new java.awt.Dimension(1280, 92));
-        BuyerSideBar.setPreferredSize(new java.awt.Dimension(1280, 92));
-        BuyerSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        AgentSideBar.setBackground(new java.awt.Color(51, 51, 51));
+        AgentSideBar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        AgentSideBar.setFocusable(false);
+        AgentSideBar.setMaximumSize(new java.awt.Dimension(1280, 92));
+        AgentSideBar.setMinimumSize(new java.awt.Dimension(1280, 92));
+        AgentSideBar.setPreferredSize(new java.awt.Dimension(1280, 92));
+        AgentSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
-        DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-        DashboardLabel.setText("<html>Buyer's<br>Dashboard</html>");
-        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
+        DashboardLabel.setForeground(new java.awt.Color(0, 153, 255));
+        DashboardLabel.setText("<html>Admin<br>Dashboard</html>");
+        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
 
         GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
+        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -548,78 +758,115 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 280, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 340, 40));
 
-        reqComputation.setBackground(new java.awt.Color(0, 0, 0));
-        reqComputation.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        reqComputation.setForeground(new java.awt.Color(255, 255, 255));
-        reqComputation.setText("   Computation");
-        reqComputation.setAlignmentY(0.0F);
-        reqComputation.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        reqComputation.setBorderPainted(false);
-        reqComputation.setContentAreaFilled(false);
-        reqComputation.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        reqComputation.setFocusPainted(false);
-        reqComputation.setFocusable(false);
-        reqComputation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        reqComputation.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        reqComputation.setIconTextGap(0);
-        reqComputation.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        reqComputation.setSelected(true);
-        reqComputation.addMouseListener(new java.awt.event.MouseAdapter() {
+        viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
+        viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
+        viewTransactions.setText("Transactions");
+        viewTransactions.setAlignmentY(0.0F);
+        viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewTransactions.setBorderPainted(false);
+        viewTransactions.setContentAreaFilled(false);
+        viewTransactions.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewTransactions.setFocusPainted(false);
+        viewTransactions.setFocusable(false);
+        viewTransactions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setIconTextGap(0);
+        viewTransactions.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewTransactions.setSelected(true);
+        viewTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reqComputationMouseClicked(evt);
+                viewTransactionsMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                reqComputationMouseEntered(evt);
+                viewTransactionsMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                reqComputationMouseExited(evt);
+                viewTransactionsMouseExited(evt);
+            }
+        });
+        viewTransactions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewTransactionsActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 340, 40));
+
+        viewFinanceSettings.setBackground(new java.awt.Color(0, 0, 0));
+        viewFinanceSettings.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewFinanceSettings.setForeground(new java.awt.Color(255, 255, 255));
+        viewFinanceSettings.setText("Finance Settings");
+        viewFinanceSettings.setAlignmentY(0.0F);
+        viewFinanceSettings.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewFinanceSettings.setBorderPainted(false);
+        viewFinanceSettings.setContentAreaFilled(false);
+        viewFinanceSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewFinanceSettings.setFocusPainted(false);
+        viewFinanceSettings.setFocusable(false);
+        viewFinanceSettings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setIconTextGap(0);
+        viewFinanceSettings.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewFinanceSettings.setSelected(true);
+        viewFinanceSettings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                reqComputationMousePressed(evt);
+                viewFinanceSettingsMousePressed(evt);
             }
         });
-        reqComputation.addActionListener(new java.awt.event.ActionListener() {
+        viewFinanceSettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reqComputationActionPerformed(evt);
+                viewFinanceSettingsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 280, 40));
+        AgentSideBar.add(viewFinanceSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 340, 40));
 
-        transaction.setBackground(new java.awt.Color(0, 0, 0));
-        transaction.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        transaction.setForeground(new java.awt.Color(255, 255, 255));
-        transaction.setText("   Transactions");
-        transaction.setAlignmentY(0.0F);
-        transaction.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        transaction.setBorderPainted(false);
-        transaction.setContentAreaFilled(false);
-        transaction.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        transaction.setFocusPainted(false);
-        transaction.setFocusable(false);
-        transaction.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        transaction.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        transaction.setIconTextGap(0);
-        transaction.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        transaction.setSelected(true);
-        transaction.addMouseListener(new java.awt.event.MouseAdapter() {
+        genReport.setBackground(new java.awt.Color(0, 0, 0));
+        genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        genReport.setForeground(new java.awt.Color(255, 255, 255));
+        genReport.setText("   Generate Report");
+        genReport.setAlignmentY(0.0F);
+        genReport.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        genReport.setBorderPainted(false);
+        genReport.setContentAreaFilled(false);
+        genReport.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        genReport.setFocusPainted(false);
+        genReport.setFocusable(false);
+        genReport.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        genReport.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        genReport.setIconTextGap(0);
+        genReport.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        genReport.setSelected(true);
+        genReport.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                transactionMouseClicked(evt);
+                genReportMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                transactionMouseEntered(evt);
+                genReportMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                transactionMouseExited(evt);
+                genReportMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                genReportMousePressed(evt);
             }
         });
-        transaction.addActionListener(new java.awt.event.ActionListener() {
+        genReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                transactionActionPerformed(evt);
+                genReportActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 280, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 340, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -653,7 +900,41 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 340, 40));
+
+        viewReserv.setBackground(new java.awt.Color(0, 0, 0));
+        viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewReserv.setForeground(new java.awt.Color(255, 255, 255));
+        viewReserv.setText("   Reservations");
+        viewReserv.setAlignmentY(0.0F);
+        viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewReserv.setBorderPainted(false);
+        viewReserv.setContentAreaFilled(false);
+        viewReserv.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewReserv.setFocusPainted(false);
+        viewReserv.setFocusable(false);
+        viewReserv.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewReserv.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewReserv.setIconTextGap(0);
+        viewReserv.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewReserv.setSelected(true);
+        viewReserv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewReservMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewReservMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewReservMouseExited(evt);
+            }
+        });
+        viewReserv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewReservActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 340, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -661,7 +942,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 RefreshActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
 
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -698,9 +979,46 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 280, 40));
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 280, 40));
 
-        getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
+        btnAuditLogs.setBackground(new java.awt.Color(0, 0, 0));
+        btnAuditLogs.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        btnAuditLogs.setForeground(new java.awt.Color(255, 255, 255));
+        btnAuditLogs.setText("View Audit Logs");
+        btnAuditLogs.setAlignmentY(0.0F);
+        btnAuditLogs.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        btnAuditLogs.setBorderPainted(false);
+        btnAuditLogs.setContentAreaFilled(false);
+        btnAuditLogs.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAuditLogs.setFocusPainted(false);
+        btnAuditLogs.setFocusable(false);
+        btnAuditLogs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAuditLogs.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        btnAuditLogs.setIconTextGap(0);
+        btnAuditLogs.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        btnAuditLogs.setSelected(true);
+        btnAuditLogs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAuditLogsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAuditLogsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAuditLogsMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnAuditLogsMousePressed(evt);
+            }
+        });
+        btnAuditLogs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAuditLogsActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 340, 50));
+
+        getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
         Lots.setBackground(new java.awt.Color(30, 30, 30));
         Lots.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1411,7 +1729,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         Lots.add(lotsOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 1000, 590));
 
-        MainContentBuyer.addTab("tab1", Lots);
+        MainContentSeller.addTab("tab1", Lots);
 
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
         Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1419,44 +1737,15 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title.setText("MY RESERVATIONS");
-        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 340, 30));
+        Title.setText("PENDING RESERVATIONS");
+        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
 
-        buyerHistoryTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        buyerHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Name", "Block", "Lot", "Price"
-            }
-        ));
-        jScrollPane1.setViewportView(buyerHistoryTable);
+        reservOverview.setBorder(null);
+        javax.swing.JScrollBar reservBar = reservOverview.getVerticalScrollBar();
+        reservBar.setPreferredSize(new java.awt.Dimension(8,0));
+        reservBar.setUnitIncrement(24);
 
-        Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 940, -1));
-
-        MainContentBuyer.addTab("tab2", Reservations);
-
-        Computation.setBackground(new java.awt.Color(30, 30, 30));
-        Computation.setMinimumSize(new java.awt.Dimension(502, 297));
-        Computation.setPreferredSize(new java.awt.Dimension(502, 297));
-        Computation.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        Title1.setForeground(new java.awt.Color(255, 255, 255));
-        Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title1.setText("COMPUTATION:");
-        Computation.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
-
-        computationOverview.setBorder(null);
-        javax.swing.JScrollBar computationBar = computationOverview.getVerticalScrollBar();
-        computationBar.setPreferredSize(new java.awt.Dimension(8,0));
-        computationBar.setUnitIncrement(24);
-
-        computationBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
+        reservBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
 
             @Override
             protected void configureScrollBarColors() {
@@ -1482,220 +1771,364 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         });
 
-        computation.setBackground(new java.awt.Color(30, 30, 30));
-        computation.setMinimumSize(new java.awt.Dimension(930, 1058));
-        computation.setPreferredSize(new java.awt.Dimension(930, 1058));
-        computation.setLayout(new java.awt.GridLayout(5, 1, 5, 0));
+        reservations.setBackground(new java.awt.Color(30, 30, 30));
+        reservations.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
+        reservations.setMinimumSize(new java.awt.Dimension(930, 1058));
+        reservations.setPreferredSize(new java.awt.Dimension(930, 1058));
+        reservations.setLayout(new java.awt.GridLayout(5, 1, 5, 0));
 
-        computation1.setBackground(new java.awt.Color(30, 30, 30));
-        computation1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        reservation1.setBackground(new java.awt.Color(30, 30, 30));
+        reservation1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        reservation1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        computationTitle.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        computationTitle.setForeground(new java.awt.Color(255, 255, 255));
-        computationTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        computationTitle.setText("Sample Lot Name Here");
-        computation1.add(computationTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+        reservationTitle.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        reservationTitle.setForeground(new java.awt.Color(255, 255, 255));
+        reservationTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        reservationTitle.setText("Sample Lot Name Here");
+        reservation1.add(reservationTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
 
-        info1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info1.setForeground(new java.awt.Color(255, 255, 255));
-        info1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info1.setText("Info:");
-        computation1.add(info1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+        info29.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info29.setForeground(new java.awt.Color(255, 255, 255));
+        info29.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info29.setText("Info:");
+        reservation1.add(info29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
 
-        InfoText1.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText1.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText1.setText("jTextField1");
-        InfoText1.setBorder(null);
-        computation1.add(InfoText1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+        InfoText29.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText29.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText29.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText29.setText("jTextField1");
+        InfoText29.setBorder(null);
+        reservation1.add(InfoText29, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
 
-        info2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info2.setForeground(new java.awt.Color(255, 255, 255));
-        info2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info2.setText("Info:");
-        computation1.add(info2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+        info30.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info30.setForeground(new java.awt.Color(255, 255, 255));
+        info30.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info30.setText("Info:");
+        reservation1.add(info30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
 
-        InfoText2.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText2.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText2.setText("jTextField1");
-        InfoText2.setBorder(null);
-        computation1.add(InfoText2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+        InfoText30.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText30.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText30.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText30.setText("jTextField1");
+        InfoText30.setBorder(null);
+        reservation1.add(InfoText30, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
 
-        info3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info3.setForeground(new java.awt.Color(255, 255, 255));
-        info3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info3.setText("Info:");
-        computation1.add(info3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+        info31.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info31.setForeground(new java.awt.Color(255, 255, 255));
+        info31.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info31.setText("Info:");
+        reservation1.add(info31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
 
-        InfoText3.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText3.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText3.setText("jTextField1");
-        InfoText3.setBorder(null);
-        computation1.add(InfoText3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+        InfoText31.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText31.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText31.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText31.setText("jTextField1");
+        InfoText31.setBorder(null);
+        reservation1.add(InfoText31, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
 
-        info4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info4.setForeground(new java.awt.Color(255, 255, 255));
-        info4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info4.setText("Info:");
-        computation1.add(info4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+        info32.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info32.setForeground(new java.awt.Color(255, 255, 255));
+        info32.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info32.setText("Info:");
+        reservation1.add(info32, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
 
-        InfoText4.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText4.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText4.setText("jTextField1");
-        InfoText4.setBorder(null);
-        computation1.add(InfoText4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+        InfoText32.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText32.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText32.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText32.setText("jTextField1");
+        InfoText32.setBorder(null);
+        reservation1.add(InfoText32, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
 
-        computation.add(computation1);
+        jButton8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton8.setText("Accept");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        reservation1.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
-        computation3.setBackground(new java.awt.Color(30, 30, 30));
-        computation3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jButton9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton9.setText("Decline");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        reservation1.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, -1));
 
-        computationTitle2.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        computationTitle2.setForeground(new java.awt.Color(255, 255, 255));
-        computationTitle2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        computationTitle2.setText("Sample Lot Name Here");
-        computation3.add(computationTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+        reservations.add(reservation1);
 
-        info9.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info9.setForeground(new java.awt.Color(255, 255, 255));
-        info9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info9.setText("Info:");
-        computation3.add(info9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+        reservation2.setBackground(new java.awt.Color(30, 30, 30));
+        reservation2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        reservation2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        InfoText9.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText9.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText9.setText("jTextField1");
-        InfoText9.setBorder(null);
-        computation3.add(InfoText9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+        reservationTitle1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        reservationTitle1.setForeground(new java.awt.Color(255, 255, 255));
+        reservationTitle1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        reservationTitle1.setText("Sample Lot Name Here");
+        reservation2.add(reservationTitle1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
 
-        info10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info10.setForeground(new java.awt.Color(255, 255, 255));
-        info10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info10.setText("Info:");
-        computation3.add(info10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+        info33.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info33.setForeground(new java.awt.Color(255, 255, 255));
+        info33.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info33.setText("Info:");
+        reservation2.add(info33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
 
-        InfoText10.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText10.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText10.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText10.setText("jTextField1");
-        InfoText10.setBorder(null);
-        computation3.add(InfoText10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+        InfoText33.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText33.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText33.setText("jTextField1");
+        InfoText33.setBorder(null);
+        reservation2.add(InfoText33, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
 
-        info11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info11.setForeground(new java.awt.Color(255, 255, 255));
-        info11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info11.setText("Info:");
-        computation3.add(info11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+        info34.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info34.setForeground(new java.awt.Color(255, 255, 255));
+        info34.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info34.setText("Info:");
+        reservation2.add(info34, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
 
-        InfoText11.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText11.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText11.setText("jTextField1");
-        InfoText11.setBorder(null);
-        computation3.add(InfoText11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+        InfoText34.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText34.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText34.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText34.setText("jTextField1");
+        InfoText34.setBorder(null);
+        reservation2.add(InfoText34, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
 
-        info12.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info12.setForeground(new java.awt.Color(255, 255, 255));
-        info12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info12.setText("Info:");
-        computation3.add(info12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+        info35.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info35.setForeground(new java.awt.Color(255, 255, 255));
+        info35.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info35.setText("Info:");
+        reservation2.add(info35, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
 
-        InfoText12.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText12.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText12.setText("jTextField1");
-        InfoText12.setBorder(null);
-        computation3.add(InfoText12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+        InfoText35.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText35.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText35.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText35.setText("jTextField1");
+        InfoText35.setBorder(null);
+        reservation2.add(InfoText35, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
 
-        computation.add(computation3);
+        info36.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        info36.setForeground(new java.awt.Color(255, 255, 255));
+        info36.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        info36.setText("Info:");
+        reservation2.add(info36, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
 
-        computation4.setBackground(new java.awt.Color(30, 30, 30));
-        computation4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        InfoText36.setBackground(new java.awt.Color(30, 30, 30));
+        InfoText36.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        InfoText36.setForeground(new java.awt.Color(255, 255, 255));
+        InfoText36.setText("jTextField1");
+        InfoText36.setBorder(null);
+        reservation2.add(InfoText36, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
 
-        computationTitle3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        computationTitle3.setForeground(new java.awt.Color(255, 255, 255));
-        computationTitle3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        computationTitle3.setText("Sample Lot Name Here");
-        computation4.add(computationTitle3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 30));
+        jButton10.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton10.setText("Accept");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+        reservation2.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
-        info13.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info13.setForeground(new java.awt.Color(255, 255, 255));
-        info13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info13.setText("Info:");
-        computation4.add(info13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 40, 20));
+        jButton11.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton11.setText("Decline");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        reservation2.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, -1));
 
-        InfoText13.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText13.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText13.setText("jTextField1");
-        InfoText13.setBorder(null);
-        computation4.add(InfoText13, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 160, 20));
+        reservations.add(reservation2);
 
-        info14.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info14.setForeground(new java.awt.Color(255, 255, 255));
-        info14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info14.setText("Info:");
-        computation4.add(info14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 50, 20));
+        reservOverview.setViewportView(reservations);
 
-        InfoText14.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText14.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText14.setText("jTextField1");
-        InfoText14.setBorder(null);
-        computation4.add(InfoText14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 160, 20));
+        Reservations.add(reservOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
 
-        info15.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info15.setForeground(new java.awt.Color(255, 255, 255));
-        info15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info15.setText("Info:");
-        computation4.add(info15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 40, 20));
+        MainContentSeller.addTab("tab2", Reservations);
 
-        InfoText15.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText15.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText15.setText("jTextField1");
-        InfoText15.setBorder(null);
-        computation4.add(InfoText15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 160, 20));
+        Performance.setBackground(new java.awt.Color(30, 30, 30));
+        Performance.setMinimumSize(new java.awt.Dimension(502, 297));
+        Performance.setPreferredSize(new java.awt.Dimension(502, 297));
+        Performance.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        info16.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        info16.setForeground(new java.awt.Color(255, 255, 255));
-        info16.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        info16.setText("Info:");
-        computation4.add(info16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 340, 20));
+        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title1.setForeground(new java.awt.Color(255, 255, 255));
+        Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title1.setText("PERFORMANCE OVERVIEW");
+        Performance.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
 
-        InfoText16.setBackground(new java.awt.Color(30, 30, 30));
-        InfoText16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        InfoText16.setForeground(new java.awt.Color(255, 255, 255));
-        InfoText16.setText("jTextField1");
-        InfoText16.setBorder(null);
-        computation4.add(InfoText16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 160, 20));
+        agentPerf.setBorder(null);
+        javax.swing.JScrollBar perfBar = agentPerf.getVerticalScrollBar();
+        perfBar.setPreferredSize(new java.awt.Dimension(8,0));
+        perfBar.setUnitIncrement(24);
 
-        computation.add(computation4);
+        perfBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
 
-        computationOverview.setViewportView(computation);
+            @Override
+            protected void configureScrollBarColors() {
+                this.trackColor = new java.awt.Color(30,30,30);
+                this.thumbColor = new java.awt.Color(120,120,120);
+            }
 
-        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+            @Override
+            protected javax.swing.JButton createDecreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
 
-        MainContentBuyer.addTab("tab3", Computation);
+            @Override
+            protected javax.swing.JButton createIncreaseButton(int orientation) {
+                javax.swing.JButton button = new javax.swing.JButton();
+                button.setBackground(new java.awt.Color(30,30,30));
+                button.setBorder(null);
+                return button;
+            }
 
-        Logout.setBackground(new java.awt.Color(30, 30, 30));
-        Logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        MainContentBuyer.addTab("tab4", Logout);
+        });
+
+        History.setBackground(new java.awt.Color(30, 30, 30));
+        History.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 153)));
+        History.setMinimumSize(new java.awt.Dimension(930, 1058));
+        History.setPreferredSize(new java.awt.Dimension(930, 1058));
+        History.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Customer", "Block", "Lot Size", "Price"
+            }
+        ));
+        perfOverview.setViewportView(jTable1);
+
+        History.add(perfOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 970, -1));
+
+        agentPerf.setViewportView(History);
+
+        Performance.add(agentPerf, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+
+        MainContentSeller.addTab("tab3", Performance);
+
+        Report.setBackground(new java.awt.Color(30, 30, 30));
+        Report.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 48)); // NOI18N
+        Title2.setForeground(new java.awt.Color(255, 255, 255));
+        Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title2.setText("REPORT");
+        Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 340, 60));
+
+        reportTextArea.setColumns(20);
+        reportTextArea.setRows(5);
+        jScrollPane2.setViewportView(reportTextArea);
+
+        Report.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 960, 560));
+
+        btnExportTXT.setText("Export as Text");
+        btnExportTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportTXTActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+
+        btnGenerateReport.setText("Generate");
+        btnGenerateReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerateReportActionPerformed(evt);
+            }
+        });
+        Report.add(btnGenerateReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        btnExportPDF.setText("Export as PDF");
+        btnExportPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportPDFActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
+
+        btnExportCSV.setText("Export as CSV");
+        btnExportCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportCSVActionPerformed(evt);
+            }
+        });
+        Report.add(btnExportCSV, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, -1, -1));
+
+        MainContentSeller.addTab("tab4", Report);
+
+        Transactions.setBackground(new java.awt.Color(30, 30, 30));
+        Transactions.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title3.setForeground(new java.awt.Color(255, 255, 255));
+        Title3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title3.setText("Transaction History");
+        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+
+        transactionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(transactionTable);
+
+        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+
+        MainContentSeller.addTab("tab2", Transactions);
+
+        AuditLogsPanel.setBackground(new java.awt.Color(30, 30, 30));
+        AuditLogsPanel.setMinimumSize(new java.awt.Dimension(502, 297));
+        AuditLogsPanel.setPreferredSize(new java.awt.Dimension(502, 297));
+        AuditLogsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Title6.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title6.setForeground(new java.awt.Color(255, 255, 255));
+        Title6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title6.setText("Audit Logs");
+        AuditLogsPanel.add(Title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+
+        auditTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(auditTable);
+
+        AuditLogsPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+
+        MainContentSeller.addTab("tab3", AuditLogsPanel);
 
         Profile.setBackground(new java.awt.Color(30, 30, 30));
         Profile.setMinimumSize(new java.awt.Dimension(502, 297));
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
         Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
-        Title2.setForeground(new java.awt.Color(255, 255, 255));
-        Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title2.setText("Account Information");
-        Profile.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title4.setForeground(new java.awt.Color(255, 255, 255));
+        Title4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title4.setText("Account Information");
+        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
 
         firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         firstName.setForeground(new java.awt.Color(255, 255, 255));
@@ -1768,9 +2201,59 @@ public class BuyerDashboard extends javax.swing.JFrame {
         change.setText("Update");
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
-        MainContentBuyer.addTab("tab3", Profile);
+        MainContentSeller.addTab("tab3", Profile);
 
-        getContentPane().add(MainContentBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
+        FinanceSettingsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setText("BDO Rate: ");
+        FinanceSettingsPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, 40));
+
+        txtBdoRate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBdoRateActionPerformed(evt);
+            }
+        });
+        FinanceSettingsPanel.add(txtBdoRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 110, 40));
+        FinanceSettingsPanel.add(txtBpiRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 110, 40));
+
+        jLabel2.setText("BPI Rate: ");
+        FinanceSettingsPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 100, 40));
+        FinanceSettingsPanel.add(txtRcbcRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 110, 40));
+
+        jLabel3.setText("RCBC Rate: ");
+        FinanceSettingsPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 100, 40));
+        FinanceSettingsPanel.add(txtPagIbigRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 110, 40));
+
+        jLabel4.setText("Pag-IBIG Rate: ");
+        FinanceSettingsPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 100, 40));
+        FinanceSettingsPanel.add(txtDownPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 110, 40));
+
+        jLabel5.setText("Downpayment (%):");
+        FinanceSettingsPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 120, 40));
+        FinanceSettingsPanel.add(txtMaxLoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 110, 40));
+
+        jLabel6.setText("Max Loanable Amt.:");
+        FinanceSettingsPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 100, 40));
+        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 110, 40));
+
+        jLabel7.setText("Misc. Fee:");
+        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 100, 40));
+        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 390, 110, 40));
+
+        jLabel8.setText("Reservation Fee:");
+        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 100, 40));
+
+        btnUpdateFinance.setText("Update Finance Settings");
+        btnUpdateFinance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateFinanceActionPerformed(evt);
+            }
+        });
+        FinanceSettingsPanel.add(btnUpdateFinance, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 240, -1));
+
+        MainContentSeller.addTab("tab8", FinanceSettingsPanel);
+
+        getContentPane().add(MainContentSeller, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/main_bg.png"))); // NOI18N
@@ -1781,24 +2264,24 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
     private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
         // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(0);
+        MainContentSeller.setSelectedIndex(0);
         refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
-    private void reqComputationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqComputationActionPerformed
+    private void viewFinanceSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewFinanceSettingsActionPerformed
         // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(2);
-    }//GEN-LAST:event_reqComputationActionPerformed
+        MainContentSeller.setSelectedIndex(7);
+    }//GEN-LAST:event_viewFinanceSettingsActionPerformed
 
-    private void transactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionActionPerformed
+    private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
         // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(1);
-    }//GEN-LAST:event_transactionActionPerformed
+        MainContentSeller.setSelectedIndex(4);
+    }//GEN-LAST:event_viewTransactionsActionPerformed
 
     private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
         // TODO add your handling code here:
-        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
-        BuyerLoginFrame.setVisible(true);
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
+        AgentLoginFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_logOutActionPerformed
 
@@ -1826,40 +2309,40 @@ public class BuyerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
 
-    private void reqComputationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseEntered
+    private void viewFinanceSettingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseEntered
         // TODO add your handling code here:
-         reqComputation.setForeground(entered);
-    }//GEN-LAST:event_reqComputationMouseEntered
+         viewFinanceSettings.setForeground(entered);
+    }//GEN-LAST:event_viewFinanceSettingsMouseEntered
 
-    private void reqComputationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseExited
+    private void viewFinanceSettingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseExited
         // TODO add your handling code here:
-        reqComputation.setForeground(normal);
-    }//GEN-LAST:event_reqComputationMouseExited
+        viewFinanceSettings.setForeground(normal);
+    }//GEN-LAST:event_viewFinanceSettingsMouseExited
 
-    private void reqComputationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMousePressed
+    private void viewFinanceSettingsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMousePressed
         // TODO add your handling code here:
-        reqComputation.setForeground(clickedcolor);
-    }//GEN-LAST:event_reqComputationMousePressed
+        viewFinanceSettings.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewFinanceSettingsMousePressed
 
-    private void reqComputationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseClicked
+    private void viewFinanceSettingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewFinanceSettingsMouseClicked
         // TODO add your handling code here:
-        reqComputation.setForeground(clickedcolor);
-    }//GEN-LAST:event_reqComputationMouseClicked
+        viewFinanceSettings.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewFinanceSettingsMouseClicked
 
-    private void transactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseClicked
+    private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
         // TODO add your handling code here:
-        transaction.setForeground(clickedcolor);
-    }//GEN-LAST:event_transactionMouseClicked
+        viewTransactions.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewTransactionsMouseClicked
 
-    private void transactionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseEntered
+    private void viewTransactionsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseEntered
         // TODO add your handling code here:
-        transaction.setForeground(entered);
-    }//GEN-LAST:event_transactionMouseEntered
+        viewTransactions.setForeground(entered);
+    }//GEN-LAST:event_viewTransactionsMouseEntered
 
-    private void transactionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseExited
+    private void viewTransactionsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseExited
         // TODO add your handling code here:
-        transaction.setForeground(normal);
-    }//GEN-LAST:event_transactionMouseExited
+        viewTransactions.setForeground(normal);
+    }//GEN-LAST:event_viewTransactionsMouseExited
 
     private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
         // TODO add your handling code here:
@@ -1876,26 +2359,67 @@ public class BuyerDashboard extends javax.swing.JFrame {
         logOut.setForeground(normal);
     }//GEN-LAST:event_logOutMouseExited
 
+    private void genReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseClicked
+        // TODO add your handling code here:
+        genReport.setForeground(clickedcolor);
+    }//GEN-LAST:event_genReportMouseClicked
+
+    private void genReportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseEntered
+        // TODO add your handling code here:
+        genReport.setForeground(entered);
+    }//GEN-LAST:event_genReportMouseEntered
+
+    private void genReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseExited
+        // TODO add your handling code here:
+        genReport.setForeground(normal);
+    }//GEN-LAST:event_genReportMouseExited
+
+    private void genReportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genReportMousePressed
+
+    private void genReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genReportActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(3);
+    }//GEN-LAST:event_genReportActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseClicked
+
+    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseEntered
+
+    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewReservMouseExited
+
+    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(1);
+    }//GEN-LAST:event_viewReservActionPerformed
+
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
         // TODO add your handling code here:
         refreshDashboard();
     }//GEN-LAST:event_RefreshActionPerformed
-
-    private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FirstNameActionPerformed
-
-    private void LastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LastNameActionPerformed
-
-    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailActionPerformed
-
-    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordActionPerformed
 
     private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
         // TODO add your handling code here:
@@ -1918,8 +2442,115 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
     private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
         // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(5);
+        MainContentSeller.setSelectedIndex(6);
     }//GEN-LAST:event_viewProfileActionPerformed
+
+    private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FirstNameActionPerformed
+
+    private void LastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LastNameActionPerformed
+
+    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
+        // TODO add your handling code here:
+        if (reportTextArea.getText().isEmpty()) return;
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), admin);
+        if (success) javax.swing.JOptionPane.showMessageDialog(this, "Text Report saved to Downloads.");
+    }//GEN-LAST:event_btnExportTXTActionPerformed
+
+    private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
+        // TODO add your handling code here:
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAllTransactions(), admin);
+        reportTextArea.setText(data);
+    }//GEN-LAST:event_btnGenerateReportActionPerformed
+
+    private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
+        // TODO add your handling code here:
+        if (reportTextArea.getText().isEmpty()) return;
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), admin);
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "PDF Report saved to Downloads.");
+        }
+        else {
+            javax.swing.JOptionPane.showMessageDialog(this, "PDF Export Failed. Ensure iText7 libraries are loaded.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportPDFActionPerformed
+
+    private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
+        // TODO add your handling code here:
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAllTransactions();
+        
+        boolean success = controller.ReportGenerator.exportToCSV(transactions, admin);
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "CSV Report saved to Downloads.");
+        }
+        else {
+            javax.swing.JOptionPane.showMessageDialog(this, "CSV Export Failed.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportCSVActionPerformed
+
+    private void btnAuditLogsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditLogsMouseClicked
+
+    private void btnAuditLogsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditLogsMouseEntered
+
+    private void btnAuditLogsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditLogsMouseExited
+
+    private void btnAuditLogsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAuditLogsMousePressed
+
+    private void btnAuditLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAuditLogsActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(5); // Adjust index to match the Audit panel
+        loadAuditLogs(); // Refresh data on view
+    }//GEN-LAST:event_btnAuditLogsActionPerformed
+
+    private void txtBdoRateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBdoRateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBdoRateActionPerformed
+
+    private void btnUpdateFinanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateFinanceActionPerformed
+        // TODO add your handling code here:
+        try {
+            double bdo = Double.parseDouble(txtBdoRate.getText());
+            double bpi = Double.parseDouble(txtBpiRate.getText());
+            double rcbc = Double.parseDouble(txtRcbcRate.getText());
+            double pagibig = Double.parseDouble(txtPagIbigRate.getText());
+            double dp = Double.parseDouble(txtDownPayment.getText());
+            double maxLoan = Double.parseDouble(txtMaxLoan.getText());
+            double misc = Double.parseDouble(txtMiscFee.getText());
+            double res = Double.parseDouble(txtResFee.getText());
+            
+            controller.FinanceManager.getInstance().updateSettings(bdo, bpi, rcbc, pagibig, dp, maxLoan, misc, res);
+            
+            models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated 8-parameter finance rates.");
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated.");
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateFinanceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1938,26 +2569,34 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuyerDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminDashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new BuyerDashboard().setVisible(true);
+                new AdminDashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AgentSideBar;
+    private javax.swing.JPanel AuditLogsPanel;
     private javax.swing.JLabel Block1;
     private javax.swing.JPanel Block1Grid;
     private javax.swing.JLabel Block2;
@@ -1968,35 +2607,38 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel Block4Grid;
     private javax.swing.JLabel Block5;
     private javax.swing.JPanel Block5Grid;
-    private javax.swing.JPanel BuyerSideBar;
-    private javax.swing.JPanel Computation;
     private javax.swing.JLabel DashboardLabel;
     private javax.swing.JLabel Email;
+    private javax.swing.JPanel FinanceSettingsPanel;
     private javax.swing.JTextField FirstName;
     private javax.swing.JLabel GroupName;
-    private javax.swing.JTextField InfoText1;
-    private javax.swing.JTextField InfoText10;
-    private javax.swing.JTextField InfoText11;
-    private javax.swing.JTextField InfoText12;
-    private javax.swing.JTextField InfoText13;
-    private javax.swing.JTextField InfoText14;
-    private javax.swing.JTextField InfoText15;
-    private javax.swing.JTextField InfoText16;
-    private javax.swing.JTextField InfoText2;
-    private javax.swing.JTextField InfoText3;
-    private javax.swing.JTextField InfoText4;
-    private javax.swing.JTextField InfoText9;
+    private javax.swing.JPanel History;
+    private javax.swing.JTextField InfoText29;
+    private javax.swing.JTextField InfoText30;
+    private javax.swing.JTextField InfoText31;
+    private javax.swing.JTextField InfoText32;
+    private javax.swing.JTextField InfoText33;
+    private javax.swing.JTextField InfoText34;
+    private javax.swing.JTextField InfoText35;
+    private javax.swing.JTextField InfoText36;
     private javax.swing.JTextField LastName;
-    private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
-    private javax.swing.JTabbedPane MainContentBuyer;
+    private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JLabel Password;
+    private javax.swing.JPanel Performance;
     private javax.swing.JPanel Profile;
     private javax.swing.JButton Refresh;
+    private javax.swing.JPanel Report;
     private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
     private javax.swing.JLabel Title2;
+    private javax.swing.JLabel Title3;
+    private javax.swing.JLabel Title4;
+    private javax.swing.JLabel Title6;
+    private javax.swing.JPanel Transactions;
+    private javax.swing.JScrollPane agentPerf;
+    private javax.swing.JTable auditTable;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;
@@ -2098,39 +2740,66 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JButton b5_l8;
     private javax.swing.JButton b5_l9;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JTable buyerHistoryTable;
+    private javax.swing.JButton btnAuditLogs;
+    private javax.swing.JButton btnExportCSV;
+    private javax.swing.JButton btnExportPDF;
+    private javax.swing.JButton btnExportTXT;
+    private javax.swing.JButton btnGenerateReport;
+    private javax.swing.JButton btnUpdateFinance;
     private javax.swing.JButton change;
-    private javax.swing.JPanel computation;
-    private javax.swing.JPanel computation1;
-    private javax.swing.JPanel computation3;
-    private javax.swing.JPanel computation4;
-    private javax.swing.JScrollPane computationOverview;
-    private javax.swing.JLabel computationTitle;
-    private javax.swing.JLabel computationTitle2;
-    private javax.swing.JLabel computationTitle3;
     private javax.swing.JTextField email;
     private javax.swing.JLabel firstName;
-    private javax.swing.JLabel info1;
-    private javax.swing.JLabel info10;
-    private javax.swing.JLabel info11;
-    private javax.swing.JLabel info12;
-    private javax.swing.JLabel info13;
-    private javax.swing.JLabel info14;
-    private javax.swing.JLabel info15;
-    private javax.swing.JLabel info16;
-    private javax.swing.JLabel info2;
-    private javax.swing.JLabel info3;
-    private javax.swing.JLabel info4;
-    private javax.swing.JLabel info9;
+    private javax.swing.JButton genReport;
+    private javax.swing.JLabel info29;
+    private javax.swing.JLabel info30;
+    private javax.swing.JLabel info31;
+    private javax.swing.JLabel info32;
+    private javax.swing.JLabel info33;
+    private javax.swing.JLabel info34;
+    private javax.swing.JLabel info35;
+    private javax.swing.JLabel info36;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lastName;
     private javax.swing.JButton logOut;
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
     private javax.swing.JTextField password;
-    private javax.swing.JButton reqComputation;
-    private javax.swing.JButton transaction;
+    private javax.swing.JScrollPane perfOverview;
+    private javax.swing.JTextArea reportTextArea;
+    private javax.swing.JScrollPane reservOverview;
+    private javax.swing.JPanel reservation1;
+    private javax.swing.JPanel reservation2;
+    private javax.swing.JLabel reservationTitle;
+    private javax.swing.JLabel reservationTitle1;
+    private javax.swing.JPanel reservations;
+    private javax.swing.JTable transactionTable;
+    private javax.swing.JTextField txtBdoRate;
+    private javax.swing.JTextField txtBpiRate;
+    private javax.swing.JTextField txtDownPayment;
+    private javax.swing.JTextField txtMaxLoan;
+    private javax.swing.JTextField txtMiscFee;
+    private javax.swing.JTextField txtPagIbigRate;
+    private javax.swing.JTextField txtRcbcRate;
+    private javax.swing.JTextField txtResFee;
+    private javax.swing.JButton viewFinanceSettings;
     private javax.swing.JButton viewLots;
     private javax.swing.JButton viewProfile;
+    private javax.swing.JButton viewReserv;
+    private javax.swing.JButton viewTransactions;
     // End of variables declaration//GEN-END:variables
 }
