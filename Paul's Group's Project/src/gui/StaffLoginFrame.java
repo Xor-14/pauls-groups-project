@@ -220,8 +220,8 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         // TODO add your handling code here:
-        String email = userName.getText(); // Adjust variable name if needed
-        String password = new String(userPass.getPassword()); // Adjust variable name if needed
+        String email = userName.getText().trim(); 
+        String password = new String(userPass.getPassword()).trim(); 
         
         models.User user = controller.UserManager.getInstance().login(email, password);
         

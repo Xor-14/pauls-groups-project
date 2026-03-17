@@ -234,7 +234,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
         loadPendingTransactions();
-        loadAgentHistory();
+        loadAdminHistory();
         loadAuditLogs();
         loadFinanceSettings();
     }
@@ -326,14 +326,14 @@ public class AdminDashboard extends javax.swing.JFrame {
             controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, true);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Approved.");
             loadPendingTransactions();
-            loadAgentHistory();
+            loadAdminHistory();
         });
 
         rejectBtn.addActionListener(e -> {
             controller.TransactionManager.getInstance().resolveTransaction(t.getTransactionID(), agentId, false);
             javax.swing.JOptionPane.showMessageDialog(this, "Transaction Rejected.");
             loadPendingTransactions();
-            loadAgentHistory();
+            loadAdminHistory();
         });
 
         btnPanel.add(approveBtn);
@@ -343,9 +343,9 @@ public class AdminDashboard extends javax.swing.JFrame {
         return card;
     }
     
-    private void loadAgentHistory() {
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
+    private void loadAdminHistory() {
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAllTransactions();
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -361,7 +361,8 @@ public class AdminDashboard extends javax.swing.JFrame {
                 t.getType(), String.format("PHP %,.2f", t.getAmount()), t.getStatus()
             });
         }
-        transactionTable.setModel(model);
+        
+        jTable1.setModel(model); 
     }
     
     private void attachButtonListeners() {
@@ -418,7 +419,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         updateAllLotColors();
         applyFilters();
         loadPendingTransactions();
-        loadAgentHistory();
+        loadAdminHistory();
     }
     
     private void loadAuditLogs() {
@@ -2437,39 +2438,41 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void btnExportTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportTXTActionPerformed
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent.getId());
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), admin);
         if (success) javax.swing.JOptionPane.showMessageDialog(this, "Text Report saved to Downloads.");
     }//GEN-LAST:event_btnExportTXTActionPerformed
 
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
         // TODO add your handling code here:
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAllTransactions(), admin);
         reportTextArea.setText(data);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
     private void btnExportPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportPDFActionPerformed
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent.getId());
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), admin);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "PDF Report saved to Downloads.");
-        } else {
+        }
+        else {
             javax.swing.JOptionPane.showMessageDialog(this, "PDF Export Failed. Ensure iText7 libraries are loaded.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExportPDFActionPerformed
 
     private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
         // TODO add your handling code here:
-        models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
+        models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
+        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAllTransactions();
         
-        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent.getId());
+        boolean success = controller.ReportGenerator.exportToCSV(transactions, admin);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "CSV Report saved to Downloads.");
-        } else {
+        }
+        else {
             javax.swing.JOptionPane.showMessageDialog(this, "CSV Export Failed.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExportCSVActionPerformed

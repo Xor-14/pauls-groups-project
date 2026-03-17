@@ -2233,14 +2233,14 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent.getId());
+        boolean success = controller.ReportGenerator.exportToTXT(reportTextArea.getText(), agent);
         if (success) javax.swing.JOptionPane.showMessageDialog(this, "Text Report saved to Downloads.");
     }//GEN-LAST:event_btnExportTXTActionPerformed
 
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent.getId());
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent);
         reportTextArea.setText(data);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
@@ -2248,7 +2248,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (reportTextArea.getText().isEmpty()) return;
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent.getId());
+        boolean success = controller.ReportGenerator.exportToPDF(reportTextArea.getText(), agent);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "PDF Report saved to Downloads.");
         } else {
@@ -2261,7 +2261,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
         java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
         
-        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent.getId());
+        boolean success = controller.ReportGenerator.exportToCSV(transactions, agent);
         if (success) {
             javax.swing.JOptionPane.showMessageDialog(this, "CSV Report saved to Downloads.");
         } else {
