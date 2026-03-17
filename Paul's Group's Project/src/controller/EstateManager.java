@@ -133,17 +133,17 @@ public class EstateManager {
     }
 
     public void resolveTransaction(int transactionId, int agentId, boolean approve) {
-        SaleTransaction target = null;
-        for (SaleTransaction t : transactions) {
+        models.SaleTransaction target = null;
+        for (models.SaleTransaction t : transactions) {
             if (t.getTransactionID() == transactionId) target = t;
         }
         if (target == null) return;
 
-        target.setStatus(approve ? "Approved" : "Rejected");
-        target.setAgentID(agentId);
-
-        Lot lot = findLotById(target.getLotID());
+        models.Lot lot = findLotById(target.getLotID());
+        
         if (approve) {
+            target.setStatus("Approved");
+            target.setAgentID(agentId);
             lot.setStatus(target.getType().equals("Reservation") ? "Reserved" : "Sold");
             if (target.getType().equals("Purchase")) {
                 for (models.Agent a : UserManager.getInstance().getAgents()) {
@@ -154,8 +154,12 @@ public class EstateManager {
                     }
                 }
             }
+            logAudit("TRANSACTION_APPROVED", agentId, "Approved TransID " + transactionId + " for Lot " + lot.getLotID());
         } else {
+            // Remove from active transactions if rejected
+            transactions.remove(target);
             lot.setStatus("Available");
+            logAudit("TRANSACTION_REJECTED", agentId, "Rejected TransID " + transactionId + " for Lot " + lot.getLotID());
         }
         
         CSVDatabase.saveLots(allLots);
@@ -167,5 +171,23 @@ public class EstateManager {
         this.allLots = CSVDatabase.loadLots();
         this.transactions = CSVDatabase.loadTransactions();
         initializeBlocks(); // Re-sort lots into blocks
+    }
+    
+    public void logAudit(String actionType, int userId, String details) {
+        java.util.List<models.AuditLog> logs = CSVDatabase.loadAuditLogs();
+        int newId = logs.size() + 1;
+        String timestamp = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        logs.add(new models.AuditLog(newId, timestamp, actionType, userId, details));
+        CSVDatabase.saveAuditLogs(logs);
+    }
+    
+    public void adminOverrideLotStatus(int lotId, String newStatus) {
+        models.Lot lot = findLotById(lotId);
+        if (lot != null) {
+            String oldStatus = lot.getStatus();
+            lot.setStatus(newStatus);
+            CSVDatabase.saveLots(allLots);
+            logAudit("ADMIN_OVERRIDE", 0, "Lot " + lotId + " changed from " + oldStatus + " to " + newStatus);
+        }
     }
 }

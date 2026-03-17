@@ -1,0 +1,16 @@
+ESTATE SALES REPORT
+Generated: 2026-03-17 18:50:51
+Agent ID: 2
+--------------------------------------------------
+Trans ID: 9 | Lot: 21 | Bank - BDO | PHP 493,725.00
+Trans ID: 10 | Lot: 22 | Bank - BPI | PHP 271,000.00
+Trans ID: 11 | Lot: 23 | None | PHP 30,000.00
+Trans ID: 12 | Lot: 24 | Spot Cash | PHP 3,010,000.00
+Trans ID: 13 | Lot: 25 | None | PHP 50,000.00
+Trans ID: 14 | Lot: 36 | None | PHP 50,000.00
+Trans ID: 15 | Lot: 37 | Spot Cash | PHP 3,010,000.00
+Trans ID: 19 | Lot: 40 | Bank - BDO | PHP 493,725.00
+Trans ID: 20 | Lot: 33 | Bank - BDO | PHP 271,000.00
+--------------------------------------------------
+Total Approved Transactions: 9
+Total Sales Volume: PHP 7,679,450.00
