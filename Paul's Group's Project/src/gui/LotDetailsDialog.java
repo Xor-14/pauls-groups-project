@@ -23,8 +23,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
-        "Spot Cash", "Bank - BDO", "Bank - BPI", "Bank - RCBC", "Pag-IBIG Financing" 
-    }));
+            "Spot Cash", "Bank - BDO", "Bank - BPI", "Bank - RCBC", "Pag-IBIG Financing", "In-House Financing" 
+        }));
+        
         jLabel1.setText("LOT DETAILS - " + currentLot.getLotType().toUpperCase());
         Info1.setText(String.format("Block: %d | Lot ID: %d | Lot Area: %.2f sqm | Floor Area: %.2f sqm", 
                 currentLot.getBlockID(), currentLot.getLotID(), currentLot.getLotArea(), currentLot.getFloorArea()));
@@ -62,6 +63,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         } else if (selected.contains("Pag-IBIG")) {
             buildRFOTablePagIbig();
             buildLoanTablePagIbig();
+        } else if (selected.contains("In-House")) {
+            buildRFOTableBank(); // Shares identical RFO layout with Bank
+            buildLoanTableInHouse();
         } else {
             buildRFOTableCash();
             buildLoanTableCash();
@@ -204,6 +208,24 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         }
         tableLoan.setModel(model);
     }
+    
+    private void buildLoanTableInHouse() {
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {}, new String [] {"Loanable Amount (In-House)", "Monthly Amortization", "Required NDI"}
+        ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
+        
+        double tcp = currentLot.getTcp();
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double loanable = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
+        int[] terms = {5, 10, 15, 20}; // Matches bank terms
+        
+        for (int years : terms) {
+            double ma = controller.FinancialCalculator.calculateMonthlyAmortization(loanable, years, "In-House", "N/A");
+            double ndi = ma / 0.30; 
+            model.addRow(new Object[]{years + " Years", String.format("PHP %,.2f", ma), String.format("PHP %,.2f", ndi)});
+        }
+        tableLoan.setModel(model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -313,7 +335,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 550, 140));
 
         financingComboBox.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spot Cash", "Bank", "Pag-IBIG" }));
+        financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spot Cash", "Bank", "Pag-IBIG", "In-House" }));
         financingComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 financingComboBoxActionPerformed(evt);
@@ -380,10 +402,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         double monthlyAmortization = 0.0;
         String financingTypeForTransaction = selectedFinancing;
 
-        // Execute complex flow if financing is required
-        if (selectedFinancing.contains("Bank") || selectedFinancing.contains("Pag-IBIG")) {
-            Integer[] terms = selectedFinancing.contains("Bank") ? new Integer[]{5, 10, 15, 20} : new Integer[]{5, 10, 15, 20, 25, 30};
-            Integer defaultTerm = selectedFinancing.contains("Bank") ? 20 : 30;
+        if (selectedFinancing.contains("Bank") || selectedFinancing.contains("Pag-IBIG") || selectedFinancing.contains("In-House")) {
+            Integer[] terms = selectedFinancing.contains("Pag-IBIG") ? new Integer[]{5, 10, 15, 20, 25, 30} : new Integer[]{5, 10, 15, 20};
+            Integer defaultTerm = selectedFinancing.contains("Pag-IBIG") ? 30 : 20;
 
             Integer selectedTerm = (Integer) javax.swing.JOptionPane.showInputDialog(this, 
                     "Select Loan Term (Years):", "Term Selection", 
@@ -399,6 +420,8 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 if (selectedFinancing.contains("BDO")) bankName = "BDO";
                 else if (selectedFinancing.contains("BPI")) bankName = "BPI";
                 else if (selectedFinancing.contains("RCBC")) bankName = "RCBC";
+            } else if (selectedFinancing.contains("In-House")) {
+                baseFinancing = "In-House";
             } else {
                 double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
                 if (loanableAmount > maxLoan) loanableAmount = maxLoan;

@@ -25,11 +25,28 @@ public class FinancialCalculator {
     }
 
     public static double calculateMonthlyAmortization(double principal, int years, String financingType, String bankName) {
-        double annualRate = financingType.equalsIgnoreCase("Bank") ? FinanceManager.getInstance().getRate(bankName.toUpperCase()) : FinanceManager.getInstance().getRate("PagIbig");
-        double monthlyRate = annualRate / 12;
+        double annualRate;
+        
+        if (financingType.toLowerCase().contains("pag-ibig") || financingType.toLowerCase().contains("hdmf")) {
+            annualRate = FinanceManager.getInstance().getRate("PagIbig");
+        } else if (financingType.toLowerCase().contains("in-house")) {
+            annualRate = FinanceManager.getInstance().getRate("BDO"); // Mirrors default bank rate
+        } else {
+            annualRate = FinanceManager.getInstance().getRate(bankName.toUpperCase());
+            if (annualRate == 0.0) annualRate = FinanceManager.getInstance().getRate("BDO");
+        }
+        
+        double monthlyRate = annualRate / 12.0;
         int totalPayments = years * 12;
         
         if (monthlyRate == 0) return principal / totalPayments;
-        return (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
+        
+        // Standard formula
+        double rawFactor = (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
+        
+        // Real Estate Standard: Truncate factor rate to 6 decimal places
+        double truncatedFactor = Math.floor(rawFactor * 1000000.0) / 1000000.0;
+        
+        return principal * truncatedFactor;
     }
 }
