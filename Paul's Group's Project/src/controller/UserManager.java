@@ -10,157 +10,74 @@
 
 package controller;
 
-import models.Admin;
-import models.Agent;
-import models.Buyer;
-import models.User;
+import models.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
-    private List<Buyer> buyers;
-    private List<Agent> agents;
-    private List<Admin> admins;
+    private List<User> users;
     private User currentUser;
 
     private UserManager() {
-        buyers = loadBuyers();
-        agents = loadAgents();
-        admins = loadAdmins();
-        
-        if (admins.isEmpty()) {
+        users = new ArrayList<>();
+        loadAllUsers();
+        if (getUserById(1, "Admin") == null && users.stream().noneMatch(u -> u instanceof Admin)) {
             register(new Admin(0, "System", "Admin", "admin", "admin"));
         }
     }
     
-    private static class InstanceHolder {
-        private static final UserManager INSTANCE = new UserManager();
-    }
-
+    private static class InstanceHolder { private static final UserManager INSTANCE = new UserManager(); }
     public static UserManager getInstance() { return InstanceHolder.INSTANCE; }
 
-    // --- PARSERS ---
-    private List<Buyer> loadBuyers() {
-        List<Buyer> list = new ArrayList<>();
-        for(String[] v : CSVDatabase.readCSV(CSVDatabase.CLIENTS_FILE)) {
-            if(v.length >= 5) list.add(new Buyer(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), v[4].trim()));
+    private void loadAllUsers() {
+        for(String[] v : CSVDatabase.readCSV(CSVDatabase.CLIENTS_FILE)) if(v.length>=5) users.add(new Buyer(Integer.parseInt(v[0]), v[1], v[2], v[3], v[4]));
+        for(String[] v : CSVDatabase.readCSV(CSVDatabase.AGENTS_FILE)) if(v.length>=7) users.add(new Agent(Integer.parseInt(v[0]), v[1], v[2], v[3], v[4], Integer.parseInt(v[5]), Double.parseDouble(v[6])));
+        for(String[] v : CSVDatabase.readCSV(CSVDatabase.ADMINS_FILE)) if(v.length>=5) users.add(new Admin(Integer.parseInt(v[0]), v[1], v[2], v[3], v[4]));
+    }
+
+    public void saveAllUsers() {
+        List<String[]> buyers = new ArrayList<>(), agents = new ArrayList<>(), admins = new ArrayList<>();
+        for(User u : users) {
+            if(u instanceof Buyer) buyers.add(new String[]{String.valueOf(u.getId()), u.getFirstName(), u.getLastName(), u.getEmail(), u.getPassword()});
+            else if(u instanceof Agent) { Agent a = (Agent)u; agents.add(new String[]{String.valueOf(a.getId()), a.getFirstName(), a.getLastName(), a.getEmail(), a.getPassword(), String.valueOf(a.getAssignedBlock()), String.valueOf(a.getTotalSales())}); }
+            else if(u instanceof Admin) admins.add(new String[]{String.valueOf(u.getId()), u.getFirstName(), u.getLastName(), u.getEmail(), u.getPassword()});
         }
-        return list;
+        CSVDatabase.writeCSV(CSVDatabase.CLIENTS_FILE, "id,firstName,lastName,email,password", buyers);
+        CSVDatabase.writeCSV(CSVDatabase.AGENTS_FILE, "id,firstName,lastName,email,password,assignedBlock,totalSales", agents);
+        CSVDatabase.writeCSV(CSVDatabase.ADMINS_FILE, "id,firstName,lastName,email,password", admins);
     }
 
-    private List<Agent> loadAgents() {
-        List<Agent> list = new ArrayList<>();
-        for(String[] v : CSVDatabase.readCSV(CSVDatabase.AGENTS_FILE)) {
-            if(v.length >= 7) list.add(new Agent(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), v[4].trim(), Integer.parseInt(v[5].trim()), Double.parseDouble(v[6].trim())));
-        }
-        return list;
-    }
-
-    private List<Admin> loadAdmins() {
-        List<Admin> list = new ArrayList<>();
-        for(String[] v : CSVDatabase.readCSV(CSVDatabase.ADMINS_FILE)) {
-            if(v.length >= 5) list.add(new Admin(Integer.parseInt(v[0].trim()), v[1].trim(), v[2].trim(), v[3].trim(), v[4].trim()));
-        }
-        return list;
-    }
-
-    // --- WRITERS ---
-    public void saveBuyers() {
-        List<String[]> data = new ArrayList<>();
-        for(Buyer b : buyers) data.add(new String[]{String.valueOf(b.getId()), b.getFirstName(), b.getLastName(), b.getEmail(), b.getPassword()});
-        CSVDatabase.writeCSV(CSVDatabase.CLIENTS_FILE, "id,firstName,lastName,email,password", data);
-    }
-
-    public void saveAgents() {
-        List<String[]> data = new ArrayList<>();
-        for(Agent a : agents) data.add(new String[]{String.valueOf(a.getId()), a.getFirstName(), a.getLastName(), a.getEmail(), a.getPassword(), String.valueOf(a.getAssignedBlock()), String.valueOf(a.getTotalSales())});
-        CSVDatabase.writeCSV(CSVDatabase.AGENTS_FILE, "id,firstName,lastName,email,password,assignedBlock,totalSales", data);
-    }
-
-    public void saveAdmins() {
-        List<String[]> data = new ArrayList<>();
-        for(Admin a : admins) data.add(new String[]{String.valueOf(a.getId()), a.getFirstName(), a.getLastName(), a.getEmail(), a.getPassword()});
-        CSVDatabase.writeCSV(CSVDatabase.ADMINS_FILE, "id,firstName,lastName,email,password", data);
-    }
-
-    // --- CORE LOGIC ---
     public User login(String email, String password) {
-        for (Admin admin : admins) if (admin.getEmail().equals(email) && admin.getPassword().equals(password)) { currentUser = admin; return admin; }
-        for (Agent a : agents) if (a.getEmail().equals(email) && a.getPassword().equals(password)) { currentUser = a; return a; }
-        for (Buyer b : buyers) if (b.getEmail().equals(email) && b.getPassword().equals(password)) { currentUser = b; return b; }
+        for (User u : users) if (u.getEmail().equals(email) && u.getPassword().equals(password)) { currentUser = u; return u; }
         return null;
     }
     
     public boolean register(User user) {
-        if (isEmailTaken(user.getEmail())) return false;
-        
-        if (user instanceof Admin) {
-            user.setId(admins.size() + 1);
-            admins.add((Admin) user);
-            saveAdmins();
-            AuditManager.getInstance().logAudit("ADMIN_REGISTERED", user.getId(), "New admin created: " + user.getEmail());
-        } else if (user instanceof Agent) {
-            user.setId(agents.size() + 1);
-            agents.add((Agent) user);
-            saveAgents();
-            AuditManager.getInstance().logAudit("AGENT_REGISTERED", user.getId(), "New agent created: " + user.getEmail());
-        } else if (user instanceof Buyer) {
-            user.setId(buyers.size() + 1);
-            buyers.add((Buyer) user);
-            saveBuyers();
-            AuditManager.getInstance().logAudit("BUYER_REGISTERED", user.getId(), "New buyer created: " + user.getEmail());
-        }
+        if (users.stream().anyMatch(u -> u.getEmail().equals(user.getEmail()))) return false;
+        user.setId((int) users.stream().filter(u -> u.getClass().equals(user.getClass())).count() + 1);
+        users.add(user);
+        saveAllUsers();
+        AuditManager.getInstance().logAudit(user.getClass().getSimpleName().toUpperCase() + "_REGISTERED", user.getId(), "New account: " + user.getEmail());
         return true;
-    }
-
-    private boolean isEmailTaken(String email) {
-        return admins.stream().anyMatch(a -> a.getEmail().equals(email)) || agents.stream().anyMatch(a -> a.getEmail().equals(email)) || buyers.stream().anyMatch(b -> b.getEmail().equals(email));
     }
 
     public User getUserById(int id, String role) {
-        if (role.equalsIgnoreCase("Admin")) return admins.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-        if (role.equalsIgnoreCase("Agent")) return agents.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-        if (role.equalsIgnoreCase("Buyer")) return buyers.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-        return null;
+        return users.stream().filter(u -> u.getClass().getSimpleName().equalsIgnoreCase(role) && u.getId() == id).findFirst().orElse(null);
     }
 
     public void deleteUser(int userId, String role) {
-        if (role.equals("Agent")) {
-            agents.removeIf(a -> a.getId() == userId);
-            saveAgents();
-        } else if (role.equals("Buyer")) {
-            buyers.removeIf(b -> b.getId() == userId);
-            saveBuyers();
-        }
-        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin deleted " + role + " ID " + userId);
+        users.removeIf(u -> u.getClass().getSimpleName().equalsIgnoreCase(role) && u.getId() == userId);
+        saveAllUsers();
+        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Deleted " + role + " ID " + userId);
     }
 
-    public boolean updateCurrentUser(String firstName, String lastName, String email, String password) {
-        if (currentUser == null) return false;
-        
-        // Prevent changing to an email that is already used by another account
-        if (!currentUser.getEmail().equals(email) && isEmailTaken(email)) {
-            return false;
-        }
-
-        currentUser.setFirstName(firstName);
-        currentUser.setLastName(lastName);
-        currentUser.setEmail(email);
-        currentUser.setPassword(password);
-
-        if (currentUser instanceof Admin) {
-            saveAdmins();
-        } else if (currentUser instanceof Agent) {
-            saveAgents();
-        } else if (currentUser instanceof Buyer) {
-            saveBuyers();
-        }
-        
-        AuditManager.getInstance().logAudit("PROFILE_UPDATED", currentUser.getId(), "User updated profile: " + email);
+    public boolean updateCurrentUser(String f, String l, String e, String p) {
+        if (users.stream().anyMatch(u -> u.getEmail().equals(e) && u.getId() != currentUser.getId())) return false;
+        currentUser.setFirstName(f); currentUser.setLastName(l); currentUser.setEmail(e); currentUser.setPassword(p);
+        saveAllUsers();
         return true;
     }
-    
+
     public User getCurrentUser() { return currentUser; }
     public void logout() { currentUser = null; }
-    public List<Agent> getAgents() { return agents; }
 }

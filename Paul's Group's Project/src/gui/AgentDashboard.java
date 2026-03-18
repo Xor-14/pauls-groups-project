@@ -333,7 +333,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     
     private void loadAgentHistory() {
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> history = controller.TransactionManager.getInstance().getTransactionsByUser(agent.getId(), "Agent");
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
@@ -2257,7 +2257,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void btnGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateReportActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getAgentTransactions(agent.getId()), agent);
+        String data = controller.ReportGenerator.buildReportString(controller.TransactionManager.getInstance().getTransactionsByUser(agent.getId(), "Agent"), agent);
         reportTextArea.setText(data);
     }//GEN-LAST:event_btnGenerateReportActionPerformed
 
@@ -2276,7 +2276,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void btnExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCSVActionPerformed
         // TODO add your handling code here:
         models.Agent agent = (models.Agent) controller.UserManager.getInstance().getCurrentUser();
-        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getAgentTransactions(agent.getId());
+        java.util.List<models.SaleTransaction> transactions = controller.TransactionManager.getInstance().getTransactionsByUser(agent.getId(), "Agent");
         
         boolean success = controller.ReportGenerator.exportToCSV(transactions, agent);
         if (success) {

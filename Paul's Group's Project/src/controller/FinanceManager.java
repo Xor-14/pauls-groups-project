@@ -10,74 +10,42 @@
 
 package controller;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 
 public class FinanceManager {
-    
-    private double bdoRate = 0.065;
-    private double bpiRate = 0.07;
-    private double rcbcRate = 0.065;
-    private double pagIbigRate = 0.0625;
-    private double downPaymentPercent = 0.10;
-    private double pagIbigMaxLoan = 6000000.0;
-    private double miscFeePercent = 0.05;
-    private double reservationFee = 20000.0;
+    private Map<String, Double> settings;
+    private final String[] KEYS = {"BDO", "BPI", "RCBC", "PagIbig", "DP", "MaxLoan", "Misc", "ResFee"};
+    private final double[] DEFAULTS = {0.065, 0.07, 0.065, 0.0625, 0.10, 6000000.0, 0.05, 20000.0};
 
-    private FinanceManager() { loadSettings(); }
-    
-    private static class InstanceHolder {
-        private static final FinanceManager INSTANCE = new FinanceManager();
+    private FinanceManager() {
+        settings = new HashMap<>();
+        loadSettings();
     }
     
+    private static class InstanceHolder { private static final FinanceManager INSTANCE = new FinanceManager(); }
     public static FinanceManager getInstance() { return InstanceHolder.INSTANCE; }
 
     private void loadSettings() {
         List<String[]> data = CSVDatabase.readCSV(CSVDatabase.FINANCE_FILE);
-        if (!data.isEmpty() && data.get(0).length >= 8) {
-            String[] v = data.get(0);
-            bdoRate = Double.parseDouble(v[0]);
-            bpiRate = Double.parseDouble(v[1]);
-            rcbcRate = Double.parseDouble(v[2]);
-            pagIbigRate = Double.parseDouble(v[3]);
-            downPaymentPercent = Double.parseDouble(v[4]);
-            pagIbigMaxLoan = Double.parseDouble(v[5]);
-            miscFeePercent = Double.parseDouble(v[6]);
-            reservationFee = Double.parseDouble(v[7]);
+        if (!data.isEmpty() && data.get(0).length >= KEYS.length) {
+            for (int i = 0; i < KEYS.length; i++) settings.put(KEYS[i], Double.parseDouble(data.get(0)[i]));
         } else {
-            saveSettings(); 
+            for (int i = 0; i < KEYS.length; i++) settings.put(KEYS[i], DEFAULTS[i]);
+            saveSettings();
         }
     }
 
-    private void saveSettings() {
+    public void saveSettings() {
         List<String[]> data = new ArrayList<>();
-        data.add(new String[]{
-            String.valueOf(bdoRate), String.valueOf(bpiRate), String.valueOf(rcbcRate), 
-            String.valueOf(pagIbigRate), String.valueOf(downPaymentPercent), 
-            String.valueOf(pagIbigMaxLoan), String.valueOf(miscFeePercent), String.valueOf(reservationFee)
-        });
-        CSVDatabase.writeCSV(CSVDatabase.FINANCE_FILE, "bdo,bpi,rcbc,pagIbig,dp,pagIbigMax,misc,resFee", data);
+        String[] values = new String[KEYS.length];
+        for (int i = 0; i < KEYS.length; i++) values[i] = String.valueOf(settings.get(KEYS[i]));
+        data.add(values);
+        CSVDatabase.writeCSV(CSVDatabase.FINANCE_FILE, String.join(",", KEYS), data);
     }
 
-    public void updateSettings(double bdo, double bpi, double rcbc, double pagibig, double dp, double maxLoan, double misc, double resFee) {
-        this.bdoRate = bdo;
-        this.bpiRate = bpi;
-        this.rcbcRate = rcbc;
-        this.pagIbigRate = pagibig;
-        this.downPaymentPercent = dp;
-        this.pagIbigMaxLoan = maxLoan;
-        this.miscFeePercent = misc;
-        this.reservationFee = resFee;
-        saveSettings();
-    }
-
-    // Getters
-    public double getBdoRate() { return bdoRate; }
-    public double getBpiRate() { return bpiRate; }
-    public double getRcbcRate() { return rcbcRate; }
-    public double getPagIbigRate() { return pagIbigRate; }
-    public double getDownPaymentPercent() { return downPaymentPercent; }
-    public double getPagIbigMaxLoan() { return pagIbigMaxLoan; }
-    public double getMiscFeePercent() { return miscFeePercent; }
-    public double getReservationFee() { return reservationFee; }
+    public double getRate(String key) { return settings.getOrDefault(key, 0.0); }
+    public void updateSetting(String key, double value) { settings.put(key, value); }
 }

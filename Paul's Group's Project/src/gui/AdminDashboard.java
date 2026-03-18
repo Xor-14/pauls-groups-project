@@ -473,14 +473,14 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     private void loadFinanceSettings() {
         controller.FinanceManager fm = controller.FinanceManager.getInstance();
-        txtBdoRate.setText(String.valueOf(fm.getBdoRate()));
-        txtBpiRate.setText(String.valueOf(fm.getBpiRate()));
-        txtRcbcRate.setText(String.valueOf(fm.getRcbcRate()));
-        txtPagIbigRate.setText(String.valueOf(fm.getPagIbigRate()));
-        txtDownPayment.setText(String.valueOf(fm.getDownPaymentPercent()));
-        txtMaxLoan.setText(String.valueOf(fm.getPagIbigMaxLoan()));
-        txtMiscFee.setText(String.valueOf(fm.getMiscFeePercent()));
-        txtResFee.setText(String.valueOf(fm.getReservationFee()));
+        txtBdoRate.setText(String.valueOf(fm.getRate("BDO")));
+        txtBpiRate.setText(String.valueOf(fm.getRate("BPI")));
+        txtRcbcRate.setText(String.valueOf(fm.getRate("RCBC")));
+        txtPagIbigRate.setText(String.valueOf(fm.getRate("PagIbig")));
+        txtDownPayment.setText(String.valueOf(fm.getRate("DP")));
+        txtMaxLoan.setText(String.valueOf(fm.getRate("MaxLoan")));
+        txtMiscFee.setText(String.valueOf(fm.getRate("Misc")));
+        txtResFee.setText(String.valueOf(fm.getRate("ResFee")));
     }
     
     private void loadProfileData() {
@@ -2549,20 +2549,19 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void btnUpdateFinanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateFinanceActionPerformed
         // TODO add your handling code here:
         try {
-            double bdo = Double.parseDouble(txtBdoRate.getText());
-            double bpi = Double.parseDouble(txtBpiRate.getText());
-            double rcbc = Double.parseDouble(txtRcbcRate.getText());
-            double pagibig = Double.parseDouble(txtPagIbigRate.getText());
-            double dp = Double.parseDouble(txtDownPayment.getText());
-            double maxLoan = Double.parseDouble(txtMaxLoan.getText());
-            double misc = Double.parseDouble(txtMiscFee.getText());
-            double res = Double.parseDouble(txtResFee.getText());
-            
-            controller.FinanceManager.getInstance().updateSettings(bdo, bpi, rcbc, pagibig, dp, maxLoan, misc, res);
-            
-            models.Admin admin = (models.Admin) controller.UserManager.getInstance().getCurrentUser();
-            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated 8-parameter finance rates.");
-            
+            controller.FinanceManager fm = controller.FinanceManager.getInstance();
+            fm.updateSetting("BDO", Double.parseDouble(txtBdoRate.getText()));
+            fm.updateSetting("BPI", Double.parseDouble(txtBpiRate.getText()));
+            fm.updateSetting("RCBC", Double.parseDouble(txtRcbcRate.getText()));
+            fm.updateSetting("PagIbig", Double.parseDouble(txtPagIbigRate.getText()));
+            fm.updateSetting("DP", Double.parseDouble(txtDownPayment.getText()));
+            fm.updateSetting("MaxLoan", Double.parseDouble(txtMaxLoan.getText()));
+            fm.updateSetting("Misc", Double.parseDouble(txtMiscFee.getText()));
+            fm.updateSetting("ResFee", Double.parseDouble(txtResFee.getText()));
+            fm.saveSettings();
+
+            models.User admin = controller.UserManager.getInstance().getCurrentUser();
+            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated global finance rates.");
             javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated.");
         } catch (NumberFormatException e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
