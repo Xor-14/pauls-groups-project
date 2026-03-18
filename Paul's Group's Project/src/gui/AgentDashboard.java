@@ -235,6 +235,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         normal = new Color(255,255,255);
         loadPendingTransactions();
         loadAgentHistory();
+        loadProfileData();
     }
     
     public void applyFilters() {
@@ -386,6 +387,17 @@ public class AgentDashboard extends javax.swing.JFrame {
         applyFilters();
         loadPendingTransactions();
         loadAgentHistory();
+    }
+    
+    private void loadProfileData() {
+        models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
+        
+        if (currentUser != null) {
+            FirstName.setText(currentUser.getFirstName());
+            LastName.setText(currentUser.getLastName());
+            email.setText(currentUser.getEmail());
+            password.setText(currentUser.getPassword());
+        }
     }
 
     /**
@@ -2017,6 +2029,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
 
         change.setText("Update");
+        change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeActionPerformed(evt);
+            }
+        });
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
         MainContentSeller.addTab("tab3", Profile);
@@ -2268,6 +2285,34 @@ public class AgentDashboard extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "CSV Export Failed.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnExportCSVActionPerformed
+
+    private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
+        // TODO add your handling code here:
+        String first = FirstName.getText().trim();
+        String last = LastName.getText().trim();
+        String mail = email.getText().trim();
+        String pass = password.getText().trim();
+
+        // Input Sanitation
+        if (first.isEmpty() || last.isEmpty() || mail.isEmpty() || pass.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "All fields are required.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (first.contains(",") || last.contains(",") || mail.contains(",") || pass.contains(",")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Commas are not allowed.", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Execute Update
+        boolean success = controller.UserManager.getInstance().updateCurrentUser(first, last, mail, pass);
+
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Profile updated successfully.");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Update failed. Email may already be in use.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_changeActionPerformed
 
     /**
      * @param args the command line arguments

@@ -16,3 +16,5 @@ logId,timestamp,actionType,userId,details
 15,2026-03-18 04:06:41,FINANCE_UPDATED,2,Admin updated 8-parameter finance rates.
 16,2026-03-18 13:09:45,BUYER_REGISTERED,3,New buyer created: youseff@test.com
 17,2026-03-18 13:09:59,ADMIN_REGISTERED,3,New admin created: rodolfo@test.com
+18,2026-03-18 13:41:45,PROFILE_UPDATED,3,User updated profile: elcid@test.com
+19,2026-03-18 13:48:00,PROFILE_UPDATED,2,User updated profile: paul@test.com
