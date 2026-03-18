@@ -101,14 +101,14 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double rf = controller.FinanceManager.getInstance().getReservationFee();
+        double rf = controller.FinanceManager.getInstance().getRate("ResFee");
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
         double netDp = grossDp - rf;
         int dpMonths = 6; 
         double dpAmort = netDp / dpMonths;
 
         model.addRow(new Object[]{"Total Contract Price (TCP)", String.format("PHP %,.2f", tcp)});
-        model.addRow(new Object[]{"Downpayment %", String.format("%.0f%%", controller.FinanceManager.getInstance().getDownPaymentPercent() * 100)});
+        model.addRow(new Object[]{"Downpayment %", String.format("%.0f%%", controller.FinanceManager.getInstance().getRate("DP") * 100)});
         model.addRow(new Object[]{"Gross Downpayment", String.format("PHP %,.2f", grossDp)});
         model.addRow(new Object[]{"Less: Reservation Fee", String.format("PHP %,.2f", rf)});
         model.addRow(new Object[]{"Balance on DP", String.format("PHP %,.2f", netDp)});
@@ -124,11 +124,11 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double rf = controller.FinanceManager.getInstance().getReservationFee();
+        double rf = controller.FinanceManager.getInstance().getRate("ResFee");
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
         
         double tempLoanable = tcp - grossDp;
-        double maxLoan = controller.FinanceManager.getInstance().getPagIbigMaxLoan();
+        double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
         if (tempLoanable > maxLoan) {
             grossDp += (tempLoanable - maxLoan);
         }
@@ -190,7 +190,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
         double loanable = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         
-        double maxLoan = controller.FinanceManager.getInstance().getPagIbigMaxLoan();
+        double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
         if (loanable > maxLoan) loanable = maxLoan;
 
         int[] terms = {5, 10, 15, 20, 25, 30}; 
@@ -365,7 +365,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         String selectedFinancing = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Spot Cash";
         
         double tcp = currentLot.getTcp();
-        double reservationFee = controller.FinanceManager.getInstance().getReservationFee();
+        double reservationFee = controller.FinanceManager.getInstance().getRate("ResFee");
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
         double loanableAmount = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         
@@ -393,7 +393,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 else if (selectedFinancing.contains("BPI")) bankName = "BPI";
                 else if (selectedFinancing.contains("RCBC")) bankName = "RCBC";
             } else {
-                double maxLoan = controller.FinanceManager.getInstance().getPagIbigMaxLoan();
+                double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
                 if (loanableAmount > maxLoan) loanableAmount = maxLoan;
             }
 
@@ -463,7 +463,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         
         if (currentLot.getStatus().equalsIgnoreCase("Available")) {
             models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
-            double reservationFee = controller.FinanceManager.getInstance().getReservationFee();
+            double reservationFee = controller.FinanceManager.getInstance().getRate("ResFee");
             
             boolean success = controller.TransactionManager.getInstance().requestTransaction(
                     currentLot.getLotID(), currentUser.getId(), "Reservation", "None", reservationFee, 0.0);
