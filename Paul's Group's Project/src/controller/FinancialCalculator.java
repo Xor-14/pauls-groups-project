@@ -13,12 +13,11 @@ package controller;
 public class FinancialCalculator {
 
     public static double calculateTCP(double basePrice) {
-        double miscFee = basePrice * FinanceManager.getInstance().getMiscFeePercent();
-        return basePrice + miscFee;
+        return basePrice + (basePrice * FinanceManager.getInstance().getRate("Misc"));
     }
 
     public static double calculateDownPayment(double tcp) {
-        return tcp * FinanceManager.getInstance().getDownPaymentPercent();
+        return tcp * FinanceManager.getInstance().getRate("DP");
     }
 
     public static double calculateLoanableAmount(double tcp, double grossDownPayment) {
@@ -26,29 +25,11 @@ public class FinancialCalculator {
     }
 
     public static double calculateMonthlyAmortization(double principal, int years, String financingType, String bankName) {
-        double annualRate;
-        
-        if (financingType.equalsIgnoreCase("Pag-IBIG") || financingType.equalsIgnoreCase("HDMF")) {
-            annualRate = FinanceManager.getInstance().getPagIbigRate();
-        } else {
-            switch (bankName.toUpperCase()) {
-                case "BPI": annualRate = FinanceManager.getInstance().getBpiRate(); break;
-                case "RCBC": annualRate = FinanceManager.getInstance().getRcbcRate(); break;
-                case "BDO": 
-                default: annualRate = FinanceManager.getInstance().getBdoRate(); break;
-            }
-        }
-            
+        double annualRate = financingType.equalsIgnoreCase("Bank") ? FinanceManager.getInstance().getRate(bankName.toUpperCase()) : FinanceManager.getInstance().getRate("PagIbig");
         double monthlyRate = annualRate / 12;
         int totalPayments = years * 12;
         
         if (monthlyRate == 0) return principal / totalPayments;
-        
-        return (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) 
-             / (Math.pow(1 + monthlyRate, totalPayments) - 1);
-    }
-    
-    public static boolean isEligibleForPagIbig(double loanableAmount) {
-        return loanableAmount <= FinanceManager.getInstance().getPagIbigMaxLoan();
+        return (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
     }
 }

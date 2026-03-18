@@ -54,17 +54,12 @@ public class TransactionManager {
 
     public List<SaleTransaction> getAllTransactions() { return transactions; }
 
-    public List<SaleTransaction> getBuyerTransactions(int buyerId) {
-        List<SaleTransaction> history = new ArrayList<>();
-        for (SaleTransaction t : transactions) if (t.getBuyerID() == buyerId) history.add(t);
-        return history;
-    }
-
-    public List<SaleTransaction> getAgentTransactions(int agentId) {
-        List<SaleTransaction> history = new ArrayList<>();
-        for (SaleTransaction t : transactions) if (t.getAgentID() == agentId) history.add(t);
-        return history;
-    }    
+    public List<SaleTransaction> getTransactionsByUser(int userId, String role) {
+        return transactions.stream().filter(t ->
+            (role.equalsIgnoreCase("Buyer") && t.getBuyerID() == userId) ||
+            (role.equalsIgnoreCase("Agent") && t.getAgentID() == userId)
+        ).collect(java.util.stream.Collectors.toList());
+    }   
     
     public boolean requestTransaction(int lotID, int buyerID, String type, String financingType, double amount, double amortization) {
         Lot lot = EstateManager.getInstance().findLotById(lotID);
@@ -106,12 +101,10 @@ public class TransactionManager {
             target.setAgentID(agentId);
             lot.setStatus(target.getType().equals("Reservation") ? "Reserved" : "Sold");
             if (target.getType().equals("Purchase")) {
-                for (models.Agent a : UserManager.getInstance().getAgents()) {
-                    if (a.getId() == agentId) {
-                        a.addSale(target.getAmount());
-                        UserManager.getInstance().saveAgents();
-                        break;
-                    }
+                models.Agent a = (models.Agent) UserManager.getInstance().getUserById(agentId, "Agent");
+                if (a != null) {
+                    a.addSale(target.getAmount());
+                    UserManager.getInstance().saveAllUsers();
                 }
             }
             AuditManager.getInstance().logAudit("TRANSACTION_APPROVED", agentId, "Approved TransID " + transactionId + " for Lot " + lot.getLotID());
