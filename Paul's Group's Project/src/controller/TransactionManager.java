@@ -107,11 +107,11 @@ public class TransactionManager {
                     UserManager.getInstance().saveAllUsers();
                 }
             }
-            AuditManager.getInstance().logAudit("TRANSACTION_APPROVED", agentId, "Approved TransID " + transactionId + " for Lot " + lot.getLotID());
+            AuditManager.getInstance().logAudit("TRANSACTION_APPROVED", agentId, "Agent", "Approved TransID " + transactionId + " for Lot " + lot.getLotID());
         } else {
             transactions.remove(target);
             lot.setStatus("Available");
-            AuditManager.getInstance().logAudit("TRANSACTION_REJECTED", agentId, "Rejected TransID " + transactionId + " for Lot " + lot.getLotID());
+            AuditManager.getInstance().logAudit("TRANSACTION_REJECTED", agentId, "Agent", "Rejected TransID " + transactionId + " for Lot " + lot.getLotID());
         }
         
         EstateManager.getInstance().saveLots();

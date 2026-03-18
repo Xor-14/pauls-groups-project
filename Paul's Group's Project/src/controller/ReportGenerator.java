@@ -58,9 +58,13 @@ public class ReportGenerator {
             if (isAuthorized && t.getStatus().equals("Approved")) {
                 Buyer buyer = (Buyer) UserManager.getInstance().getUserById(t.getBuyerID(), "Buyer");
                 String buyerName = (buyer != null) ? buyer.getFirstName() + " " + buyer.getLastName() : "Unknown Buyer";
+                
+                Agent agent = (Agent) UserManager.getInstance().getUserById(t.getAgentID(), "Agent");
+                String agentName = (agent != null) ? agent.getFirstName() + " " + agent.getLastName() : "Unknown Agent";
 
-                sb.append(String.format("Trans ID: %d | Lot: %d | Buyer: %s (ID: %d) | %s | PHP %,.2f\n", 
-                        t.getTransactionID(), t.getLotID(), buyerName, t.getBuyerID(), t.getFinancingType(), t.getAmount()));
+                // Appended Agent details
+                sb.append(String.format("Trans ID: %d | Lot: %d | Agent: %s (ID: %d) | Buyer: %s (ID: %d) | %s | PHP %,.2f\n", 
+                        t.getTransactionID(), t.getLotID(), agentName, t.getAgentID(), buyerName, t.getBuyerID(), t.getFinancingType(), t.getAmount()));
                 totalSales += t.getAmount();
                 count++;
             }
@@ -103,7 +107,8 @@ public class ReportGenerator {
         String fileName = getDynamicFileName(user, ".csv");
         String filePath = getDownloadsPath(fileName);
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write("Transaction ID,Date,Lot ID,Agent ID,Buyer Name,Buyer ID,Financing Type,Amount\n");
+            // Appended Agent Name header
+            writer.write("Transaction ID,Date,Lot ID,Agent Name,Agent ID,Buyer Name,Buyer ID,Financing Type,Amount\n");
             
             for (SaleTransaction t : transactions) {
                 boolean isAuthorized = (user instanceof Admin) || (user instanceof Agent && t.getAgentID() == user.getId());
@@ -112,8 +117,12 @@ public class ReportGenerator {
                     Buyer buyer = (Buyer) UserManager.getInstance().getUserById(t.getBuyerID(), "Buyer");
                     String buyerName = (buyer != null) ? buyer.getFirstName() + " " + buyer.getLastName() : "Unknown Buyer";
                     
-                    writer.write(String.format("%d,%s,%d,%d,%s,%d,%s,%.2f\n",
-                        t.getTransactionID(), t.getDate(), t.getLotID(), t.getAgentID(), buyerName, 
+                    Agent agent = (Agent) UserManager.getInstance().getUserById(t.getAgentID(), "Agent");
+                    String agentName = (agent != null) ? agent.getFirstName() + " " + agent.getLastName() : "Unknown Agent";
+                    
+                    // Included Agent variable injection
+                    writer.write(String.format("%d,%s,%d,%s,%d,%s,%d,%s,%.2f\n",
+                        t.getTransactionID(), t.getDate(), t.getLotID(), agentName, t.getAgentID(), buyerName, 
                         t.getBuyerID(), t.getFinancingType(), t.getAmount()));
                 }
             }

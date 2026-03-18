@@ -57,7 +57,7 @@ public class UserManager {
         user.setId((int) users.stream().filter(u -> u.getClass().equals(user.getClass())).count() + 1);
         users.add(user);
         saveAllUsers();
-        AuditManager.getInstance().logAudit(user.getClass().getSimpleName().toUpperCase() + "_REGISTERED", user.getId(), "New account: " + user.getEmail());
+        AuditManager.getInstance().logAudit(user.getClass().getSimpleName().toUpperCase() + "_REGISTERED", user.getId(), user.getClass().getSimpleName(), "New account: " + user.getEmail());
         return true;
     }
 
@@ -68,7 +68,7 @@ public class UserManager {
     public void deleteUser(int userId, String role) {
         users.removeIf(u -> u.getClass().getSimpleName().equalsIgnoreCase(role) && u.getId() == userId);
         saveAllUsers();
-        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Deleted " + role + " ID " + userId);
+        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin", "Deleted " + role + " ID " + userId);
     }
 
     public boolean updateCurrentUser(String f, String l, String e, String p) {

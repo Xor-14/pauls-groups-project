@@ -395,7 +395,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                             controller.EstateManager.getInstance().saveLots();
                             
                             String detail = String.format("Admin overridden Lot %d from %s to %s", lot.getLotID(), oldStatus, newStatus);
-                            controller.AuditManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), detail);
+                            controller.AuditManager.getInstance().logAudit("LOT_OVERRIDE", currentAdmin.getId(), "Admin", detail);
                             
                             updateLotColor(finalB, finalL);
                             javax.swing.JOptionPane.showMessageDialog(this, "Lot status updated successfully.");
@@ -440,22 +440,20 @@ public class AdminDashboard extends javax.swing.JFrame {
     }
     
     private void loadAuditLogs() {
-        // Assuming CSVDatabase has a loadAuditLogs method returning List<AuditLog>
         java.util.List<models.AuditLog> logs = controller.AuditManager.getInstance().getLogs();
         
         javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
             new Object [][] {},
-            new String [] {"Log ID", "Timestamp", "Action", "User ID", "Details"}
+            new String [] {"Log ID", "Timestamp", "Action", "User ID", "User Role", "Details"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) { return false; }
         };
         
-        // Reverse iterate to show newest logs at the top
         for (int i = logs.size() - 1; i >= 0; i--) {
             models.AuditLog log = logs.get(i);
             model.addRow(new Object[]{
-                log.getLogId(), log.getTimestamp(), log.getActionType(), log.getUserId(), log.getDetails()
+                log.getLogId(), log.getTimestamp(), log.getActionType(), log.getUserId(), log.getUserRole(), log.getDetails()
             });
         }
         auditTable.setModel(model);
@@ -2585,8 +2583,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             fm.saveSettings();
 
             models.User admin = controller.UserManager.getInstance().getCurrentUser();
-            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated global finance rates (12 parameters).");
-            
+            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin", "Admin updated global finance rates.");            
             javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated Successfully.");
         } catch (NumberFormatException e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs. Ensure all fields contain valid numbers.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);

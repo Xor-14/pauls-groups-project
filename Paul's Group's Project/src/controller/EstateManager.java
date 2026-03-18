@@ -110,7 +110,7 @@ public class EstateManager {
             String oldStatus = lot.getStatus();
             lot.setStatus(newStatus);
             saveLots();
-            AuditManager.getInstance().logAudit("ADMIN_OVERRIDE", 0, "Lot " + lotId + " changed from " + oldStatus + " to " + newStatus);
+            AuditManager.getInstance().logAudit("ADMIN_OVERRIDE", 0, "Admin", "Lot " + lotId + " changed from " + oldStatus + " to " + newStatus);
         }
     }
 }
