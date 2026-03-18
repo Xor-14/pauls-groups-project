@@ -33,38 +33,35 @@ public class LotFilterPanel extends JPanel {
         JLabel sFilter = new JLabel("Status:");
         sFilter.setFont(new Font("Arial", Font.BOLD, 18));
         sFilter.setForeground(Color.WHITE);
-        add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 60, 30));
+        add(sFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 65, -1, -1));
 
         statusFilter = new JComboBox<>(new String[]{"All", "Vacant", "Reserved", "Occupied"});
-        add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 60, 90, -1));
+        add(statusFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 65, 120, -1));
 
         JLabel bFilter = new JLabel("Block:");
         bFilter.setFont(new Font("Arial", Font.BOLD, 18));
         bFilter.setForeground(Color.WHITE);
-        add(bFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(195, 60, 60, 30));
+        add(bFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 65, -1, -1));
 
         blockFilter = new JComboBox<>(new String[]{"All", "Block 1", "Block 2", "Block 3", "Block 4", "Block 5"});
-        add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 60, -1, -1));
+        add(blockFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 65, 120, -1));
 
         JLabel lFilter = new JLabel("Type:");
         lFilter.setFont(new Font("Arial", Font.BOLD, 18));
         lFilter.setForeground(Color.WHITE);
-        add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(355, 60, 80, 30));
+        add(lFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 65, -1, -1));
 
         lotFilter = new JComboBox<>(new String[]{"All", "Callista", "AlliyahInner", "AlliyahOuter"});
-        add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 60, -1, -1));
-
+        add(lotFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 65, 120, -1));
         JLabel pFilter = new JLabel("Max Price:");
         pFilter.setFont(new Font("Arial", Font.BOLD, 18));
         pFilter.setForeground(Color.WHITE);
-        add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 60, 90, 30));
+        add(pFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 65, -1, -1));
 
         priceFilter = new JComboBox<>(new String[]{"All", "Max 3500000", "Max 5500000"});
-        add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, -1, -1));
-
-        applyFilterBtn = new JButton("Apply Filter");
+        add(priceFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 65, 140, -1));        applyFilterBtn = new JButton("Apply Filter");
         applyFilterBtn.addActionListener(e -> applyAction.run());
-        add(applyFilterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 100, -1, -1));
+        add(applyFilterBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 100, -1, -1));   
     }
 
     public boolean evaluateLot(Lot lot) {

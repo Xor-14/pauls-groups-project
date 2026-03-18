@@ -49,11 +49,16 @@ public class StartingPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        GroupName = new javax.swing.JLabel();
         start = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
+        GroupName = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,22 +67,14 @@ public class StartingPage extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1279, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        GroupName.setForeground(new java.awt.Color(255, 255, 255));
-        GroupName.setText("Paul's Group");
-        getContentPane().add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 35, 524, 30));
-
-        start.setBackground(new java.awt.Color(0, 0, 0));
         start.setFont(new java.awt.Font("Arial", 0, 34)); // NOI18N
-        start.setForeground(new java.awt.Color(255, 255, 255));
-        start.setText("Click Here to Start");
+        start.setForeground(new java.awt.Color(51, 51, 51));
+        start.setText("Get Started");
         start.setAlignmentY(0.0F);
-        start.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        start.setContentAreaFilled(false);
+        start.setBorder(null);
         start.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         start.setFocusPainted(false);
         start.setFocusable(false);
-        start.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         start.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         start.setIconTextGap(0);
         start.setMargin(new java.awt.Insets(14, 14, 14, 14));
@@ -101,7 +98,7 @@ public class StartingPage extends javax.swing.JFrame {
                 startActionPerformed(evt);
             }
         });
-        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 400, 40));
+        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 520, 480, 40));
 
         jPanel1.setBackground(new java.awt.Color(30, 30, 30));
         jPanel1.setFocusable(false);
@@ -109,16 +106,51 @@ public class StartingPage extends javax.swing.JFrame {
         jPanel1.setMinimumSize(new java.awt.Dimension(1280, 92));
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 92));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        jPanel1.add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 90));
+
+        GroupName.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        GroupName.setForeground(new java.awt.Color(130, 159, 120));
+        GroupName.setText("C R E A M S");
+        jPanel1.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 35, 524, 30));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 92));
 
-        jLabel1.setFont(new java.awt.Font("New Peninim MT", 1, 70)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("New Peninim MT", 1, 85)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html>R E A L<br>E S T A T E<br>M A N A G E R</html>");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 233, 524, 288));
+        jLabel1.setText("CALLISTA");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 640, 70));
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("LOGO");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(612, 209, 549, 336));
+        jLabel3.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel3.setText("S Y S T E M");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 440, 640, 70));
+
+        jLabel4.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel4.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel4.setText("R E A L  E S T A T E");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, 640, 70));
+
+        jLabel5.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel5.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel5.setText("A N D  A C Q U I S I T I O N");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 340, 640, 70));
+
+        jLabel6.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel6.setText("M A N A G E M E N T");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 640, 70));
+
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo2.png"))); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 557, 557));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/main_bg.png"))); // NOI18N
@@ -142,17 +174,14 @@ public class StartingPage extends javax.swing.JFrame {
 
     private void startMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startMouseEntered
         // TODO add your handling code here:
-        start.setForeground(entered);
     }//GEN-LAST:event_startMouseEntered
 
     private void startMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startMouseExited
         // TODO add your handling code here:
-        start.setForeground(normal);
     }//GEN-LAST:event_startMouseExited
 
     private void startMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startMousePressed
         // TODO add your handling code here:
-        start.setForeground(clickedcolor);
     }//GEN-LAST:event_startMousePressed
 
     /**
@@ -195,9 +224,14 @@ public class StartingPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel Logo;
     private javax.swing.JLabel bgimg;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton start;
     // End of variables declaration//GEN-END:variables

@@ -22,20 +22,8 @@ public class AgentDashboard extends javax.swing.JFrame {
      /**
      * 
      */ 
-    private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
-    private int imageIndex = 0;
     private LotFilterPanel customFilterPanel;
     
-   private void imageSlideshow() {
-
-    Timer timer = new Timer(8000, e -> {
-        imageIndex = (imageIndex + 1) % imgslides.length;
-
-        bgimg.setIcon(
-            new ImageIcon(getClass().getResource(imgslides[imageIndex])));
-    });
-    timer.start();
-}
    /** 
     * Colors
      */ 
@@ -225,7 +213,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         initComponents();
         customFilterPanel = new LotFilterPanel(this::applyFilters);
         Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
-        imageSlideshow();
         mapButtons();
         attachButtonListeners();
         
@@ -411,7 +398,8 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         AgentSideBar = new javax.swing.JPanel();
         DashboardLabel = new javax.swing.JLabel();
-        GroupName = new javax.swing.JLabel();
+        Logo = new javax.swing.JLabel();
+        GroupName1 = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
         viewTransactions = new javax.swing.JButton();
         viewPerformance = new javax.swing.JButton();
@@ -564,7 +552,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         Performance = new javax.swing.JPanel();
         Title1 = new javax.swing.JLabel();
-        agentPerf = new javax.swing.JScrollPane();
         History = new javax.swing.JPanel();
         perfOverview = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -612,11 +599,15 @@ public class AgentDashboard extends javax.swing.JFrame {
         DashboardLabel.setText("<html>Agent's<br>Dashboard</html>");
         AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
 
-        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        GroupName.setForeground(new java.awt.Color(255, 255, 255));
-        GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        GroupName.setText("Paul's Group");
-        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
+        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        AgentSideBar.add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 90));
+
+        GroupName1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        GroupName1.setForeground(new java.awt.Color(130, 159, 120));
+        GroupName1.setText("C R E A M S");
+        AgentSideBar.add(GroupName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 35, 524, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -653,12 +644,12 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 340, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 340, 40));
 
         viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
         viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
-        viewTransactions.setText("Transactions");
+        viewTransactions.setText("   Transactions");
         viewTransactions.setAlignmentY(0.0F);
         viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewTransactions.setBorderPainted(false);
@@ -687,7 +678,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 340, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 340, 40));
 
         viewPerformance.setBackground(new java.awt.Color(0, 0, 0));
         viewPerformance.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -724,7 +715,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewPerformanceActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 340, 40));
+        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 340, 40));
 
         genReport.setBackground(new java.awt.Color(0, 0, 0));
         genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -761,7 +752,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 340, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 340, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -795,7 +786,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 340, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 340, 40));
 
         viewReserv.setBackground(new java.awt.Color(0, 0, 0));
         viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -829,7 +820,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewReservActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 340, 40));
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 340, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -837,7 +828,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 RefreshActionPerformed(evt);
             }
         });
-        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -874,7 +865,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 280, 40));
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 280, 40));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1592,11 +1583,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
         Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title.setText("PENDING RESERVATIONS");
-        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+        Title.setText("Pending Reservations");
+        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 680, 40));
 
         reservOverview.setBorder(null);
         javax.swing.JScrollBar reservBar = reservOverview.getVerticalScrollBar();
@@ -1630,13 +1621,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         });
 
         reservations.setBackground(new java.awt.Color(30, 30, 30));
-        reservations.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         reservations.setMinimumSize(new java.awt.Dimension(930, 1058));
         reservations.setPreferredSize(new java.awt.Dimension(930, 1058));
         reservations.setLayout(new java.awt.GridLayout(5, 1, 5, 0));
 
         reservation1.setBackground(new java.awt.Color(30, 30, 30));
-        reservation1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         reservation1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         reservationTitle.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -1718,7 +1707,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         reservations.add(reservation1);
 
         reservation2.setBackground(new java.awt.Color(30, 30, 30));
-        reservation2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         reservation2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         reservationTitle1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -1801,7 +1789,7 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         reservOverview.setViewportView(reservations);
 
-        Reservations.add(reservOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+        Reservations.add(reservOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 980, 620));
 
         MainContentSeller.addTab("tab2", Reservations);
 
@@ -1810,45 +1798,13 @@ public class AgentDashboard extends javax.swing.JFrame {
         Performance.setPreferredSize(new java.awt.Dimension(502, 297));
         Performance.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title1.setForeground(new java.awt.Color(255, 255, 255));
         Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title1.setText("PERFORMANCE OVERVIEW");
-        Performance.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
-
-        agentPerf.setBorder(null);
-        javax.swing.JScrollBar perfBar = agentPerf.getVerticalScrollBar();
-        perfBar.setPreferredSize(new java.awt.Dimension(8,0));
-        perfBar.setUnitIncrement(24);
-
-        perfBar.setUI(new javax.swing.plaf.basic.BasicScrollBarUI() {
-
-            @Override
-            protected void configureScrollBarColors() {
-                this.trackColor = new java.awt.Color(30,30,30);
-                this.thumbColor = new java.awt.Color(120,120,120);
-            }
-
-            @Override
-            protected javax.swing.JButton createDecreaseButton(int orientation) {
-                javax.swing.JButton button = new javax.swing.JButton();
-                button.setBackground(new java.awt.Color(30,30,30));
-                button.setBorder(null);
-                return button;
-            }
-
-            @Override
-            protected javax.swing.JButton createIncreaseButton(int orientation) {
-                javax.swing.JButton button = new javax.swing.JButton();
-                button.setBackground(new java.awt.Color(30,30,30));
-                button.setBorder(null);
-                return button;
-            }
-
-        });
+        Title1.setText("Performance Overview");
+        Performance.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 600, 50));
 
         History.setBackground(new java.awt.Color(30, 30, 30));
-        History.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 153)));
         History.setMinimumSize(new java.awt.Dimension(930, 1058));
         History.setPreferredSize(new java.awt.Dimension(930, 1058));
         History.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1866,22 +1822,20 @@ public class AgentDashboard extends javax.swing.JFrame {
         ));
         perfOverview.setViewportView(jTable1);
 
-        History.add(perfOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 970, -1));
+        History.add(perfOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 960, -1));
 
-        agentPerf.setViewportView(History);
-
-        Performance.add(agentPerf, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+        Performance.add(History, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1010, -1));
 
         MainContentSeller.addTab("tab3", Performance);
 
         Report.setBackground(new java.awt.Color(30, 30, 30));
         Report.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 48)); // NOI18N
+        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title2.setForeground(new java.awt.Color(255, 255, 255));
         Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title2.setText("REPORT");
-        Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 340, 60));
+        Title2.setText("Report");
+        Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 60));
 
         reportTextArea.setColumns(20);
         reportTextArea.setRows(5);
@@ -1926,11 +1880,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         Transactions.setBackground(new java.awt.Color(30, 30, 30));
         Transactions.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title3.setForeground(new java.awt.Color(255, 255, 255));
         Title3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title3.setText("Transaction History");
-        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         agentHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1945,7 +1899,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(agentHistoryTable);
 
-        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 960, -1));
 
         MainContentSeller.addTab("tab2", Transactions);
 
@@ -1954,11 +1908,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
         Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title4.setForeground(new java.awt.Color(255, 255, 255));
         Title4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title4.setText("Account Information");
-        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         firstName.setForeground(new java.awt.Color(255, 255, 255));
@@ -2036,7 +1990,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         });
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
-        MainContentSeller.addTab("tab3", Profile);
+        MainContentSeller.addTab("tab5", Profile);
 
         getContentPane().add(MainContentSeller, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 
@@ -2186,14 +2140,17 @@ public class AgentDashboard extends javax.swing.JFrame {
 
     private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
         // TODO add your handling code here:
+        viewReserv.setForeground(clickedcolor);
     }//GEN-LAST:event_viewReservMouseClicked
 
     private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
         // TODO add your handling code here:
+        viewReserv.setForeground(entered);
     }//GEN-LAST:event_viewReservMouseEntered
 
     private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
         // TODO add your handling code here:
+        viewReserv.setForeground(normal);
     }//GEN-LAST:event_viewReservMouseExited
 
     private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
@@ -2367,7 +2324,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel DashboardLabel;
     private javax.swing.JLabel Email;
     private javax.swing.JTextField FirstName;
-    private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel GroupName1;
     private javax.swing.JPanel History;
     private javax.swing.JTextField InfoText29;
     private javax.swing.JTextField InfoText30;
@@ -2378,6 +2335,7 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText35;
     private javax.swing.JTextField InfoText36;
     private javax.swing.JTextField LastName;
+    private javax.swing.JLabel Logo;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JLabel Password;
@@ -2393,7 +2351,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Title4;
     private javax.swing.JPanel Transactions;
     private javax.swing.JTable agentHistoryTable;
-    private javax.swing.JScrollPane agentPerf;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;

@@ -43,7 +43,8 @@ public class StaffLoginFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        GroupName = new javax.swing.JLabel();
+        Logo = new javax.swing.JLabel();
+        GroupName1 = new javax.swing.JLabel();
         LoginForm = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         Username = new javax.swing.JLabel();
@@ -66,10 +67,15 @@ public class StaffLoginFrame extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1279, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        GroupName.setForeground(new java.awt.Color(255, 255, 255));
-        GroupName.setText("Paul's Group");
-        getContentPane().add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 35, 524, 30));
+        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        getContentPane().add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 90));
+
+        GroupName1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        GroupName1.setForeground(new java.awt.Color(130, 159, 120));
+        GroupName1.setText("C R E A M S");
+        getContentPane().add(GroupName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 35, 524, 30));
 
         LoginForm.setBackground(new java.awt.Color(30, 30, 30));
         LoginForm.setFocusable(false);
@@ -117,7 +123,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
         Code.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         Code.setForeground(new java.awt.Color(255, 255, 255));
-        Code.setText("Code (Deprecated, pls turn to \"Confirm Password)");
+        Code.setText("Confirm Password");
         LoginForm.add(Code, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 265, -1, -1));
 
         codePass.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
@@ -169,7 +175,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 300, 40));
+        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 320, 40));
 
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
@@ -296,8 +302,9 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Code;
-    private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel GroupName1;
     private javax.swing.JPanel LoginForm;
+    private javax.swing.JLabel Logo;
     private javax.swing.JLabel Password;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Username;

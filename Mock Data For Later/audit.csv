@@ -18,9 +18,4 @@ logId,timestamp,actionType,userId,details
 17,2026-03-18 13:09:59,ADMIN_REGISTERED,3,New admin created: rodolfo@test.com
 18,2026-03-18 13:41:45,PROFILE_UPDATED,3,User updated profile: elcid@test.com
 19,2026-03-18 13:48:00,PROFILE_UPDATED,2,User updated profile: paul@test.com
-20,2026-03-18 15:08:45,LOT_OVERRIDE,1,Admin overridden Lot 21 from Sold to Available
-21,2026-03-18 15:08:52,LOT_OVERRIDE,1,Admin overridden Lot 22 from Reserved to Available
-22,2026-03-18 15:10:34,LOT_OVERRIDE,1,Admin overridden Lot 2 from Sold to Available
-23,2026-03-18 15:10:38,LOT_OVERRIDE,1,Admin overridden Lot 3 from Reserved to Occupied
-24,2026-03-18 15:10:41,LOT_OVERRIDE,1,Admin overridden Lot 3 from Occupied to Available
-25,2026-03-18 15:10:43,LOT_OVERRIDE,1,Admin overridden Lot 22 from Reserved to Available
+20,2026-03-18 14:48:49,BUYER_REGISTERED,4,New buyer created: yo
