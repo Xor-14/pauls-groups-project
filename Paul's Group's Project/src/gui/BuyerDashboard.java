@@ -266,6 +266,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
+        
+        loadProfileData();
     }
     
     private void attachButtonListeners() {
@@ -302,6 +304,17 @@ public class BuyerDashboard extends javax.swing.JFrame {
         updateAllLotColors();
         applyFilters();
         loadBuyerHistory();
+    }
+    
+    private void loadProfileData() {
+        models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
+        
+        if (currentUser != null) {
+            FirstName.setText(currentUser.getFirstName());
+            LastName.setText(currentUser.getLastName());
+            email.setText(currentUser.getEmail());
+            password.setText(currentUser.getPassword());
+        }
     }
 
     /**
@@ -1923,6 +1936,30 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
+        String first = FirstName.getText().trim();
+        String last = LastName.getText().trim();
+        String mail = email.getText().trim();
+        String pass = password.getText().trim();
+
+        // Input Sanitation
+        if (first.isEmpty() || last.isEmpty() || mail.isEmpty() || pass.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "All fields are required.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (first.contains(",") || last.contains(",") || mail.contains(",") || pass.contains(",")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Commas are not allowed.", "Input Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Execute Update
+        boolean success = controller.UserManager.getInstance().updateCurrentUser(first, last, mail, pass);
+
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Profile updated successfully.");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Update failed. Email may already be in use.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_changeActionPerformed
 
     /**
