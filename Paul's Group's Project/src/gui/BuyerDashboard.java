@@ -474,7 +474,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         InfoText15 = new javax.swing.JTextField();
         info16 = new javax.swing.JLabel();
         InfoText16 = new javax.swing.JTextField();
-        Logout = new javax.swing.JPanel();
         Profile = new javax.swing.JPanel();
         Title2 = new javax.swing.JLabel();
         firstName = new javax.swing.JLabel();
@@ -1682,10 +1681,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         MainContentBuyer.addTab("tab3", Computation);
 
-        Logout.setBackground(new java.awt.Color(30, 30, 30));
-        Logout.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        MainContentBuyer.addTab("tab4", Logout);
-
         Profile.setBackground(new java.awt.Color(30, 30, 30));
         Profile.setMinimumSize(new java.awt.Dimension(502, 297));
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
@@ -1918,7 +1913,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
     private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
         // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(5);
+        MainContentBuyer.setSelectedIndex(3);
     }//GEN-LAST:event_viewProfileActionPerformed
 
     /**
@@ -1987,7 +1982,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText4;
     private javax.swing.JTextField InfoText9;
     private javax.swing.JTextField LastName;
-    private javax.swing.JPanel Logout;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
     private javax.swing.JLabel Password;

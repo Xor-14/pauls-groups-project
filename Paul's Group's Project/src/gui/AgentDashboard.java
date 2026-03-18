@@ -2210,7 +2210,7 @@ public class AgentDashboard extends javax.swing.JFrame {
 
     private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(6);
+        MainContentSeller.setSelectedIndex(5);
     }//GEN-LAST:event_viewProfileActionPerformed
 
     private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
