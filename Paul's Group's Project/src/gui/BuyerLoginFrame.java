@@ -194,33 +194,10 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 92));
 
-        jLabel2.setFont(new java.awt.Font("New Peninim MT", 1, 85)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("CALLISTA");
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 640, 70));
-
-        jLabel4.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel4.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel4.setText("R E A L  E S T A T E");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, 640, 70));
-
-        jLabel5.setBackground(new java.awt.Color(204, 204, 204));
-        jLabel5.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel5.setText("A N D  A C Q U I S I T I O N");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 360, 640, 70));
-
-        jLabel6.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel6.setText("M A N A G E M E N T");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 410, 640, 70));
-
-        jLabel3.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("S Y S T E M");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, 640, 70));
+        jLabel1.setFont(new java.awt.Font("New Peninim MT", 1, 70)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("<html>B U Y E R <br> P O R T A L</html>");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 233, 524, 288));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/main_bg.png"))); // NOI18N

@@ -1,10 +1,6 @@
 transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,agentID,status
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
+1,2026-03-18,Reservation,None,50000.0,0.0,1,1,1,Approved
+2,2026-03-18,Reservation,None,30000.0,0.0,2,1,1,Approved
+3,2026-03-18,Reservation,None,30000.0,0.0,3,1,1,Approved
+4,2026-03-18,Reservation,None,30000.0,0.0,4,1,1,Approved
+5,2026-03-18,Reservation,None,50000.0,0.0,5,1,1,Approved

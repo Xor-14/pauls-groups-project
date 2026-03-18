@@ -16,11 +16,11 @@ import models.AuditLog;
 
 public class AuditManager {
     
-    private AuditManager() {}
-    
     private static class InstanceHolder {
         private static final AuditManager INSTANCE = new AuditManager();
     }
+    
+    private AuditManager() {}
     
     public static AuditManager getInstance() { 
         return InstanceHolder.INSTANCE; 
