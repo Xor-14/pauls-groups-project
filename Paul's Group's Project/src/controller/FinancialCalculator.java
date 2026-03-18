@@ -16,12 +16,13 @@ public class FinancialCalculator {
         return basePrice + (basePrice * FinanceManager.getInstance().getRate("Misc"));
     }
 
-    public static double calculateDownPayment(double tcp) {
-        return tcp * FinanceManager.getInstance().getRate("DP");
-    }
-
     public static double calculateLoanableAmount(double tcp, double grossDownPayment) {
         return tcp - grossDownPayment;
+    }
+    
+    public static double calculateDownPayment(double tcp, String financingType) {
+        double dpRate = financingType.contains("In-House") ? FinanceManager.getInstance().getRate("InHouseDP") : FinanceManager.getInstance().getRate("DP");
+        return tcp * dpRate;
     }
 
     public static double calculateMonthlyAmortization(double principal, int years, String financingType, String bankName) {
@@ -30,7 +31,7 @@ public class FinancialCalculator {
         if (financingType.toLowerCase().contains("pag-ibig") || financingType.toLowerCase().contains("hdmf")) {
             annualRate = FinanceManager.getInstance().getRate("PagIbig");
         } else if (financingType.toLowerCase().contains("in-house")) {
-            annualRate = FinanceManager.getInstance().getRate("BDO"); // Mirrors default bank rate
+            annualRate = (years == 5) ? FinanceManager.getInstance().getRate("InHouse5") : FinanceManager.getInstance().getRate("InHouse10");
         } else {
             annualRate = FinanceManager.getInstance().getRate(bankName.toUpperCase());
             if (annualRate == 0.0) annualRate = FinanceManager.getInstance().getRate("BDO");
@@ -41,10 +42,7 @@ public class FinancialCalculator {
         
         if (monthlyRate == 0) return principal / totalPayments;
         
-        // Standard formula
         double rawFactor = (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
-        
-        // Real Estate Standard: Truncate factor rate to 6 decimal places
         double truncatedFactor = Math.floor(rawFactor * 1000000.0) / 1000000.0;
         
         return principal * truncatedFactor;

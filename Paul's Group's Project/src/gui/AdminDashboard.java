@@ -463,6 +463,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     
     private void loadFinanceSettings() {
         controller.FinanceManager fm = controller.FinanceManager.getInstance();
+        
+        // Standard Financing
         txtBdoRate.setText(String.valueOf(fm.getRate("BDO")));
         txtBpiRate.setText(String.valueOf(fm.getRate("BPI")));
         txtRcbcRate.setText(String.valueOf(fm.getRate("RCBC")));
@@ -471,6 +473,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         txtMaxLoan.setText(String.valueOf(fm.getRate("MaxLoan")));
         txtMiscFee.setText(String.valueOf(fm.getRate("Misc")));
         txtResFee.setText(String.valueOf(fm.getRate("ResFee")));
+        
+        // In-House Financing
+        txtInHouseDP.setText(String.valueOf(fm.getRate("InHouseDP")));
+        txtInHouseResFee.setText(String.valueOf(fm.getRate("InHouseResFee")));
+        txtInHouse5.setText(String.valueOf(fm.getRate("InHouse5")));
+        txtInHouse10.setText(String.valueOf(fm.getRate("InHouse10")));
     }
     
     private void loadProfileData() {
@@ -699,6 +707,14 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         btnUpdateFinance = new javax.swing.JButton();
         Title5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtInHouseDP = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        txtInHouseResFee = new javax.swing.JTextField();
+        txtInHouse5 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtInHouse10 = new javax.swing.JTextField();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -2230,18 +2246,18 @@ public class AdminDashboard extends javax.swing.JFrame {
                 txtMiscFeeActionPerformed(evt);
             }
         });
-        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 200, 40));
+        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 260, 200, 40));
 
         jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Misc. Fee:");
-        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 100, 40));
-        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, 200, 40));
+        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 220, 100, 40));
+        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 260, 200, 40));
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Reservation Fee:");
-        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, 230, 40));
+        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 220, 230, 40));
 
         btnUpdateFinance.setText("Update Finance Settings");
         btnUpdateFinance.addActionListener(new java.awt.event.ActionListener() {
@@ -2256,6 +2272,30 @@ public class AdminDashboard extends javax.swing.JFrame {
         Title5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title5.setText("Finance Settings");
         FinanceSettingsPanel.add(Title5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 50));
+
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("In-House DP:");
+        FinanceSettingsPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 220, 40));
+        FinanceSettingsPanel.add(txtInHouseDP, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 200, 40));
+
+        jLabel10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("In-House Res. Fee:");
+        FinanceSettingsPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, 220, 40));
+        FinanceSettingsPanel.add(txtInHouseResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, 200, 40));
+        FinanceSettingsPanel.add(txtInHouse5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 370, 200, 40));
+
+        jLabel11.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("In-House (5):");
+        FinanceSettingsPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 330, 220, 40));
+
+        jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("In-House (10):");
+        FinanceSettingsPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 330, 220, 40));
+        FinanceSettingsPanel.add(txtInHouse10, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 370, 200, 40));
 
         MainContentSeller.addTab("tab8", FinanceSettingsPanel);
 
@@ -2525,6 +2565,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             controller.FinanceManager fm = controller.FinanceManager.getInstance();
+            
+            // Standard Financing
             fm.updateSetting("BDO", Double.parseDouble(txtBdoRate.getText()));
             fm.updateSetting("BPI", Double.parseDouble(txtBpiRate.getText()));
             fm.updateSetting("RCBC", Double.parseDouble(txtRcbcRate.getText()));
@@ -2533,13 +2575,21 @@ public class AdminDashboard extends javax.swing.JFrame {
             fm.updateSetting("MaxLoan", Double.parseDouble(txtMaxLoan.getText()));
             fm.updateSetting("Misc", Double.parseDouble(txtMiscFee.getText()));
             fm.updateSetting("ResFee", Double.parseDouble(txtResFee.getText()));
+            
+            // In-House Financing
+            fm.updateSetting("InHouseDP", Double.parseDouble(txtInHouseDP.getText()));
+            fm.updateSetting("InHouseResFee", Double.parseDouble(txtInHouseResFee.getText()));
+            fm.updateSetting("InHouse5", Double.parseDouble(txtInHouse5.getText()));
+            fm.updateSetting("InHouse10", Double.parseDouble(txtInHouse10.getText()));
+            
             fm.saveSettings();
 
             models.User admin = controller.UserManager.getInstance().getCurrentUser();
-            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated global finance rates.");
-            javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated.");
+            controller.AuditManager.getInstance().logAudit("FINANCE_UPDATED", admin.getId(), "Admin updated global finance rates (12 parameters).");
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Finance Settings Updated Successfully.");
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Invalid inputs. Ensure all fields contain valid numbers.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnUpdateFinanceActionPerformed
 
@@ -2789,6 +2839,9 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -2796,6 +2849,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2817,6 +2871,10 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField txtBdoRate;
     private javax.swing.JTextField txtBpiRate;
     private javax.swing.JTextField txtDownPayment;
+    private javax.swing.JTextField txtInHouse10;
+    private javax.swing.JTextField txtInHouse5;
+    private javax.swing.JTextField txtInHouseDP;
+    private javax.swing.JTextField txtInHouseResFee;
     private javax.swing.JTextField txtMaxLoan;
     private javax.swing.JTextField txtMiscFee;
     private javax.swing.JTextField txtPagIbigRate;

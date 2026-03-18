@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class FinanceManager {
     private Map<String, Double> settings;
-    private final String[] KEYS = {"BDO", "BPI", "RCBC", "PagIbig", "DP", "MaxLoan", "Misc", "ResFee"};
-    private final double[] DEFAULTS = {0.065, 0.07, 0.065, 0.0625, 0.10, 6000000.0, 0.05, 20000.0};
+    private final String[] KEYS = {"BDO", "BPI", "RCBC", "PagIbig", "DP", "MaxLoan", "Misc", "ResFee", "InHouseDP", "InHouseResFee", "InHouse5", "InHouse10"};
+    private final double[] DEFAULTS = {0.065, 0.07, 0.065, 0.0625, 0.10, 6000000.0, 0.05, 20000.0, 0.20, 30000.0, 0.16, 0.18};
 
     private FinanceManager() {
         settings = new HashMap<>();

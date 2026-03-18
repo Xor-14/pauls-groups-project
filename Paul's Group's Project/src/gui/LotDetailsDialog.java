@@ -54,7 +54,6 @@ public class LotDetailsDialog extends javax.swing.JDialog {
 
     private void updateFinancingTable() {
         String selected = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Spot Cash";
-        
         buildLotInfoTable();
         
         if (selected.contains("Bank")) {
@@ -64,7 +63,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
             buildRFOTablePagIbig();
             buildLoanTablePagIbig();
         } else if (selected.contains("In-House")) {
-            buildRFOTableBank(); // Shares identical RFO layout with Bank
+            buildRFOTableInHouse();
             buildLoanTableInHouse();
         } else {
             buildRFOTableCash();
@@ -108,7 +107,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         
         double tcp = currentLot.getTcp();
         double rf = controller.FinanceManager.getInstance().getRate("ResFee");
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "Bank");
         double netDp = grossDp - rf;
         int dpMonths = 6; 
         double dpAmort = netDp / dpMonths;
@@ -131,7 +130,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         
         double tcp = currentLot.getTcp();
         double rf = controller.FinanceManager.getInstance().getRate("ResFee");
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "Pag-IBIG");
         
         double tempLoanable = tcp - grossDp;
         double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
@@ -150,6 +149,29 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         model.addRow(new Object[]{"Balance on Equity", String.format("PHP %,.2f", netDp)});
         model.addRow(new Object[]{"Equity Payable in (Months)", String.valueOf(dpMonths)});
         model.addRow(new Object[]{"Monthly Equity Amortization", String.format("PHP %,.2f", dpAmort)});
+        
+        tableRFO.setModel(model);
+    }
+    
+    private void buildRFOTableInHouse() {
+        javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(
+            new Object [][] {}, new String [] {"RFO Basic Turn Over (In-House)", "Amount"}
+        ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
+        
+        double tcp = currentLot.getTcp();
+        double rf = controller.FinanceManager.getInstance().getRate("InHouseResFee");
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "In-House");
+        double netDp = grossDp - rf;
+        int dpMonths = 6; 
+        double dpAmort = netDp / dpMonths;
+
+        model.addRow(new Object[]{"Total Contract Price (TCP)", String.format("PHP %,.2f", tcp)});
+        model.addRow(new Object[]{"Downpayment %", String.format("%.0f%%", controller.FinanceManager.getInstance().getRate("InHouseDP") * 100)});
+        model.addRow(new Object[]{"Gross Downpayment", String.format("PHP %,.2f", grossDp)});
+        model.addRow(new Object[]{"Less: Reservation Fee", String.format("PHP %,.2f", rf)});
+        model.addRow(new Object[]{"Balance on DP", String.format("PHP %,.2f", netDp)});
+        model.addRow(new Object[]{"DP Payable in (Months)", String.valueOf(dpMonths)});
+        model.addRow(new Object[]{"Monthly DP Amortization", String.format("PHP %,.2f", dpAmort)});
         
         tableRFO.setModel(model);
     }
@@ -175,7 +197,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp,"Bank");
         double loanable = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         int[] terms = {5, 10, 15, 20}; 
         
@@ -193,7 +215,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp,"Pag-IBIG");
         double loanable = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         
         double maxLoan = controller.FinanceManager.getInstance().getRate("MaxLoan");
@@ -215,9 +237,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "In-House");
         double loanable = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
-        int[] terms = {5, 10, 15, 20}; // Matches bank terms
+        int[] terms = {5, 10}; 
         
         for (int years : terms) {
             double ma = controller.FinancialCalculator.calculateMonthlyAmortization(loanable, years, "In-House", "N/A");
@@ -394,8 +416,8 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         String selectedFinancing = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Spot Cash";
         
         double tcp = currentLot.getTcp();
-        double reservationFee = controller.FinanceManager.getInstance().getRate("ResFee");
-        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp);
+        double reservationFee = selectedFinancing.contains("In-House") ? controller.FinanceManager.getInstance().getRate("InHouseResFee") : controller.FinanceManager.getInstance().getRate("ResFee");
+        double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, selectedFinancing);
         double loanableAmount = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         
         double amountToPay;
@@ -403,8 +425,16 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         String financingTypeForTransaction = selectedFinancing;
 
         if (selectedFinancing.contains("Bank") || selectedFinancing.contains("Pag-IBIG") || selectedFinancing.contains("In-House")) {
-            Integer[] terms = selectedFinancing.contains("Pag-IBIG") ? new Integer[]{5, 10, 15, 20, 25, 30} : new Integer[]{5, 10, 15, 20};
-            Integer defaultTerm = selectedFinancing.contains("Pag-IBIG") ? 30 : 20;
+            
+            Integer[] terms;
+            Integer defaultTerm;
+            if (selectedFinancing.contains("Pag-IBIG")) {
+                terms = new Integer[]{5, 10, 15, 20, 25, 30}; defaultTerm = 30;
+            } else if (selectedFinancing.contains("In-House")) {
+                terms = new Integer[]{5, 10}; defaultTerm = 10;
+            } else {
+                terms = new Integer[]{5, 10, 15, 20}; defaultTerm = 20;
+            }
 
             Integer selectedTerm = (Integer) javax.swing.JOptionPane.showInputDialog(this, 
                     "Select Loan Term (Years):", "Term Selection", 
