@@ -1,3 +1,4 @@
 logId,timestamp,actionType,userId,details
 1,2026-03-18 16:15:42,BUYER_REGISTERED,1,New account: paul@test.com
 2,2026-03-18 17:55:05,ADMIN_REGISTERED,2,New account: yousef@test.com
+3,2026-03-18 18:07:30,FINANCE_UPDATED,2,Admin updated global finance rates (12 parameters).

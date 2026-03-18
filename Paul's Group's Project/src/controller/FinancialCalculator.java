@@ -42,9 +42,7 @@ public class FinancialCalculator {
         
         if (monthlyRate == 0) return principal / totalPayments;
         
-        double rawFactor = (monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
-        double truncatedFactor = Math.floor(rawFactor * 1000000.0) / 1000000.0;
-        
-        return principal * truncatedFactor;
+        // Use standard floating-point precision to match developer reference exactly
+        return (principal * monthlyRate * Math.pow(1 + monthlyRate, totalPayments)) / (Math.pow(1 + monthlyRate, totalPayments) - 1);
     }
 }

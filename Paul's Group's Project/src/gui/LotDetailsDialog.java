@@ -129,7 +129,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double rf = controller.FinanceManager.getInstance().getRate("ResFee");
+        double rf = currentLot.getReservationFee();
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "Pag-IBIG");
         
         double tempLoanable = tcp - grossDp;
@@ -159,7 +159,10 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ) { @Override public boolean isCellEditable(int row, int column) { return false; } };
         
         double tcp = currentLot.getTcp();
-        double rf = controller.FinanceManager.getInstance().getRate("InHouseResFee");
+        
+        // EXPLICIT FIX: Pull reservation fee directly from the specific lot's CSV data
+        double rf = currentLot.getReservationFee(); 
+        
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, "In-House");
         double netDp = grossDp - rf;
         int dpMonths = 6; 
@@ -416,7 +419,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         String selectedFinancing = financingComboBox.getSelectedItem() != null ? financingComboBox.getSelectedItem().toString() : "Spot Cash";
         
         double tcp = currentLot.getTcp();
-        double reservationFee = selectedFinancing.contains("In-House") ? controller.FinanceManager.getInstance().getRate("InHouseResFee") : controller.FinanceManager.getInstance().getRate("ResFee");
+        
+        double reservationFee = currentLot.getReservationFee(); 
+        
         double grossDp = controller.FinancialCalculator.calculateDownPayment(tcp, selectedFinancing);
         double loanableAmount = controller.FinancialCalculator.calculateLoanableAmount(tcp, grossDp);
         
@@ -523,7 +528,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         
         if (currentLot.getStatus().equalsIgnoreCase("Available")) {
             models.User currentUser = controller.UserManager.getInstance().getCurrentUser();
-            double reservationFee = controller.FinanceManager.getInstance().getRate("ResFee");
+            
+            // EXPLICIT FIX: Stop pulling globally, use the Lot's inherent trait
+            double reservationFee = currentLot.getReservationFee();
             
             boolean success = controller.TransactionManager.getInstance().requestTransaction(
                     currentLot.getLotID(), currentUser.getId(), "Reservation", "None", reservationFee, 0.0);

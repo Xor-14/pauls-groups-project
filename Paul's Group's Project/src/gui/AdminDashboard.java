@@ -734,7 +734,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(255, 255, 51));
         DashboardLabel.setText("<html>Admin<br>Dashboard</html>");
-        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 600, 280, 120));
+        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, 260, 120));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -779,7 +779,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 280, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 280, 40));
 
         viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
         viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -813,7 +813,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 260, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 260, 40));
 
         btnAuditLogs.setBackground(new java.awt.Color(0, 0, 0));
         btnAuditLogs.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -850,7 +850,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAuditLogsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 420, 260, 40));
+        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 260, 40));
 
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -961,7 +961,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 280, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -995,7 +995,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 280, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 510, 280, 40));
 
         Logo1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Logo1.setForeground(new java.awt.Color(255, 255, 255));
