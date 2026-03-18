@@ -408,6 +408,12 @@ public class AgentDashboard extends javax.swing.JFrame {
         viewReserv = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
         viewProfile = new javax.swing.JButton();
+        icon1 = new javax.swing.JLabel();
+        icon2 = new javax.swing.JLabel();
+        icon3 = new javax.swing.JLabel();
+        icon4 = new javax.swing.JLabel();
+        icon5 = new javax.swing.JLabel();
+        icon7 = new javax.swing.JLabel();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -522,6 +528,11 @@ public class AgentDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
+        icon6 = new javax.swing.JLabel();
+        icon8 = new javax.swing.JLabel();
+        icon9 = new javax.swing.JLabel();
+        icon10 = new javax.swing.JLabel();
+        icon11 = new javax.swing.JLabel();
         Reservations = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         reservOverview = new javax.swing.JScrollPane();
@@ -597,7 +608,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(0, 153, 255));
         DashboardLabel.setText("<html>Agent<br>Dashboard</html>");
-        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 590, 280, 130));
+        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 590, 280, 130));
 
         Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Logo.setForeground(new java.awt.Color(255, 255, 255));
@@ -612,7 +623,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewLots.setForeground(new java.awt.Color(255, 255, 255));
-        viewLots.setText("   View Lots");
+        viewLots.setText("View Lots");
         viewLots.setAlignmentY(0.0F);
         viewLots.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewLots.setBorderPainted(false);
@@ -644,12 +655,12 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 280, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 240, 280, 40));
 
         viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
         viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
-        viewTransactions.setText("   Transactions");
+        viewTransactions.setText("Transactions");
         viewTransactions.setAlignmentY(0.0F);
         viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewTransactions.setBorderPainted(false);
@@ -678,12 +689,12 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 280, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 380, 280, 40));
 
         genReport.setBackground(new java.awt.Color(0, 0, 0));
         genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         genReport.setForeground(new java.awt.Color(255, 255, 255));
-        genReport.setText("   Generate Report");
+        genReport.setText("Generate Report");
         genReport.setAlignmentY(0.0F);
         genReport.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         genReport.setBorderPainted(false);
@@ -715,12 +726,12 @@ public class AgentDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 280, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 450, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         logOut.setForeground(new java.awt.Color(255, 255, 255));
-        logOut.setText("   Logout");
+        logOut.setText("Logout");
         logOut.setAlignmentY(0.0F);
         logOut.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         logOut.setBorderPainted(false);
@@ -749,12 +760,12 @@ public class AgentDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 280, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 520, 280, 40));
 
         viewReserv.setBackground(new java.awt.Color(0, 0, 0));
         viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewReserv.setForeground(new java.awt.Color(255, 255, 255));
-        viewReserv.setText("   Reservations");
+        viewReserv.setText("Reservations");
         viewReserv.setAlignmentY(0.0F);
         viewReserv.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewReserv.setBorderPainted(false);
@@ -783,7 +794,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewReservActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 280, 40));
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 310, 280, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -796,7 +807,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewProfile.setForeground(new java.awt.Color(255, 255, 255));
-        viewProfile.setText("   View Profile");
+        viewProfile.setText("View Profile");
         viewProfile.setAlignmentY(0.0F);
         viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewProfile.setBorderPainted(false);
@@ -828,7 +839,31 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 280, 40));
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 170, 280, 40));
+
+        icon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/profile.png"))); // NOI18N
+        icon1.setText("jLabel13");
+        AgentSideBar.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 165, 40, 40));
+
+        icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lots.png"))); // NOI18N
+        icon2.setText("jLabel13");
+        AgentSideBar.add(icon2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 235, 40, 40));
+
+        icon3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/transactions.png"))); // NOI18N
+        icon3.setText("jLabel13");
+        AgentSideBar.add(icon3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 305, 40, 40));
+
+        icon4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/transactions.png"))); // NOI18N
+        icon4.setText("jLabel13");
+        AgentSideBar.add(icon4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 375, 40, 40));
+
+        icon5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/transactions.png"))); // NOI18N
+        icon5.setText("jLabel13");
+        AgentSideBar.add(icon5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 445, 40, 40));
+
+        icon7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logout.png"))); // NOI18N
+        icon7.setText("jLabel13");
+        AgentSideBar.add(icon7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 515, 40, 40));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -876,7 +911,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block1.setForeground(new java.awt.Color(255, 255, 255));
         Block1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block1.setText("Block 1");
-        lotsView.add(Block1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 43, 340, 30));
+        lotsView.add(Block1, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 43, 340, 30));
 
         Block1Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block1Grid.setForeground(new java.awt.Color(153, 153, 153));
@@ -1009,7 +1044,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block2.setForeground(new java.awt.Color(255, 255, 255));
         Block2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block2.setText("Block 2");
-        lotsView.add(Block2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 252, 340, 30));
+        lotsView.add(Block2, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 252, 340, 30));
 
         Block2Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block2Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1140,7 +1175,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block3.setForeground(new java.awt.Color(255, 255, 255));
         Block3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block3.setText("Block 3");
-        lotsView.add(Block3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 451, 340, 30));
+        lotsView.add(Block3, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 451, 340, 30));
 
         Block3Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block3Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1277,7 +1312,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block4.setForeground(new java.awt.Color(255, 255, 255));
         Block4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block4.setText("Block 4");
-        lotsView.add(Block4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 650, 340, 30));
+        lotsView.add(Block4, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 650, 340, 30));
 
         Block4Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block4Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1408,7 +1443,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block5.setForeground(new java.awt.Color(255, 255, 255));
         Block5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block5.setText("Block 5");
-        lotsView.add(Block5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 849, 340, 30));
+        lotsView.add(Block5, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 849, 340, 30));
 
         Block5Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block5Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1536,6 +1571,26 @@ public class AgentDashboard extends javax.swing.JFrame {
         Block5Grid.add(b5_l20);
 
         lotsView.add(Block5Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 889, 890, 130));
+
+        icon6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon6.setText("jLabel13");
+        lotsView.add(icon6, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 35, 40, 40));
+
+        icon8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon8.setText("jLabel13");
+        lotsView.add(icon8, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 244, 40, 40));
+
+        icon9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon9.setText("jLabel13");
+        lotsView.add(icon9, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 443, 40, 40));
+
+        icon10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon10.setText("jLabel13");
+        lotsView.add(icon10, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 642, 40, 40));
+
+        icon11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon11.setText("jLabel13");
+        lotsView.add(icon11, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 842, 40, 40));
 
         lotsOverview.setViewportView(lotsView);
 
@@ -1892,7 +1947,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 FirstNameActionPerformed(evt);
             }
         });
-        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 20));
+        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 30));
 
         lastName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lastName.setForeground(new java.awt.Color(255, 255, 255));
@@ -1909,7 +1964,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 LastNameActionPerformed(evt);
             }
         });
-        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 20));
+        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 30));
 
         Email.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         Email.setForeground(new java.awt.Color(255, 255, 255));
@@ -1926,7 +1981,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 emailActionPerformed(evt);
             }
         });
-        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 20));
+        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 30));
 
         Password.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -1943,7 +1998,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 passwordActionPerformed(evt);
             }
         });
-        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
+        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 30));
 
         change.setText("Update");
         change.addActionListener(new java.awt.event.ActionListener() {
@@ -1964,101 +2019,9 @@ public class AgentDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(0);
-        refreshDashboard();
-    }//GEN-LAST:event_viewLotsActionPerformed
-
-    private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(4);
-    }//GEN-LAST:event_viewTransactionsActionPerformed
-
-    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
-        // TODO add your handling code here:
-        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
-        AgentLoginFrame.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_logOutActionPerformed
-
-    private void viewLotsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseEntered
-        // TODO add your handling code here:
-        viewLots.setForeground(entered);
-    }//GEN-LAST:event_viewLotsMouseEntered
-
-    private void viewLotsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseExited
-        // TODO add your handling code here:
-        viewLots.setForeground(normal);
-    }//GEN-LAST:event_viewLotsMouseExited
-
-    private void viewLotsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMousePressed
-        // TODO add your handling code here:
-        viewLots.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewLotsMousePressed
-
-    private void viewLotsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseClicked
-        // TODO add your handling code here:
-        viewLots.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewLotsMouseClicked
-
     private void b3_l20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3_l20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
-
-    private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
-        // TODO add your handling code here:
-        viewTransactions.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewTransactionsMouseClicked
-
-    private void viewTransactionsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseEntered
-        // TODO add your handling code here:
-        viewTransactions.setForeground(entered);
-    }//GEN-LAST:event_viewTransactionsMouseEntered
-
-    private void viewTransactionsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseExited
-        // TODO add your handling code here:
-        viewTransactions.setForeground(normal);
-    }//GEN-LAST:event_viewTransactionsMouseExited
-
-    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
-        // TODO add your handling code here:
-        logOut.setForeground(clickedcolor);
-    }//GEN-LAST:event_logOutMouseClicked
-
-    private void logOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseEntered
-        // TODO add your handling code here:
-        logOut.setForeground(entered);
-    }//GEN-LAST:event_logOutMouseEntered
-
-    private void logOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseExited
-        // TODO add your handling code here:
-        logOut.setForeground(normal);
-    }//GEN-LAST:event_logOutMouseExited
-
-    private void genReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseClicked
-        // TODO add your handling code here:
-        genReport.setForeground(clickedcolor);
-    }//GEN-LAST:event_genReportMouseClicked
-
-    private void genReportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseEntered
-        // TODO add your handling code here:
-        genReport.setForeground(entered);
-    }//GEN-LAST:event_genReportMouseEntered
-
-    private void genReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseExited
-        // TODO add your handling code here:
-        genReport.setForeground(normal);
-    }//GEN-LAST:event_genReportMouseExited
-
-    private void genReportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_genReportMousePressed
-
-    private void genReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genReportActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(3);
-    }//GEN-LAST:event_genReportActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
@@ -2075,55 +2038,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
-
-    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
-        // TODO add your handling code here:
-        viewReserv.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewReservMouseClicked
-
-    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
-        // TODO add your handling code here:
-        viewReserv.setForeground(entered);
-    }//GEN-LAST:event_viewReservMouseEntered
-
-    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
-        // TODO add your handling code here:
-        viewReserv.setForeground(normal);
-    }//GEN-LAST:event_viewReservMouseExited
-
-    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(1);
-    }//GEN-LAST:event_viewReservActionPerformed
-
-    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
-        // TODO add your handling code here:
-        refreshDashboard();
-    }//GEN-LAST:event_RefreshActionPerformed
-
-    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewProfileMouseClicked
-
-    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
-        // TODO add your handling code here:
-        viewProfile.setForeground(entered);
-    }//GEN-LAST:event_viewProfileMouseEntered
-
-    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
-        // TODO add your handling code here:
-        viewProfile.setForeground(normal);
-    }//GEN-LAST:event_viewProfileMouseExited
-
-    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
-        // TODO add your handling code here:
-        viewProfile.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewProfileMousePressed
-
-    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(5);
-    }//GEN-LAST:event_viewProfileActionPerformed
 
     private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
         // TODO add your handling code here:
@@ -2208,6 +2122,148 @@ public class AgentDashboard extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Update failed. Email may already be in use.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_changeActionPerformed
+
+    private void viewLotsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseClicked
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMouseClicked
+
+    private void viewLotsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseEntered
+        // TODO add your handling code here:
+        viewLots.setForeground(entered);
+    }//GEN-LAST:event_viewLotsMouseEntered
+
+    private void viewLotsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseExited
+        // TODO add your handling code here:
+        viewLots.setForeground(normal);
+    }//GEN-LAST:event_viewLotsMouseExited
+
+    private void viewLotsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMousePressed
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMousePressed
+
+    private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(0);
+        refreshDashboard();
+    }//GEN-LAST:event_viewLotsActionPerformed
+
+    private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
+        // TODO add your handling code here:
+        viewTransactions.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewTransactionsMouseClicked
+
+    private void viewTransactionsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseEntered
+        // TODO add your handling code here:
+        viewTransactions.setForeground(entered);
+    }//GEN-LAST:event_viewTransactionsMouseEntered
+
+    private void viewTransactionsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseExited
+        // TODO add your handling code here:
+        viewTransactions.setForeground(normal);
+    }//GEN-LAST:event_viewTransactionsMouseExited
+
+    private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(4);
+    }//GEN-LAST:event_viewTransactionsActionPerformed
+
+    private void genReportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseClicked
+        // TODO add your handling code here:
+        genReport.setForeground(clickedcolor);
+    }//GEN-LAST:event_genReportMouseClicked
+
+    private void genReportMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseEntered
+        // TODO add your handling code here:
+        genReport.setForeground(entered);
+    }//GEN-LAST:event_genReportMouseEntered
+
+    private void genReportMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMouseExited
+        // TODO add your handling code here:
+        genReport.setForeground(normal);
+    }//GEN-LAST:event_genReportMouseExited
+
+    private void genReportMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genReportMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genReportMousePressed
+
+    private void genReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genReportActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(3);
+    }//GEN-LAST:event_genReportActionPerformed
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        logOut.setForeground(clickedcolor);
+    }//GEN-LAST:event_logOutMouseClicked
+
+    private void logOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseEntered
+        // TODO add your handling code here:
+        logOut.setForeground(entered);
+    }//GEN-LAST:event_logOutMouseEntered
+
+    private void logOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseExited
+        // TODO add your handling code here:
+        logOut.setForeground(normal);
+    }//GEN-LAST:event_logOutMouseExited
+
+    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
+        // TODO add your handling code here:
+        StaffLoginFrame AgentLoginFrame=new StaffLoginFrame();
+        AgentLoginFrame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logOutActionPerformed
+
+    private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
+        // TODO add your handling code here:
+        viewReserv.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewReservMouseClicked
+
+    private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
+        // TODO add your handling code here:
+        viewReserv.setForeground(entered);
+    }//GEN-LAST:event_viewReservMouseEntered
+
+    private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
+        // TODO add your handling code here:
+        viewReserv.setForeground(normal);
+    }//GEN-LAST:event_viewReservMouseExited
+
+    private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(1);
+    }//GEN-LAST:event_viewReservActionPerformed
+
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        // TODO add your handling code here:
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
+
+    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
+        // TODO add your handling code here:
+        viewProfile.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewProfileMouseClicked
+
+    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
+        // TODO add your handling code here:
+        viewProfile.setForeground(entered);
+    }//GEN-LAST:event_viewProfileMouseEntered
+
+    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
+        // TODO add your handling code here:
+        viewProfile.setForeground(normal);
+    }//GEN-LAST:event_viewProfileMouseExited
+
+    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
+        // TODO add your handling code here:
+        viewProfile.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewProfileMousePressed
+
+    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
+        // TODO add your handling code here:
+        MainContentSeller.setSelectedIndex(5);
+    }//GEN-LAST:event_viewProfileActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2398,6 +2454,17 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField email;
     private javax.swing.JLabel firstName;
     private javax.swing.JButton genReport;
+    private javax.swing.JLabel icon1;
+    private javax.swing.JLabel icon10;
+    private javax.swing.JLabel icon11;
+    private javax.swing.JLabel icon2;
+    private javax.swing.JLabel icon3;
+    private javax.swing.JLabel icon4;
+    private javax.swing.JLabel icon5;
+    private javax.swing.JLabel icon6;
+    private javax.swing.JLabel icon7;
+    private javax.swing.JLabel icon8;
+    private javax.swing.JLabel icon9;
     private javax.swing.JLabel info29;
     private javax.swing.JLabel info30;
     private javax.swing.JLabel info31;

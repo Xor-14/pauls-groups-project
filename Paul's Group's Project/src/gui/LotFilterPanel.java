@@ -24,11 +24,16 @@ public class LotFilterPanel extends JPanel {
     public LotFilterPanel(Runnable applyAction) {
         setBackground(new Color(30, 30, 30));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/filters.png"));
+        Image img = icon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(img);
 
-        JLabel title = new JLabel("Filters:");
+
+        JLabel title = new JLabel("Filters:", icon, JLabel.LEFT);
         title.setFont(new Font("Arial", Font.BOLD, 24)); // Replaced non-standard font
         title.setForeground(Color.WHITE);
-        add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 30));
+        add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 30, -1, -1));
 
         JLabel sFilter = new JLabel("Status:");
         sFilter.setFont(new Font("Arial", Font.BOLD, 18));

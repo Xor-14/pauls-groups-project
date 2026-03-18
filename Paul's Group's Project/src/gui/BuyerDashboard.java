@@ -323,6 +323,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
         logOut = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
         viewProfile = new javax.swing.JButton();
+        icon1 = new javax.swing.JLabel();
+        icon2 = new javax.swing.JLabel();
+        icon3 = new javax.swing.JLabel();
+        icon7 = new javax.swing.JLabel();
         MainContentBuyer = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -437,6 +441,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
+        icon6 = new javax.swing.JLabel();
+        icon8 = new javax.swing.JLabel();
+        icon9 = new javax.swing.JLabel();
+        icon10 = new javax.swing.JLabel();
+        icon11 = new javax.swing.JLabel();
         Transactions = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -505,7 +514,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
         DashboardLabel.setText("<html>Buyer<br>Dashboard</html>");
-        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 280, 160));
+        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 590, 260, 120));
 
         Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Logo.setForeground(new java.awt.Color(255, 255, 255));
@@ -520,7 +529,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewLots.setForeground(new java.awt.Color(255, 255, 255));
-        viewLots.setText("   View Lots");
+        viewLots.setText("View Lots");
         viewLots.setAlignmentY(0.0F);
         viewLots.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewLots.setBorderPainted(false);
@@ -552,12 +561,12 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 280, 40));
+        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 245, 280, 40));
 
         transaction.setBackground(new java.awt.Color(0, 0, 0));
         transaction.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         transaction.setForeground(new java.awt.Color(255, 255, 255));
-        transaction.setText("   Transactions");
+        transaction.setText("Transactions");
         transaction.setAlignmentY(0.0F);
         transaction.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         transaction.setBorderPainted(false);
@@ -586,12 +595,12 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 transactionActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 280, 40));
+        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 315, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         logOut.setForeground(new java.awt.Color(255, 255, 255));
-        logOut.setText("   Logout");
+        logOut.setText("Logout");
         logOut.setAlignmentY(0.0F);
         logOut.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         logOut.setBorderPainted(false);
@@ -620,7 +629,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 280, 40));
+        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 385, 280, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -633,7 +642,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         viewProfile.setForeground(new java.awt.Color(255, 255, 255));
-        viewProfile.setText("   View Profile");
+        viewProfile.setText("View Profile");
         viewProfile.setAlignmentY(0.0F);
         viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
         viewProfile.setBorderPainted(false);
@@ -665,7 +674,23 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 280, 40));
+        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 175, 280, 40));
+
+        icon1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/profile.png"))); // NOI18N
+        icon1.setText("jLabel13");
+        BuyerSideBar.add(icon1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 40, 40));
+
+        icon2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lots.png"))); // NOI18N
+        icon2.setText("jLabel13");
+        BuyerSideBar.add(icon2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 40, 40));
+
+        icon3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/transactions.png"))); // NOI18N
+        icon3.setText("jLabel13");
+        BuyerSideBar.add(icon3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 40, 40));
+
+        icon7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logout.png"))); // NOI18N
+        icon7.setText("jLabel13");
+        BuyerSideBar.add(icon7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 380, 40, 40));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -713,7 +738,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block1.setForeground(new java.awt.Color(255, 255, 255));
         Block1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block1.setText("Block 1");
-        lotsView.add(Block1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 43, 340, 30));
+        lotsView.add(Block1, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 43, 340, 30));
 
         Block1Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block1Grid.setForeground(new java.awt.Color(153, 153, 153));
@@ -846,7 +871,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block2.setForeground(new java.awt.Color(255, 255, 255));
         Block2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block2.setText("Block 2");
-        lotsView.add(Block2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 252, 340, 30));
+        lotsView.add(Block2, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 252, 340, 30));
 
         Block2Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block2Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -977,7 +1002,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block3.setForeground(new java.awt.Color(255, 255, 255));
         Block3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block3.setText("Block 3");
-        lotsView.add(Block3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 451, 340, 30));
+        lotsView.add(Block3, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 451, 340, 30));
 
         Block3Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block3Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1114,7 +1139,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block4.setForeground(new java.awt.Color(255, 255, 255));
         Block4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block4.setText("Block 4");
-        lotsView.add(Block4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 650, 340, 30));
+        lotsView.add(Block4, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 650, 340, 30));
 
         Block4Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block4Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1245,7 +1270,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block5.setForeground(new java.awt.Color(255, 255, 255));
         Block5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Block5.setText("Block 5");
-        lotsView.add(Block5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 849, 340, 30));
+        lotsView.add(Block5, new org.netbeans.lib.awtextra.AbsoluteConstraints(59, 849, 340, 30));
 
         Block5Grid.setBackground(new java.awt.Color(51, 51, 51));
         Block5Grid.setLayout(new java.awt.GridLayout(4, 5));
@@ -1373,6 +1398,26 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Block5Grid.add(b5_l20);
 
         lotsView.add(Block5Grid, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 889, 890, 130));
+
+        icon6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon6.setText("jLabel13");
+        lotsView.add(icon6, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 35, 40, 40));
+
+        icon8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon8.setText("jLabel13");
+        lotsView.add(icon8, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 244, 40, 40));
+
+        icon9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon9.setText("jLabel13");
+        lotsView.add(icon9, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 443, 40, 40));
+
+        icon10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon10.setText("jLabel13");
+        lotsView.add(icon10, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 642, 40, 40));
+
+        icon11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/block.png"))); // NOI18N
+        icon11.setText("jLabel13");
+        lotsView.add(icon11, new org.netbeans.lib.awtextra.AbsoluteConstraints(22, 842, 40, 40));
 
         lotsOverview.setViewportView(lotsView);
 
@@ -1675,7 +1720,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 FirstNameActionPerformed(evt);
             }
         });
-        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 20));
+        Profile.add(FirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, 250, 30));
 
         lastName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lastName.setForeground(new java.awt.Color(255, 255, 255));
@@ -1692,7 +1737,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 LastNameActionPerformed(evt);
             }
         });
-        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 20));
+        Profile.add(LastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 250, 30));
 
         Email.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         Email.setForeground(new java.awt.Color(255, 255, 255));
@@ -1709,7 +1754,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 emailActionPerformed(evt);
             }
         });
-        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 20));
+        Profile.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 250, 30));
 
         Password.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         Password.setForeground(new java.awt.Color(255, 255, 255));
@@ -1726,7 +1771,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 passwordActionPerformed(evt);
             }
         });
-        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
+        Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 30));
 
         change.setText("Update");
         change.addActionListener(new java.awt.event.ActionListener() {
@@ -1747,82 +1792,9 @@ public class BuyerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
-        // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(0);
-        refreshDashboard();
-    }//GEN-LAST:event_viewLotsActionPerformed
-
-    private void transactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionActionPerformed
-        // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(1);
-    }//GEN-LAST:event_transactionActionPerformed
-
-    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
-        // TODO add your handling code here:
-        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
-        BuyerLoginFrame.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_logOutActionPerformed
-
-    private void viewLotsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseEntered
-        // TODO add your handling code here:
-        viewLots.setForeground(entered);
-    }//GEN-LAST:event_viewLotsMouseEntered
-
-    private void viewLotsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseExited
-        // TODO add your handling code here:
-        viewLots.setForeground(normal);
-    }//GEN-LAST:event_viewLotsMouseExited
-
-    private void viewLotsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMousePressed
-        // TODO add your handling code here:
-        viewLots.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewLotsMousePressed
-
-    private void viewLotsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseClicked
-        // TODO add your handling code here:
-        viewLots.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewLotsMouseClicked
-
     private void b3_l20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3_l20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
-
-    private void transactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseClicked
-        // TODO add your handling code here:
-        transaction.setForeground(clickedcolor);
-    }//GEN-LAST:event_transactionMouseClicked
-
-    private void transactionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseEntered
-        // TODO add your handling code here:
-        transaction.setForeground(entered);
-    }//GEN-LAST:event_transactionMouseEntered
-
-    private void transactionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseExited
-        // TODO add your handling code here:
-        transaction.setForeground(normal);
-    }//GEN-LAST:event_transactionMouseExited
-
-    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
-        // TODO add your handling code here:
-        logOut.setForeground(clickedcolor);
-    }//GEN-LAST:event_logOutMouseClicked
-
-    private void logOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseEntered
-        // TODO add your handling code here:
-        logOut.setForeground(entered);
-    }//GEN-LAST:event_logOutMouseEntered
-
-    private void logOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseExited
-        // TODO add your handling code here:
-        logOut.setForeground(normal);
-    }//GEN-LAST:event_logOutMouseExited
-
-    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
-        // TODO add your handling code here:
-        refreshDashboard();
-    }//GEN-LAST:event_RefreshActionPerformed
 
     private void FirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FirstNameActionPerformed
         // TODO add your handling code here:
@@ -1839,30 +1811,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordActionPerformed
-
-    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewProfileMouseClicked
-
-    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
-        // TODO add your handling code here:
-        viewProfile.setForeground(entered);
-    }//GEN-LAST:event_viewProfileMouseEntered
-
-    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
-        // TODO add your handling code here:
-        viewProfile.setForeground(normal);
-    }//GEN-LAST:event_viewProfileMouseExited
-
-    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
-        // TODO add your handling code here:
-        viewProfile.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewProfileMousePressed
-
-    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
-        // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(3);
-    }//GEN-LAST:event_viewProfileActionPerformed
 
     private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
         // TODO add your handling code here:
@@ -1891,6 +1839,103 @@ public class BuyerDashboard extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Update failed. Email may already be in use.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_changeActionPerformed
+
+    private void viewLotsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseClicked
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMouseClicked
+
+    private void viewLotsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseEntered
+        // TODO add your handling code here:
+        viewLots.setForeground(entered);
+    }//GEN-LAST:event_viewLotsMouseEntered
+
+    private void viewLotsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMouseExited
+        // TODO add your handling code here:
+        viewLots.setForeground(normal);
+    }//GEN-LAST:event_viewLotsMouseExited
+
+    private void viewLotsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewLotsMousePressed
+        // TODO add your handling code here:
+        viewLots.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewLotsMousePressed
+
+    private void viewLotsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewLotsActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(0);
+        refreshDashboard();
+    }//GEN-LAST:event_viewLotsActionPerformed
+
+    private void transactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseClicked
+        // TODO add your handling code here:
+        transaction.setForeground(clickedcolor);
+    }//GEN-LAST:event_transactionMouseClicked
+
+    private void transactionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseEntered
+        // TODO add your handling code here:
+        transaction.setForeground(entered);
+    }//GEN-LAST:event_transactionMouseEntered
+
+    private void transactionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseExited
+        // TODO add your handling code here:
+        transaction.setForeground(normal);
+    }//GEN-LAST:event_transactionMouseExited
+
+    private void transactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(1);
+    }//GEN-LAST:event_transactionActionPerformed
+
+    private void logOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseClicked
+        // TODO add your handling code here:
+        logOut.setForeground(clickedcolor);
+    }//GEN-LAST:event_logOutMouseClicked
+
+    private void logOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseEntered
+        // TODO add your handling code here:
+        logOut.setForeground(entered);
+    }//GEN-LAST:event_logOutMouseEntered
+
+    private void logOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutMouseExited
+        // TODO add your handling code here:
+        logOut.setForeground(normal);
+    }//GEN-LAST:event_logOutMouseExited
+
+    private void logOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutActionPerformed
+        // TODO add your handling code here:
+        BuyerLoginFrame BuyerLoginFrame=new BuyerLoginFrame();
+        BuyerLoginFrame.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logOutActionPerformed
+
+    private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
+        // TODO add your handling code here:
+        refreshDashboard();
+    }//GEN-LAST:event_RefreshActionPerformed
+
+    private void viewProfileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_viewProfileMouseClicked
+
+    private void viewProfileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseEntered
+        // TODO add your handling code here:
+        viewProfile.setForeground(entered);
+    }//GEN-LAST:event_viewProfileMouseEntered
+
+    private void viewProfileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMouseExited
+        // TODO add your handling code here:
+        viewProfile.setForeground(normal);
+    }//GEN-LAST:event_viewProfileMouseExited
+
+    private void viewProfileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewProfileMousePressed
+        // TODO add your handling code here:
+        viewProfile.setForeground(clickedcolor);
+    }//GEN-LAST:event_viewProfileMousePressed
+
+    private void viewProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewProfileActionPerformed
+        // TODO add your handling code here:
+        MainContentBuyer.setSelectedIndex(3);
+    }//GEN-LAST:event_viewProfileActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2081,6 +2126,15 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel computationTitle3;
     private javax.swing.JTextField email;
     private javax.swing.JLabel firstName;
+    private javax.swing.JLabel icon1;
+    private javax.swing.JLabel icon10;
+    private javax.swing.JLabel icon11;
+    private javax.swing.JLabel icon2;
+    private javax.swing.JLabel icon3;
+    private javax.swing.JLabel icon6;
+    private javax.swing.JLabel icon7;
+    private javax.swing.JLabel icon8;
+    private javax.swing.JLabel icon9;
     private javax.swing.JLabel info1;
     private javax.swing.JLabel info10;
     private javax.swing.JLabel info11;
