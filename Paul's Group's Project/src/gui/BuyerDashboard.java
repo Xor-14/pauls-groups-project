@@ -26,20 +26,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
      /**
      * 
      */ 
-    private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
-    private int imageIndex = 0;
     private LotFilterPanel customFilterPanel;
     
-    private void imageSlideshow() {
-
-    Timer timer = new Timer(8000, e -> {
-        imageIndex = (imageIndex + 1) % imgslides.length;
-
-        bgimg.setIcon(
-            new ImageIcon(getClass().getResource(imgslides[imageIndex])));
-    });
-    timer.start();
-    }
    /** 
     * Colors
      */ 
@@ -255,7 +243,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         initComponents();
         customFilterPanel = new LotFilterPanel(this::applyFilters);
         Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
-        imageSlideshow();
         mapButtons();
         
         // Backend integration replacements
@@ -1428,11 +1415,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
         Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title.setText("MY RESERVATIONS");
-        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 340, 30));
+        Title.setText("My Reservations");
+        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         buyerHistoryTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         buyerHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1448,7 +1435,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(buyerHistoryTable);
 
-        Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 940, -1));
+        Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 940, -1));
 
         MainContentBuyer.addTab("tab2", Reservations);
 
@@ -1457,11 +1444,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Computation.setPreferredSize(new java.awt.Dimension(502, 297));
         Computation.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title1.setForeground(new java.awt.Color(255, 255, 255));
         Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title1.setText("COMPUTATION:");
-        Computation.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Title1.setText("Computation");
+        Computation.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         computationOverview.setBorder(null);
         javax.swing.JScrollBar computationBar = computationOverview.getVerticalScrollBar();
@@ -1690,7 +1677,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         computationOverview.setViewportView(computation);
 
-        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 980, 640));
 
         MainContentBuyer.addTab("tab3", Computation);
 
@@ -1699,11 +1686,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
         Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title2.setForeground(new java.awt.Color(255, 255, 255));
         Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title2.setText("Account Information");
-        Profile.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Profile.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         firstName.setForeground(new java.awt.Color(255, 255, 255));
@@ -1781,7 +1768,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         });
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
-        MainContentBuyer.addTab("tab3", Profile);
+        MainContentBuyer.addTab("tab5", Profile);
 
         getContentPane().add(MainContentBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, -40, 1000, 760));
 

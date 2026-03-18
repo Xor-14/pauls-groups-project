@@ -87,7 +87,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         Title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Title.setText("<html>Register Account</html>");
         Title.setToolTipText("");
-        LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 400, -1));
+        LoginForm.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 400, -1));
 
         FirstName.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
         FirstName.setForeground(new java.awt.Color(255, 255, 255));
@@ -147,7 +147,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
                 userPassActionPerformed(evt);
             }
         });
-        LoginForm.add(userPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, 320, 40));
+        LoginForm.add(userPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, 320, 40));
 
         login.setBackground(new java.awt.Color(0, 0, 0));
         login.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -164,12 +164,12 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 390, 300, 40));
+        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 385, 320, 40));
 
         noaccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noaccount.setForeground(new java.awt.Color(255, 255, 255));
         noaccount.setText("Already have an account?");
-        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, -1, -1));
+        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 445, -1, -1));
 
         logAsStaff.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
         logAsStaff.setText("Login as Staff");
@@ -187,13 +187,15 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
         });
         LoginForm.add(logAsStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 440, 80, 20));
 
+        roleComboBox.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buyer", "Agent", "Admin" }));
+        roleComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         roleComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleComboBoxActionPerformed(evt);
             }
         });
-        LoginForm.add(roleComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 62, 120, 30));
+        LoginForm.add(roleComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 65, 120, 30));
 
         logAsBuyer.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
         logAsBuyer.setText("Login as Buyer");
@@ -209,7 +211,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
                 logAsBuyerActionPerformed(evt);
             }
         });
-        LoginForm.add(logAsBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, 80, 20));
+        LoginForm.add(logAsBuyer, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 440, 80, 20));
 
         getContentPane().add(LoginForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 162, 401, 474));
 

@@ -22,20 +22,9 @@ public class AdminDashboard extends javax.swing.JFrame {
      /**
      * 
      */ 
-    private String[] imgslides={"/img/bgimg1.png","/img/bgimg2.png","/img/bgimg3.png"};
-    private int imageIndex = 0;
+   
     private LotFilterPanel customFilterPanel;
     
-   private void imageSlideshow() {
-
-    Timer timer = new Timer(8000, e -> {
-        imageIndex = (imageIndex + 1) % imgslides.length;
-
-        bgimg.setIcon(
-            new ImageIcon(getClass().getResource(imgslides[imageIndex])));
-    });
-    timer.start();
-}
    /** 
     * Colors
      */ 
@@ -225,7 +214,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         initComponents();
         customFilterPanel = new LotFilterPanel(this::applyFilters);
         Lots.add(customFilterPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 130));
-        imageSlideshow();
         mapButtons();
         attachButtonListeners();
         
@@ -504,17 +492,18 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         AgentSideBar = new javax.swing.JPanel();
+        Logo = new javax.swing.JLabel();
         DashboardLabel = new javax.swing.JLabel();
         GroupName = new javax.swing.JLabel();
+        Refresh = new javax.swing.JButton();
         viewLots = new javax.swing.JButton();
+        viewReserv = new javax.swing.JButton();
         viewTransactions = new javax.swing.JButton();
+        btnAuditLogs = new javax.swing.JButton();
+        viewProfile = new javax.swing.JButton();
         viewFinanceSettings = new javax.swing.JButton();
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
-        viewReserv = new javax.swing.JButton();
-        Refresh = new javax.swing.JButton();
-        viewProfile = new javax.swing.JButton();
-        btnAuditLogs = new javax.swing.JButton();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -708,6 +697,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         txtResFee = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         btnUpdateFinance = new javax.swing.JButton();
+        Title5 = new javax.swing.JLabel();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -724,6 +714,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         AgentSideBar.setPreferredSize(new java.awt.Dimension(1280, 92));
         AgentSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        AgentSideBar.add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 80, 60));
+
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(0, 153, 255));
         DashboardLabel.setText("<html>Admin<br>Dashboard</html>");
@@ -733,7 +728,15 @@ public class AdminDashboard extends javax.swing.JFrame {
         GroupName.setForeground(new java.awt.Color(255, 255, 255));
         GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         GroupName.setText("Paul's Group");
-        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
+        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 160, 30));
+
+        Refresh.setText("Refresh");
+        Refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -770,149 +773,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 340, 40));
-
-        viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
-        viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
-        viewTransactions.setText("Transactions");
-        viewTransactions.setAlignmentY(0.0F);
-        viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewTransactions.setBorderPainted(false);
-        viewTransactions.setContentAreaFilled(false);
-        viewTransactions.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewTransactions.setFocusPainted(false);
-        viewTransactions.setFocusable(false);
-        viewTransactions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewTransactions.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewTransactions.setIconTextGap(0);
-        viewTransactions.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewTransactions.setSelected(true);
-        viewTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewTransactionsMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewTransactionsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewTransactionsMouseExited(evt);
-            }
-        });
-        viewTransactions.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewTransactionsActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 340, 40));
-
-        viewFinanceSettings.setBackground(new java.awt.Color(0, 0, 0));
-        viewFinanceSettings.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewFinanceSettings.setForeground(new java.awt.Color(255, 255, 255));
-        viewFinanceSettings.setText("Finance Settings");
-        viewFinanceSettings.setAlignmentY(0.0F);
-        viewFinanceSettings.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewFinanceSettings.setBorderPainted(false);
-        viewFinanceSettings.setContentAreaFilled(false);
-        viewFinanceSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewFinanceSettings.setFocusPainted(false);
-        viewFinanceSettings.setFocusable(false);
-        viewFinanceSettings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewFinanceSettings.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewFinanceSettings.setIconTextGap(0);
-        viewFinanceSettings.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewFinanceSettings.setSelected(true);
-        viewFinanceSettings.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewFinanceSettingsMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewFinanceSettingsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewFinanceSettingsMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                viewFinanceSettingsMousePressed(evt);
-            }
-        });
-        viewFinanceSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewFinanceSettingsActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(viewFinanceSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 340, 40));
-
-        genReport.setBackground(new java.awt.Color(0, 0, 0));
-        genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        genReport.setForeground(new java.awt.Color(255, 255, 255));
-        genReport.setText("   Generate Report");
-        genReport.setAlignmentY(0.0F);
-        genReport.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        genReport.setBorderPainted(false);
-        genReport.setContentAreaFilled(false);
-        genReport.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        genReport.setFocusPainted(false);
-        genReport.setFocusable(false);
-        genReport.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        genReport.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        genReport.setIconTextGap(0);
-        genReport.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        genReport.setSelected(true);
-        genReport.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                genReportMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                genReportMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                genReportMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                genReportMousePressed(evt);
-            }
-        });
-        genReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                genReportActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 340, 40));
-
-        logOut.setBackground(new java.awt.Color(0, 0, 0));
-        logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        logOut.setForeground(new java.awt.Color(255, 255, 255));
-        logOut.setText("   Logout");
-        logOut.setAlignmentY(0.0F);
-        logOut.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        logOut.setBorderPainted(false);
-        logOut.setContentAreaFilled(false);
-        logOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        logOut.setFocusPainted(false);
-        logOut.setFocusable(false);
-        logOut.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        logOut.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        logOut.setIconTextGap(0);
-        logOut.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        logOut.setSelected(true);
-        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logOutMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                logOutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                logOutMouseExited(evt);
-            }
-        });
-        logOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logOutActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 340, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 340, 40));
 
         viewReserv.setBackground(new java.awt.Color(0, 0, 0));
         viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -946,52 +807,41 @@ public class AdminDashboard extends javax.swing.JFrame {
                 viewReservActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 340, 40));
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 340, 40));
 
-        Refresh.setText("Refresh");
-        Refresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RefreshActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
-
-        viewProfile.setBackground(new java.awt.Color(0, 0, 0));
-        viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewProfile.setForeground(new java.awt.Color(255, 255, 255));
-        viewProfile.setText("   View Profile");
-        viewProfile.setAlignmentY(0.0F);
-        viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewProfile.setBorderPainted(false);
-        viewProfile.setContentAreaFilled(false);
-        viewProfile.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewProfile.setFocusPainted(false);
-        viewProfile.setFocusable(false);
-        viewProfile.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewProfile.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewProfile.setIconTextGap(0);
-        viewProfile.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewProfile.setSelected(true);
-        viewProfile.addMouseListener(new java.awt.event.MouseAdapter() {
+        viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
+        viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewTransactions.setForeground(new java.awt.Color(255, 255, 255));
+        viewTransactions.setText("Transactions");
+        viewTransactions.setAlignmentY(0.0F);
+        viewTransactions.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewTransactions.setBorderPainted(false);
+        viewTransactions.setContentAreaFilled(false);
+        viewTransactions.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewTransactions.setFocusPainted(false);
+        viewTransactions.setFocusable(false);
+        viewTransactions.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewTransactions.setIconTextGap(0);
+        viewTransactions.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewTransactions.setSelected(true);
+        viewTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewProfileMouseClicked(evt);
+                viewTransactionsMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewProfileMouseEntered(evt);
+                viewTransactionsMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewProfileMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                viewProfileMousePressed(evt);
+                viewTransactionsMouseExited(evt);
             }
         });
-        viewProfile.addActionListener(new java.awt.event.ActionListener() {
+        viewTransactions.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewProfileActionPerformed(evt);
+                viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 280, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 340, 40));
 
         btnAuditLogs.setBackground(new java.awt.Color(0, 0, 0));
         btnAuditLogs.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -1028,7 +878,152 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnAuditLogsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 340, 50));
+        AgentSideBar.add(btnAuditLogs, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 390, 340, 40));
+
+        viewProfile.setBackground(new java.awt.Color(0, 0, 0));
+        viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewProfile.setForeground(new java.awt.Color(255, 255, 255));
+        viewProfile.setText("   View Profile");
+        viewProfile.setAlignmentY(0.0F);
+        viewProfile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewProfile.setBorderPainted(false);
+        viewProfile.setContentAreaFilled(false);
+        viewProfile.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewProfile.setFocusPainted(false);
+        viewProfile.setFocusable(false);
+        viewProfile.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewProfile.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewProfile.setIconTextGap(0);
+        viewProfile.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewProfile.setSelected(true);
+        viewProfile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewProfileMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewProfileMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewProfileMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                viewProfileMousePressed(evt);
+            }
+        });
+        viewProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewProfileActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 280, 40));
+
+        viewFinanceSettings.setBackground(new java.awt.Color(0, 0, 0));
+        viewFinanceSettings.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        viewFinanceSettings.setForeground(new java.awt.Color(255, 255, 255));
+        viewFinanceSettings.setText("Finance Settings");
+        viewFinanceSettings.setAlignmentY(0.0F);
+        viewFinanceSettings.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        viewFinanceSettings.setBorderPainted(false);
+        viewFinanceSettings.setContentAreaFilled(false);
+        viewFinanceSettings.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        viewFinanceSettings.setFocusPainted(false);
+        viewFinanceSettings.setFocusable(false);
+        viewFinanceSettings.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        viewFinanceSettings.setIconTextGap(0);
+        viewFinanceSettings.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        viewFinanceSettings.setSelected(true);
+        viewFinanceSettings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                viewFinanceSettingsMousePressed(evt);
+            }
+        });
+        viewFinanceSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewFinanceSettingsActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(viewFinanceSettings, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 340, 40));
+
+        genReport.setBackground(new java.awt.Color(0, 0, 0));
+        genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        genReport.setForeground(new java.awt.Color(255, 255, 255));
+        genReport.setText("   Generate Report");
+        genReport.setAlignmentY(0.0F);
+        genReport.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        genReport.setBorderPainted(false);
+        genReport.setContentAreaFilled(false);
+        genReport.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        genReport.setFocusPainted(false);
+        genReport.setFocusable(false);
+        genReport.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        genReport.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        genReport.setIconTextGap(0);
+        genReport.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        genReport.setSelected(true);
+        genReport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                genReportMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                genReportMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                genReportMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                genReportMousePressed(evt);
+            }
+        });
+        genReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genReportActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 340, 40));
+
+        logOut.setBackground(new java.awt.Color(0, 0, 0));
+        logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        logOut.setForeground(new java.awt.Color(255, 255, 255));
+        logOut.setText("   Logout");
+        logOut.setAlignmentY(0.0F);
+        logOut.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
+        logOut.setBorderPainted(false);
+        logOut.setContentAreaFilled(false);
+        logOut.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        logOut.setFocusPainted(false);
+        logOut.setFocusable(false);
+        logOut.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        logOut.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        logOut.setIconTextGap(0);
+        logOut.setMargin(new java.awt.Insets(14, 14, 14, 14));
+        logOut.setSelected(true);
+        logOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOutMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logOutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logOutMouseExited(evt);
+            }
+        });
+        logOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutActionPerformed(evt);
+            }
+        });
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 340, 40));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1746,11 +1741,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         Reservations.setBackground(new java.awt.Color(30, 30, 30));
         Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title.setText("PENDING RESERVATIONS");
-        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+        Title.setText("Pending Reservations");
+        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 33, 570, -1));
 
         reservOverview.setBorder(null);
         javax.swing.JScrollBar reservBar = reservOverview.getVerticalScrollBar();
@@ -1955,7 +1950,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         reservOverview.setViewportView(reservations);
 
-        Reservations.add(reservOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 1000, 630));
+        Reservations.add(reservOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 980, 630));
 
         MainContentSeller.addTab("tab2", Reservations);
 
@@ -1964,11 +1959,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         Performance.setPreferredSize(new java.awt.Dimension(502, 297));
         Performance.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title1.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title1.setForeground(new java.awt.Color(255, 255, 255));
         Title1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title1.setText("PERFORMANCE OVERVIEW");
-        Performance.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Title1.setText("Performance Overview");
+        Performance.add(Title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 570, 40));
 
         agentPerf.setBorder(null);
         javax.swing.JScrollBar perfBar = agentPerf.getVerticalScrollBar();
@@ -2002,7 +1997,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
 
         History.setBackground(new java.awt.Color(30, 30, 30));
-        History.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 153)));
         History.setMinimumSize(new java.awt.Dimension(930, 1058));
         History.setPreferredSize(new java.awt.Dimension(930, 1058));
         History.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -2020,7 +2014,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         ));
         perfOverview.setViewportView(jTable1);
 
-        History.add(perfOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 970, -1));
+        History.add(perfOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 960, -1));
 
         agentPerf.setViewportView(History);
 
@@ -2031,11 +2025,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         Report.setBackground(new java.awt.Color(30, 30, 30));
         Report.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 48)); // NOI18N
+        Title2.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title2.setForeground(new java.awt.Color(255, 255, 255));
         Title2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title2.setText("REPORT");
-        Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 340, 60));
+        Title2.setText("Report");
+        Report.add(Title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 340, 60));
 
         reportTextArea.setColumns(20);
         reportTextArea.setRows(5);
@@ -2080,11 +2074,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         Transactions.setBackground(new java.awt.Color(30, 30, 30));
         Transactions.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title3.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title3.setForeground(new java.awt.Color(255, 255, 255));
         Title3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title3.setText("Transaction History");
-        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 340, 30));
+        Transactions.add(Title3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         transactionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2099,20 +2093,20 @@ public class AdminDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(transactionTable);
 
-        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, -1, -1));
+        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 950, -1));
 
-        MainContentSeller.addTab("tab2", Transactions);
+        MainContentSeller.addTab("tab5", Transactions);
 
         AuditLogsPanel.setBackground(new java.awt.Color(30, 30, 30));
         AuditLogsPanel.setMinimumSize(new java.awt.Dimension(502, 297));
         AuditLogsPanel.setPreferredSize(new java.awt.Dimension(502, 297));
         AuditLogsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title6.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Title6.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title6.setForeground(new java.awt.Color(255, 255, 255));
         Title6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title6.setText("Audit Logs");
-        AuditLogsPanel.add(Title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        AuditLogsPanel.add(Title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, -1));
 
         auditTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2127,20 +2121,20 @@ public class AdminDashboard extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(auditTable);
 
-        AuditLogsPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        AuditLogsPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 960, 570));
 
-        MainContentSeller.addTab("tab3", AuditLogsPanel);
+        MainContentSeller.addTab("tab6", AuditLogsPanel);
 
         Profile.setBackground(new java.awt.Color(30, 30, 30));
         Profile.setMinimumSize(new java.awt.Dimension(502, 297));
         Profile.setPreferredSize(new java.awt.Dimension(502, 297));
         Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 28)); // NOI18N
+        Title4.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title4.setForeground(new java.awt.Color(255, 255, 255));
         Title4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Title4.setText("Account Information");
-        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 340, 30));
+        Profile.add(Title4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         firstName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         firstName.setForeground(new java.awt.Color(255, 255, 255));
@@ -2218,47 +2212,70 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
-        MainContentSeller.addTab("tab3", Profile);
+        MainContentSeller.addTab("tab7", Profile);
 
+        FinanceSettingsPanel.setBackground(new java.awt.Color(30, 30, 30));
         FinanceSettingsPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("BDO Rate: ");
-        FinanceSettingsPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, 40));
+        FinanceSettingsPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 100, 40));
 
         txtBdoRate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtBdoRateActionPerformed(evt);
             }
         });
-        FinanceSettingsPanel.add(txtBdoRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 110, 40));
-        FinanceSettingsPanel.add(txtBpiRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 70, 110, 40));
+        FinanceSettingsPanel.add(txtBdoRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 200, 40));
+        FinanceSettingsPanel.add(txtBpiRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, 200, 40));
 
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("BPI Rate: ");
-        FinanceSettingsPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 100, 40));
-        FinanceSettingsPanel.add(txtRcbcRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 110, 40));
+        FinanceSettingsPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 100, 40));
+        FinanceSettingsPanel.add(txtRcbcRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 200, 40));
 
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("RCBC Rate: ");
-        FinanceSettingsPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 100, 40));
-        FinanceSettingsPanel.add(txtPagIbigRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 110, 40));
+        FinanceSettingsPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 150, 40));
+        FinanceSettingsPanel.add(txtPagIbigRate, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 150, 200, 40));
 
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Pag-IBIG Rate: ");
-        FinanceSettingsPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 100, 40));
-        FinanceSettingsPanel.add(txtDownPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 110, 40));
+        FinanceSettingsPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 180, 40));
+        FinanceSettingsPanel.add(txtDownPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 200, 40));
 
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Downpayment (%):");
-        FinanceSettingsPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 120, 40));
-        FinanceSettingsPanel.add(txtMaxLoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 110, 40));
+        FinanceSettingsPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 180, 40));
+        FinanceSettingsPanel.add(txtMaxLoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 260, 200, 40));
 
-        jLabel6.setText("Max Loanable Amt.:");
-        FinanceSettingsPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 100, 40));
-        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 110, 40));
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Max Loanable Amount:");
+        FinanceSettingsPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 220, 40));
 
+        txtMiscFee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMiscFeeActionPerformed(evt);
+            }
+        });
+        FinanceSettingsPanel.add(txtMiscFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 200, 40));
+
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Misc. Fee:");
-        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 100, 40));
-        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 390, 110, 40));
+        FinanceSettingsPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 100, 40));
+        FinanceSettingsPanel.add(txtResFee, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, 200, 40));
 
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Reservation Fee:");
-        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 100, 40));
+        FinanceSettingsPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 330, 230, 40));
 
         btnUpdateFinance.setText("Update Finance Settings");
         btnUpdateFinance.addActionListener(new java.awt.event.ActionListener() {
@@ -2266,7 +2283,13 @@ public class AdminDashboard extends javax.swing.JFrame {
                 btnUpdateFinanceActionPerformed(evt);
             }
         });
-        FinanceSettingsPanel.add(btnUpdateFinance, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, 240, -1));
+        FinanceSettingsPanel.add(btnUpdateFinance, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 240, -1));
+
+        Title5.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
+        Title5.setForeground(new java.awt.Color(255, 255, 255));
+        Title5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Title5.setText("Finance Settings");
+        FinanceSettingsPanel.add(Title5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 50));
 
         MainContentSeller.addTab("tab8", FinanceSettingsPanel);
 
@@ -2418,19 +2441,22 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void viewReservMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseClicked
         // TODO add your handling code here:
+        viewReserv.setForeground(clickedcolor);
     }//GEN-LAST:event_viewReservMouseClicked
 
     private void viewReservMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseEntered
         // TODO add your handling code here:
+        viewReserv.setForeground(entered);
     }//GEN-LAST:event_viewReservMouseEntered
 
     private void viewReservMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewReservMouseExited
         // TODO add your handling code here:
+        viewReserv.setForeground(normal);
     }//GEN-LAST:event_viewReservMouseExited
 
     private void viewReservActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReservActionPerformed
         // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(1);
+        MainContentSeller.setSelectedIndex(3);
     }//GEN-LAST:event_viewReservActionPerformed
 
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
@@ -2522,14 +2548,17 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void btnAuditLogsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseClicked
         // TODO add your handling code here:
+        btnAuditLogs.setForeground(clickedcolor);
     }//GEN-LAST:event_btnAuditLogsMouseClicked
 
     private void btnAuditLogsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseEntered
         // TODO add your handling code here:
+        btnAuditLogs.setForeground(entered);
     }//GEN-LAST:event_btnAuditLogsMouseEntered
 
     private void btnAuditLogsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMouseExited
         // TODO add your handling code here:
+        btnAuditLogs.setForeground(normal);
     }//GEN-LAST:event_btnAuditLogsMouseExited
 
     private void btnAuditLogsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAuditLogsMousePressed
@@ -2596,6 +2625,11 @@ public class AdminDashboard extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Update failed. Email may already be in use.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_changeActionPerformed
+
+    private void txtMiscFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMiscFeeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMiscFeeActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -2667,6 +2701,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText35;
     private javax.swing.JTextField InfoText36;
     private javax.swing.JTextField LastName;
+    private javax.swing.JLabel Logo;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JLabel Password;
@@ -2680,6 +2715,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Title2;
     private javax.swing.JLabel Title3;
     private javax.swing.JLabel Title4;
+    private javax.swing.JLabel Title5;
     private javax.swing.JLabel Title6;
     private javax.swing.JPanel Transactions;
     private javax.swing.JScrollPane agentPerf;
