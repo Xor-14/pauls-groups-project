@@ -1,1 +1,3 @@
 id,firstName,lastName,email,password,assignedBlock,totalSales
+1,Brent,Victorio,brent@test.com,pass123,3,2345900.0
+2,Darrell,Capa,darrell@test.com,pass123,3,493725.0

@@ -1,6 +1,7 @@
 transactionID,date,type,financingType,amount,monthlyAmortization,lotID,buyerID,agentID,status
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
+1,2026-03-18,Purchase,In-House Financing (5 Yrs),1037450.0,105778.68484473851,41,2,1,Approved
+2,2026-03-18,Purchase,In-House Financing (10 Yrs),1037450.0,78376.95787885293,45,2,1,Approved
+3,2026-03-18,Reservation,None,30000.0,0.0,42,2,1,Approved
+4,2026-03-18,Purchase,Pag-IBIG Financing (30 Yrs),271000.0,16679.77895955103,43,2,1,Approved
+5,2026-03-18,Purchase,Bank - BDO (5 Yrs),493725.0,95747.4354620542,56,1,2,Approved
+6,2026-03-18,Reservation,None,30000.0,0.0,57,1,2,Approved

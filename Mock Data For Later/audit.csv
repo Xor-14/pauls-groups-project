@@ -2,3 +2,13 @@ logId,timestamp,actionType,userId,details
 1,2026-03-18 16:15:42,BUYER_REGISTERED,1,New account: paul@test.com
 2,2026-03-18 17:55:05,ADMIN_REGISTERED,2,New account: yousef@test.com
 3,2026-03-18 18:07:30,FINANCE_UPDATED,2,Admin updated global finance rates (12 parameters).
+4,2026-03-18 18:15:15,AGENT_REGISTERED,1,New account: brent@test.com
+5,2026-03-18 18:15:28,BUYER_REGISTERED,2,New account: euan@test.com
+6,2026-03-18 18:17:24,AGENT_REGISTERED,2,New account: darrell@test.com
+7,2026-03-18 18:17:55,TRANSACTION_APPROVED,1,Approved TransID 1 for Lot 41
+8,2026-03-18 18:17:57,TRANSACTION_APPROVED,1,Approved TransID 2 for Lot 45
+9,2026-03-18 18:18:00,TRANSACTION_APPROVED,1,Approved TransID 3 for Lot 42
+10,2026-03-18 18:18:03,TRANSACTION_APPROVED,1,Approved TransID 4 for Lot 43
+11,2026-03-18 18:18:17,TRANSACTION_APPROVED,2,Approved TransID 5 for Lot 56
+12,2026-03-18 18:18:35,TRANSACTION_APPROVED,2,Approved TransID 6 for Lot 57
+13,2026-03-18 18:18:37,TRANSACTION_REJECTED,2,Rejected TransID 7 for Lot 58
