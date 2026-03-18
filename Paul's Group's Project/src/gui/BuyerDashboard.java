@@ -315,7 +315,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         BuyerSideBar = new javax.swing.JPanel();
         DashboardLabel = new javax.swing.JLabel();
-        GroupName = new javax.swing.JLabel();
+        Logo = new javax.swing.JLabel();
+        GroupName1 = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
         reqComputation = new javax.swing.JButton();
         transaction = new javax.swing.JButton();
@@ -436,7 +437,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         b5_l18 = new javax.swing.JButton();
         b5_l19 = new javax.swing.JButton();
         b5_l20 = new javax.swing.JButton();
-        Reservations = new javax.swing.JPanel();
+        Transactions = new javax.swing.JPanel();
         Title = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         buyerHistoryTable = new javax.swing.JTable();
@@ -506,11 +507,15 @@ public class BuyerDashboard extends javax.swing.JFrame {
         DashboardLabel.setText("<html>Buyer's<br>Dashboard</html>");
         BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
 
-        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        GroupName.setForeground(new java.awt.Color(255, 255, 255));
-        GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        GroupName.setText("Paul's Group");
-        BuyerSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 160, 30));
+        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo.setForeground(new java.awt.Color(255, 255, 255));
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        BuyerSideBar.add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 90));
+
+        GroupName1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        GroupName1.setForeground(new java.awt.Color(130, 159, 120));
+        GroupName1.setText("C R E A M S");
+        BuyerSideBar.add(GroupName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 524, 30));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -547,7 +552,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 280, 40));
+        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 280, 40));
 
         reqComputation.setBackground(new java.awt.Color(0, 0, 0));
         reqComputation.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -584,7 +589,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 reqComputationActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 280, 40));
+        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 280, 40));
 
         transaction.setBackground(new java.awt.Color(0, 0, 0));
         transaction.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -618,7 +623,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 transactionActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 280, 40));
+        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -652,7 +657,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 280, 40));
+        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 280, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -660,7 +665,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 RefreshActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, -1, -1));
+        BuyerSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 90, -1));
 
         viewProfile.setBackground(new java.awt.Color(0, 0, 0));
         viewProfile.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -697,7 +702,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 280, 40));
+        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 380, 40));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1412,14 +1417,14 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         MainContentBuyer.addTab("tab1", Lots);
 
-        Reservations.setBackground(new java.awt.Color(30, 30, 30));
-        Reservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        Transactions.setBackground(new java.awt.Color(30, 30, 30));
+        Transactions.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         Title.setFont(new java.awt.Font("New Peninim MT", 1, 35)); // NOI18N
         Title.setForeground(new java.awt.Color(255, 255, 255));
         Title.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Title.setText("My Reservations");
-        Reservations.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
+        Title.setText("Transactions");
+        Transactions.add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 340, 40));
 
         buyerHistoryTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         buyerHistoryTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1435,9 +1440,9 @@ public class BuyerDashboard extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(buyerHistoryTable);
 
-        Reservations.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 940, -1));
+        Transactions.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 940, -1));
 
-        MainContentBuyer.addTab("tab2", Reservations);
+        MainContentBuyer.addTab("tab2", Transactions);
 
         Computation.setBackground(new java.awt.Color(30, 30, 30));
         Computation.setMinimumSize(new java.awt.Dimension(502, 297));
@@ -1677,7 +1682,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         computationOverview.setViewportView(computation);
 
-        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 980, 640));
+        Computation.add(computationOverview, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 980, 620));
 
         MainContentBuyer.addTab("tab3", Computation);
 
@@ -2001,7 +2006,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel DashboardLabel;
     private javax.swing.JLabel Email;
     private javax.swing.JTextField FirstName;
-    private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel GroupName1;
     private javax.swing.JTextField InfoText1;
     private javax.swing.JTextField InfoText10;
     private javax.swing.JTextField InfoText11;
@@ -2015,15 +2020,16 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText4;
     private javax.swing.JTextField InfoText9;
     private javax.swing.JTextField LastName;
+    private javax.swing.JLabel Logo;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentBuyer;
     private javax.swing.JLabel Password;
     private javax.swing.JPanel Profile;
     private javax.swing.JButton Refresh;
-    private javax.swing.JPanel Reservations;
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Title1;
     private javax.swing.JLabel Title2;
+    private javax.swing.JPanel Transactions;
     private javax.swing.JButton b1_l1;
     private javax.swing.JButton b1_l10;
     private javax.swing.JButton b1_l11;

@@ -492,9 +492,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         AgentSideBar = new javax.swing.JPanel();
-        Logo = new javax.swing.JLabel();
         DashboardLabel = new javax.swing.JLabel();
-        GroupName = new javax.swing.JLabel();
         Refresh = new javax.swing.JButton();
         viewLots = new javax.swing.JButton();
         viewReserv = new javax.swing.JButton();
@@ -504,6 +502,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         viewFinanceSettings = new javax.swing.JButton();
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
+        Logo1 = new javax.swing.JLabel();
+        GroupName1 = new javax.swing.JLabel();
         MainContentSeller = new javax.swing.JTabbedPane();
         Lots = new javax.swing.JPanel();
         lotsOverview = new javax.swing.JScrollPane();
@@ -714,21 +714,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         AgentSideBar.setPreferredSize(new java.awt.Dimension(1280, 92));
         AgentSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        Logo.setForeground(new java.awt.Color(255, 255, 255));
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
-        AgentSideBar.add(Logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 80, 60));
-
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(0, 153, 255));
         DashboardLabel.setText("<html>Admin<br>Dashboard</html>");
         AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
-
-        GroupName.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        GroupName.setForeground(new java.awt.Color(255, 255, 255));
-        GroupName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        GroupName.setText("Paul's Group");
-        AgentSideBar.add(GroupName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 160, 30));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -736,7 +725,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 RefreshActionPerformed(evt);
             }
         });
-        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
+        AgentSideBar.add(Refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
 
         viewLots.setBackground(new java.awt.Color(0, 0, 0));
         viewLots.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -1024,6 +1013,16 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
         AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 340, 40));
+
+        Logo1.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
+        Logo1.setForeground(new java.awt.Color(255, 255, 255));
+        Logo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/miniLogo.png"))); // NOI18N
+        AgentSideBar.add(Logo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 90));
+
+        GroupName1.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        GroupName1.setForeground(new java.awt.Color(130, 159, 120));
+        GroupName1.setText("C R E A M S");
+        AgentSideBar.add(GroupName1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 36, 524, -1));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -2690,7 +2689,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel Email;
     private javax.swing.JPanel FinanceSettingsPanel;
     private javax.swing.JTextField FirstName;
-    private javax.swing.JLabel GroupName;
+    private javax.swing.JLabel GroupName1;
     private javax.swing.JPanel History;
     private javax.swing.JTextField InfoText29;
     private javax.swing.JTextField InfoText30;
@@ -2701,7 +2700,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField InfoText35;
     private javax.swing.JTextField InfoText36;
     private javax.swing.JTextField LastName;
-    private javax.swing.JLabel Logo;
+    private javax.swing.JLabel Logo1;
     private javax.swing.JPanel Lots;
     private javax.swing.JTabbedPane MainContentSeller;
     private javax.swing.JLabel Password;

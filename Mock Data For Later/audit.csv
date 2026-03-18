@@ -18,3 +18,4 @@ logId,timestamp,actionType,userId,details
 17,2026-03-18 13:09:59,ADMIN_REGISTERED,3,New admin created: rodolfo@test.com
 18,2026-03-18 13:41:45,PROFILE_UPDATED,3,User updated profile: elcid@test.com
 19,2026-03-18 13:48:00,PROFILE_UPDATED,2,User updated profile: paul@test.com
+20,2026-03-18 14:48:49,BUYER_REGISTERED,4,New buyer created: yo

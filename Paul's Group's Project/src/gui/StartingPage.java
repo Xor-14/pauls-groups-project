@@ -58,9 +58,7 @@ public class StartingPage extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         bgimg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,7 +98,7 @@ public class StartingPage extends javax.swing.JFrame {
                 startActionPerformed(evt);
             }
         });
-        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 510, 480, 40));
+        getContentPane().add(start, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 520, 480, 40));
 
         jPanel1.setBackground(new java.awt.Color(30, 30, 30));
         jPanel1.setFocusable(false);
@@ -149,19 +147,10 @@ public class StartingPage extends javax.swing.JFrame {
         jLabel6.setText("M A N A G E M E N T");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 640, 70));
 
-        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/startLogo.png"))); // NOI18N
-        jLabel2.setText("LOGO");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 90, 549, 570));
-
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 90, 549, 570));
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setForeground(new java.awt.Color(153, 153, 153));
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 90, 560, 590));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo2.png"))); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 110, 557, 557));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         bgimg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/main_bg.png"))); // NOI18N
@@ -238,14 +227,12 @@ public class StartingPage extends javax.swing.JFrame {
     private javax.swing.JLabel Logo;
     private javax.swing.JLabel bgimg;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton start;
     // End of variables declaration//GEN-END:variables
 }
