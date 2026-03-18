@@ -343,7 +343,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&lt;html&gt;R E A L&lt;br&gt;E S T A T E&lt;br&gt;M A N A G E R&lt;/html&gt;"/>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;B U Y E R &lt;br&gt; P O R T A L&lt;/html&gt;"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

@@ -1,25 +1,8 @@
 logId,timestamp,actionType,userId,userRole,details
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
+1,2026-03-18 20:33:27,BUYER_REGISTERED,1,Buyer,New account: buyer@test.com
+2,2026-03-18 20:34:12,AGENT_REGISTERED,1,Agent,New account: agent@test.com
+3,2026-03-18 20:34:21,TRANSACTION_APPROVED,1,Agent,Approved TransID 1 for Lot 1
+4,2026-03-18 20:34:22,TRANSACTION_APPROVED,1,Agent,Approved TransID 2 for Lot 2
+5,2026-03-18 20:34:22,TRANSACTION_APPROVED,1,Agent,Approved TransID 3 for Lot 3
+6,2026-03-18 20:34:23,TRANSACTION_APPROVED,1,Agent,Approved TransID 4 for Lot 4
+7,2026-03-18 20:34:23,TRANSACTION_APPROVED,1,Agent,Approved TransID 5 for Lot 5

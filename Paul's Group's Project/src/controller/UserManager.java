@@ -65,12 +65,6 @@ public class UserManager {
         return users.stream().filter(u -> u.getClass().getSimpleName().equalsIgnoreCase(role) && u.getId() == id).findFirst().orElse(null);
     }
 
-    public void deleteUser(int userId, String role) {
-        users.removeIf(u -> u.getClass().getSimpleName().equalsIgnoreCase(role) && u.getId() == userId);
-        saveAllUsers();
-        AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin", "Deleted " + role + " ID " + userId);
-    }
-
     public boolean updateCurrentUser(String f, String l, String e, String p) {
         if (users.stream().anyMatch(u -> u.getEmail().equals(e) && u.getId() != currentUser.getId())) return false;
         currentUser.setFirstName(f); currentUser.setLastName(l); currentUser.setEmail(e); currentUser.setPassword(p);

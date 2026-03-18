@@ -192,7 +192,7 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("New Peninim MT", 1, 70)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html>R E A L<br>E S T A T E<br>M A N A G E R</html>");
+        jLabel1.setText("<html>B U Y E R <br> P O R T A L</html>");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 233, 524, 288));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

@@ -124,7 +124,7 @@ public class StartingPage extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("CALLISTA");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 640, 70));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 640, 100));
 
         jLabel3.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
@@ -140,7 +140,7 @@ public class StartingPage extends javax.swing.JFrame {
         jLabel5.setBackground(new java.awt.Color(204, 204, 204));
         jLabel5.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel5.setText("A N D  A C Q U I S I T I O N");
+        jLabel5.setText("a n d  A C Q U I S I T I O N");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 340, 640, 70));
 
         jLabel6.setFont(new java.awt.Font("New Peninim MT", 0, 40)); // NOI18N

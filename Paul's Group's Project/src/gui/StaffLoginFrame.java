@@ -52,8 +52,6 @@ public class StaffLoginFrame extends javax.swing.JFrame {
         userName = new javax.swing.JTextField();
         Password = new javax.swing.JLabel();
         userPass = new javax.swing.JPasswordField();
-        Code = new javax.swing.JLabel();
-        codePass = new javax.swing.JPasswordField();
         noaccount = new javax.swing.JLabel();
         shiftForms = new javax.swing.JButton();
         login = new javax.swing.JButton();
@@ -122,25 +120,10 @@ public class StaffLoginFrame extends javax.swing.JFrame {
         });
         LoginForm.add(userPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, 320, 40));
 
-        Code.setFont(new java.awt.Font("New Peninim MT", 0, 15)); // NOI18N
-        Code.setForeground(new java.awt.Color(255, 255, 255));
-        Code.setText("Confirm Password");
-        LoginForm.add(Code, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 265, -1, -1));
-
-        codePass.setFont(new java.awt.Font("New Peninim MT", 0, 18)); // NOI18N
-        codePass.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        codePass.setText("jPasswordField1");
-        codePass.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codePassActionPerformed(evt);
-            }
-        });
-        LoginForm.add(codePass, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 285, 320, 40));
-
         noaccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         noaccount.setForeground(new java.awt.Color(255, 255, 255));
         noaccount.setText("Don't have an account?");
-        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 410, -1, -1));
+        LoginForm.add(noaccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 340, -1, -1));
 
         shiftForms.setFont(new java.awt.Font("New Peninim MT", 0, 10)); // NOI18N
         shiftForms.setText("Register");
@@ -156,7 +139,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
                 shiftFormsActionPerformed(evt);
             }
         });
-        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(175, 405, 80, 20));
+        LoginForm.add(shiftForms, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 80, 20));
 
         login.setBackground(new java.awt.Color(0, 0, 0));
         login.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -176,7 +159,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 320, 40));
+        LoginForm.add(login, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, 320, 40));
 
         switchAccount.setBackground(new java.awt.Color(102, 102, 102));
         switchAccount.setFont(new java.awt.Font("New Peninim MT", 1, 10)); // NOI18N
@@ -193,9 +176,9 @@ public class StaffLoginFrame extends javax.swing.JFrame {
                 switchAccountActionPerformed(evt);
             }
         });
-        LoginForm.add(switchAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 340, 20));
+        LoginForm.add(switchAccount, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 340, 20));
 
-        getContentPane().add(LoginForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 162, 401, 474));
+        getContentPane().add(LoginForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(755, 162, 401, 410));
 
         jPanel1.setBackground(new java.awt.Color(30, 30, 30));
         jPanel1.setFocusable(false);
@@ -207,7 +190,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("New Peninim MT", 1, 70)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html>R E A L<br>E S T A T E<br>M A N A G E R</html>");
+        jLabel1.setText("<html>S T A F F <br> P O R T A L</html>");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 233, 524, 288));
 
         bgimg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -251,10 +234,6 @@ public class StaffLoginFrame extends javax.swing.JFrame {
         NewAgentAccountFrame.setVisible(true);
         dispose();
     }//GEN-LAST:event_shiftFormsActionPerformed
-
-    private void codePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codePassActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codePassActionPerformed
 
     private void switchAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchAccountActionPerformed
         // TODO add your handling code here:
@@ -302,7 +281,6 @@ public class StaffLoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Code;
     private javax.swing.JLabel GroupName1;
     private javax.swing.JPanel LoginForm;
     private javax.swing.JLabel Logo;
@@ -310,7 +288,6 @@ public class StaffLoginFrame extends javax.swing.JFrame {
     private javax.swing.JLabel Title;
     private javax.swing.JLabel Username;
     private javax.swing.JLabel bgimg;
-    private javax.swing.JPasswordField codePass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton login;

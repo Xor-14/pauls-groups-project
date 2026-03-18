@@ -1,1 +1,2 @@
 id,firstName,lastName,email,password,assignedBlock,totalSales
+1,Agent,Test,agent@test.com,pass123,1,0.0
