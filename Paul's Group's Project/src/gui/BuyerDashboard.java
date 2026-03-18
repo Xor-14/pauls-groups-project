@@ -1761,6 +1761,11 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Profile.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 250, 20));
 
         change.setText("Update");
+        change.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeActionPerformed(evt);
+            }
+        });
         Profile.add(change, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, -1, -1));
 
         MainContentBuyer.addTab("tab3", Profile);
@@ -1915,6 +1920,10 @@ public class BuyerDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
         MainContentBuyer.setSelectedIndex(3);
     }//GEN-LAST:event_viewProfileActionPerformed
+
+    private void changeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_changeActionPerformed
 
     /**
      * @param args the command line arguments

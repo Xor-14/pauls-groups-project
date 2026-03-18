@@ -135,6 +135,31 @@ public class UserManager {
         AuditManager.getInstance().logAudit("ACCOUNT_DELETED", 0, "Admin deleted " + role + " ID " + userId);
     }
 
+    public boolean updateCurrentUser(String firstName, String lastName, String email, String password) {
+        if (currentUser == null) return false;
+        
+        // Prevent changing to an email that is already used by another account
+        if (!currentUser.getEmail().equals(email) && isEmailTaken(email)) {
+            return false;
+        }
+
+        currentUser.setFirstName(firstName);
+        currentUser.setLastName(lastName);
+        currentUser.setEmail(email);
+        currentUser.setPassword(password);
+
+        if (currentUser instanceof Admin) {
+            saveAdmins();
+        } else if (currentUser instanceof Agent) {
+            saveAgents();
+        } else if (currentUser instanceof Buyer) {
+            saveBuyers();
+        }
+        
+        AuditManager.getInstance().logAudit("PROFILE_UPDATED", currentUser.getId(), "User updated profile: " + email);
+        return true;
+    }
+    
     public User getCurrentUser() { return currentUser; }
     public void logout() { currentUser = null; }
     public List<Agent> getAgents() { return agents; }
