@@ -24,6 +24,7 @@ public class LoginDialog extends javax.swing.JDialog {
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
+        this.setLocationRelativeTo(null);
  
     }
 

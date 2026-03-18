@@ -12,6 +12,6 @@ package controller;
 
 import models.Lot;
 
-public interface LotFactory {
+public interface ILotFactory {
     Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status);
 }

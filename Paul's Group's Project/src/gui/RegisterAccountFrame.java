@@ -33,6 +33,7 @@ public class RegisterAccountFrame extends javax.swing.JFrame {
     public RegisterAccountFrame() {
         initComponents();
         imageSlideshow();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**

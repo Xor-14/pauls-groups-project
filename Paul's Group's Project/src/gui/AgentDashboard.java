@@ -223,6 +223,7 @@ public class AgentDashboard extends javax.swing.JFrame {
         loadPendingTransactions();
         loadAgentHistory();
         loadProfileData();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
     
     public void applyFilters() {
@@ -402,7 +403,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         GroupName1 = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
         viewTransactions = new javax.swing.JButton();
-        viewPerformance = new javax.swing.JButton();
         genReport = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         viewReserv = new javax.swing.JButton();
@@ -596,8 +596,8 @@ public class AgentDashboard extends javax.swing.JFrame {
 
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(0, 153, 255));
-        DashboardLabel.setText("<html>Agent's<br>Dashboard</html>");
-        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
+        DashboardLabel.setText("<html>Agent<br>Dashboard</html>");
+        AgentSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 590, 280, 130));
 
         Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Logo.setForeground(new java.awt.Color(255, 255, 255));
@@ -644,7 +644,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 340, 40));
+        AgentSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 280, 40));
 
         viewTransactions.setBackground(new java.awt.Color(0, 0, 0));
         viewTransactions.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -678,44 +678,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewTransactionsActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 340, 40));
-
-        viewPerformance.setBackground(new java.awt.Color(0, 0, 0));
-        viewPerformance.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        viewPerformance.setForeground(new java.awt.Color(255, 255, 255));
-        viewPerformance.setText("   Performance");
-        viewPerformance.setAlignmentY(0.0F);
-        viewPerformance.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        viewPerformance.setBorderPainted(false);
-        viewPerformance.setContentAreaFilled(false);
-        viewPerformance.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        viewPerformance.setFocusPainted(false);
-        viewPerformance.setFocusable(false);
-        viewPerformance.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        viewPerformance.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        viewPerformance.setIconTextGap(0);
-        viewPerformance.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        viewPerformance.setSelected(true);
-        viewPerformance.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                viewPerformanceMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                viewPerformanceMousePressed(evt);
-            }
-        });
-        viewPerformance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewPerformanceActionPerformed(evt);
-            }
-        });
-        AgentSideBar.add(viewPerformance, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 340, 40));
+        AgentSideBar.add(viewTransactions, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 280, 40));
 
         genReport.setBackground(new java.awt.Color(0, 0, 0));
         genReport.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -752,7 +715,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 genReportActionPerformed(evt);
             }
         });
-        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 340, 40));
+        AgentSideBar.add(genReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 450, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -786,7 +749,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 340, 40));
+        AgentSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 280, 40));
 
         viewReserv.setBackground(new java.awt.Color(0, 0, 0));
         viewReserv.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -820,7 +783,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewReservActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 340, 40));
+        AgentSideBar.add(viewReserv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 280, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -865,7 +828,7 @@ public class AgentDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 280, 40));
+        AgentSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 280, 40));
 
         getContentPane().add(AgentSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -2007,11 +1970,6 @@ public class AgentDashboard extends javax.swing.JFrame {
         refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
-    private void viewPerformanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewPerformanceActionPerformed
-        // TODO add your handling code here:
-        MainContentSeller.setSelectedIndex(2);
-    }//GEN-LAST:event_viewPerformanceActionPerformed
-
     private void viewTransactionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsActionPerformed
         // TODO add your handling code here:
         MainContentSeller.setSelectedIndex(4);
@@ -2047,26 +2005,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private void b3_l20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3_l20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
-
-    private void viewPerformanceMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseEntered
-        // TODO add your handling code here:
-         viewPerformance.setForeground(entered);
-    }//GEN-LAST:event_viewPerformanceMouseEntered
-
-    private void viewPerformanceMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseExited
-        // TODO add your handling code here:
-        viewPerformance.setForeground(normal);
-    }//GEN-LAST:event_viewPerformanceMouseExited
-
-    private void viewPerformanceMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMousePressed
-        // TODO add your handling code here:
-        viewPerformance.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewPerformanceMousePressed
-
-    private void viewPerformanceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPerformanceMouseClicked
-        // TODO add your handling code here:
-        viewPerformance.setForeground(clickedcolor);
-    }//GEN-LAST:event_viewPerformanceMouseClicked
 
     private void viewTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewTransactionsMouseClicked
         // TODO add your handling code here:
@@ -2489,7 +2427,6 @@ public class AgentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel reservationTitle1;
     private javax.swing.JPanel reservations;
     private javax.swing.JButton viewLots;
-    private javax.swing.JButton viewPerformance;
     private javax.swing.JButton viewProfile;
     private javax.swing.JButton viewReserv;
     private javax.swing.JButton viewTransactions;

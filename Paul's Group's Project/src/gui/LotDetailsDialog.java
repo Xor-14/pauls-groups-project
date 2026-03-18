@@ -17,13 +17,14 @@ public class LotDetailsDialog extends javax.swing.JDialog {
     private Lot currentLot;
 
     public LotDetailsDialog(java.awt.Frame parent, boolean modal, models.Lot lot) {
+        
         super(parent, modal);
         this.currentLot = lot;
         initComponents();
+        this.setLocationRelativeTo(null);
         financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { 
         "Spot Cash", "Bank - BDO", "Bank - BPI", "Bank - RCBC", "Pag-IBIG Financing" 
     }));
-        
         jLabel1.setText("LOT DETAILS - " + currentLot.getLotType().toUpperCase());
         Info1.setText(String.format("Block: %d | Lot ID: %d | Lot Area: %.2f sqm | Floor Area: %.2f sqm", 
                 currentLot.getBlockID(), currentLot.getLotID(), currentLot.getLotArea(), currentLot.getFloorArea()));
@@ -47,6 +48,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 updateFinancingTable();
             }
         });
+        
     }
 
     private void updateFinancingTable() {
@@ -235,6 +237,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
 
         LotDetails.setBackground(new java.awt.Color(30, 30, 30));
         LotDetails.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
+        LotDetails.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LotDetails.setMaximumSize(new java.awt.Dimension(677, 739));
+        LotDetails.setPreferredSize(new java.awt.Dimension(616, 707));
         LotDetails.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -266,7 +271,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 btnReserveActionPerformed(evt);
             }
         });
-        LotDetails.add(btnReserve, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 630, 120, 35));
+        LotDetails.add(btnReserve, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 630, 120, 35));
 
         btnBuy.setBackground(new java.awt.Color(0, 153, 0));
         btnBuy.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -277,7 +282,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 btnBuyActionPerformed(evt);
             }
         });
-        LotDetails.add(btnBuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 630, 120, 35));
+        LotDetails.add(btnBuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 630, 120, 35));
 
         btnSell.setBackground(new java.awt.Color(255, 98, 96));
         btnSell.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -288,7 +293,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
                 btnSellActionPerformed(evt);
             }
         });
-        LotDetails.add(btnSell, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 630, 120, 35));
+        LotDetails.add(btnSell, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 630, 120, 35));
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(1920, 1920));
 
         tableRFO.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -303,7 +310,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tableRFO);
 
-        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 610, 140));
+        LotDetails.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 550, 140));
 
         financingComboBox.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         financingComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spot Cash", "Bank", "Pag-IBIG" }));
@@ -332,7 +339,7 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(tableLoan);
 
-        LotDetails.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 610, 150));
+        LotDetails.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, 550, 150));
 
         tableLotInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -347,9 +354,9 @@ public class LotDetailsDialog extends javax.swing.JDialog {
         ));
         jScrollPane3.setViewportView(tableLotInfo);
 
-        LotDetails.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 610, 110));
+        LotDetails.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 550, 110));
 
-        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1450, 680));
+        getContentPane().add(LotDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

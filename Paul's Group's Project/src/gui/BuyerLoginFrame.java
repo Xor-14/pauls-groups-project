@@ -33,6 +33,7 @@ public class BuyerLoginFrame extends javax.swing.JFrame {
     public BuyerLoginFrame() {
         initComponents();
         imageSlideshow();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**

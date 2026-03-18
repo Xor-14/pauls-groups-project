@@ -255,6 +255,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
         normal = new Color(255,255,255);
         
         loadProfileData();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
     
     private void attachButtonListeners() {
@@ -318,7 +319,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         Logo = new javax.swing.JLabel();
         GroupName1 = new javax.swing.JLabel();
         viewLots = new javax.swing.JButton();
-        reqComputation = new javax.swing.JButton();
         transaction = new javax.swing.JButton();
         logOut = new javax.swing.JButton();
         Refresh = new javax.swing.JButton();
@@ -504,8 +504,8 @@ public class BuyerDashboard extends javax.swing.JFrame {
 
         DashboardLabel.setFont(new java.awt.Font("New Peninim MT", 1, 36)); // NOI18N
         DashboardLabel.setForeground(new java.awt.Color(255, 255, 255));
-        DashboardLabel.setText("<html>Buyer's<br>Dashboard</html>");
-        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 610, 260, 90));
+        DashboardLabel.setText("<html>Buyer<br>Dashboard</html>");
+        BuyerSideBar.add(DashboardLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 280, 160));
 
         Logo.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
         Logo.setForeground(new java.awt.Color(255, 255, 255));
@@ -552,44 +552,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewLotsActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 280, 40));
-
-        reqComputation.setBackground(new java.awt.Color(0, 0, 0));
-        reqComputation.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
-        reqComputation.setForeground(new java.awt.Color(255, 255, 255));
-        reqComputation.setText("   Computation");
-        reqComputation.setAlignmentY(0.0F);
-        reqComputation.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 1, true));
-        reqComputation.setBorderPainted(false);
-        reqComputation.setContentAreaFilled(false);
-        reqComputation.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        reqComputation.setFocusPainted(false);
-        reqComputation.setFocusable(false);
-        reqComputation.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        reqComputation.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        reqComputation.setIconTextGap(0);
-        reqComputation.setMargin(new java.awt.Insets(14, 14, 14, 14));
-        reqComputation.setSelected(true);
-        reqComputation.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                reqComputationMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                reqComputationMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                reqComputationMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                reqComputationMousePressed(evt);
-            }
-        });
-        reqComputation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reqComputationActionPerformed(evt);
-            }
-        });
-        BuyerSideBar.add(reqComputation, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 360, 280, 40));
+        BuyerSideBar.add(viewLots, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 280, 40));
 
         transaction.setBackground(new java.awt.Color(0, 0, 0));
         transaction.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -623,7 +586,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 transactionActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 280, 40));
+        BuyerSideBar.add(transaction, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 280, 40));
 
         logOut.setBackground(new java.awt.Color(0, 0, 0));
         logOut.setFont(new java.awt.Font("New Peninim MT", 1, 24)); // NOI18N
@@ -657,7 +620,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 logOutActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 430, 280, 40));
+        BuyerSideBar.add(logOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 280, 40));
 
         Refresh.setText("Refresh");
         Refresh.addActionListener(new java.awt.event.ActionListener() {
@@ -702,7 +665,7 @@ public class BuyerDashboard extends javax.swing.JFrame {
                 viewProfileActionPerformed(evt);
             }
         });
-        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 380, 40));
+        BuyerSideBar.add(viewProfile, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 280, 40));
 
         getContentPane().add(BuyerSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 280, 720));
 
@@ -1790,11 +1753,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
         refreshDashboard();
     }//GEN-LAST:event_viewLotsActionPerformed
 
-    private void reqComputationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reqComputationActionPerformed
-        // TODO add your handling code here:
-        MainContentBuyer.setSelectedIndex(2);
-    }//GEN-LAST:event_reqComputationActionPerformed
-
     private void transactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transactionActionPerformed
         // TODO add your handling code here:
         MainContentBuyer.setSelectedIndex(1);
@@ -1830,26 +1788,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private void b3_l20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b3_l20ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_b3_l20ActionPerformed
-
-    private void reqComputationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseEntered
-        // TODO add your handling code here:
-         reqComputation.setForeground(entered);
-    }//GEN-LAST:event_reqComputationMouseEntered
-
-    private void reqComputationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseExited
-        // TODO add your handling code here:
-        reqComputation.setForeground(normal);
-    }//GEN-LAST:event_reqComputationMouseExited
-
-    private void reqComputationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMousePressed
-        // TODO add your handling code here:
-        reqComputation.setForeground(clickedcolor);
-    }//GEN-LAST:event_reqComputationMousePressed
-
-    private void reqComputationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reqComputationMouseClicked
-        // TODO add your handling code here:
-        reqComputation.setForeground(clickedcolor);
-    }//GEN-LAST:event_reqComputationMouseClicked
 
     private void transactionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_transactionMouseClicked
         // TODO add your handling code here:
@@ -2161,7 +2099,6 @@ public class BuyerDashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane lotsOverview;
     private javax.swing.JPanel lotsView;
     private javax.swing.JTextField password;
-    private javax.swing.JButton reqComputation;
     private javax.swing.JButton transaction;
     private javax.swing.JButton viewLots;
     private javax.swing.JButton viewProfile;

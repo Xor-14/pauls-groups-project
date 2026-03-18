@@ -32,6 +32,7 @@ public class StaffLoginFrame extends javax.swing.JFrame {
     public StaffLoginFrame() {
         initComponents();
         imageSlideshow();
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**

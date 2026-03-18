@@ -38,7 +38,7 @@ public class StartingPage extends javax.swing.JFrame {
         clickedcolor = new Color(0,0,0);
         entered = new Color(110, 110, 110);
         normal = new Color(255,255,255);
-        
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -218,11 +218,7 @@ public class StartingPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-                StartingPage startingPage = new StartingPage();
-                startingPage.setExtendedState(StartingPage.MAXIMIZED_BOTH);
-                startingPage.setVisible(true);
-                
+                new StartingPage().setVisible(true);
             }
         });
     }

@@ -15,7 +15,7 @@ import models.AlliyahOuterLot;
 import models.CallistaLot;
 import models.Lot;
 
-public class ConcreteLotFactory implements LotFactory {
+public class ConcreteLotFactory implements ILotFactory {
     @Override
     public Lot createLot(String type, int lotID, int blockID, double lotArea, double floorArea, double tcp, double rf, double hdmfMax, String status) {
         if (type == null) {

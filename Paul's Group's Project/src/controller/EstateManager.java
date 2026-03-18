@@ -32,7 +32,7 @@ public class EstateManager {
 
     private List<Lot> loadLots() {
         List<Lot> lots = new ArrayList<>();
-        LotFactory factory = new ConcreteLotFactory();
+        ILotFactory factory = new ConcreteLotFactory();
         List<String[]> data = CSVDatabase.readCSV(CSVDatabase.LOTS_FILE);
         
         for (String[] v : data) {
